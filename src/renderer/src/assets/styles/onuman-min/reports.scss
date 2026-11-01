@@ -1,0 +1,524 @@
+@use '../variables/index' as *;
+@use 'sass:color';
+
+.f-center {
+  .col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+}
+
+
+.sdfw43zq1 {
+  text-align: center !important;
+  margin-bottom: 0.5rem !important;
+  border: 1px solid $d-border !important;
+  padding: 0.4rem !important;
+}
+
+.base-height-need {
+  min-height: 2rem;
+  margin-top: 0.5rem;
+}
+
+.small-counter {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+  font-size: 0.5rem;
+  text-align: center;
+  color: $d-primary;
+  background-color: $d-border;
+  z-index: $z-top;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 55%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    width: 1rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background-color: $d-btn-3;
+    z-index: $z-down;
+  }
+}
+
+.report-actions {
+  position: fixed;
+  bottom: 3rem;
+  right: 3rem;
+  z-index: $z-toper;
+  display: flex;
+  gap: 1rem;
+
+  i {
+    position: relative;
+    cursor: pointer;
+    font-size: 1rem;
+    color: $d-btn-3 !important;
+
+    &:hover {
+      color: $d-primary !important;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 1.7rem;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border: 1px solid $d-btn-3;
+      z-index: $z-down;
+    }
+  }
+}
+
+.new-popup-sect {
+  position: relative !important;
+  width: 5rem;
+  z-index: 5;
+
+  &::after {
+    content: '';
+    display: none;
+  }
+}
+
+.dea21scfz {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: $z-toper !important;
+}
+
+/* DARK MODE STYLES */
+body.dark {
+  .report-result {
+    position: relative;
+    background-color: #fff;
+    border-radius: 0.2rem;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+
+    & * {
+      color: #000;
+    }
+
+    .report-response {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .table.table-fixed {
+        table-layout: auto !important;
+      }
+    }
+
+    .report-response-await {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    &:has(.report-response-await) {
+      background-color: #292929;
+    }
+  }
+}
+
+// REPORT ENHANCE
+.report-actions-enhanced {
+  position: sticky;
+  bottom: 1rem;
+  width: 100%;
+  backdrop-filter: blur(8px);
+  background: rgba($d-bg, 0.85); // Semi-transparent dark glass look using $d-bg
+  border-top: 1px solid rgba($d-border, 0.3);
+  padding: 12px 16px;
+  font-family: 'Inter', sans-serif;
+  color: $d-text;
+  z-index: $z-top;
+
+  .export-status-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba($d-tooltip-bg, 0.7); // Transparent background with $d-tooltip-bg
+    padding: 10px 14px;
+    font-size: 14px;
+    margin-bottom: 10px;
+
+    .status-content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      i {
+        font-size: 16px;
+        color: $d-success; // Using success color for icons
+      }
+
+      .status-actions {
+        display: flex;
+        gap: 8px;
+
+        .action-btn,
+        i {
+          color: $d-fuschia !important;
+        }
+
+        .action-btn {
+          background: transparent;
+          border: 1px solid $d-primary;
+          padding: 6px 10px;
+          font-size: 12px;
+          transition: background 0.2s ease;
+
+          &:hover {
+            background: color.adjust($d-fuschia, $lightness: -10%); // Darker hover effect
+          }
+        }
+      }
+    }
+
+    .dismiss-btn {
+      background: none;
+      color: $d-sub-sub-text; // Using a lighter text color for the dismiss button
+      border: none;
+      font-size: 18px;
+      color: $d-fuschiaDark !important;
+      cursor: pointer;
+    }
+  }
+
+  .export-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+
+    .export-card {
+      background: rgba($d-bg, 0.6); // Lighten the background with $d-bg
+      padding: 10px;
+      border-radius: 10px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .export-btn {
+        width: 100%;
+        padding: 8px;
+        border: none;
+        border-radius: 6px;
+        color: $d-white;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: background 0.2s ease;
+        overflow: hidden;
+
+        &.export-pdf {
+          background-color: $d-btn-3;
+
+          span,
+          i {
+            color: color.adjust($d-btn-3, $lightness: 30%) !important;
+          }
+
+          &:hover {
+            background-color: color.adjust($d-btn-3, $lightness: -5%) !important;
+
+            span,
+            i {
+              color: color.adjust($d-btn-3, $lightness: 40%) !important;
+            }
+          }
+        }
+
+        &.export-excel {
+          background-color: $d-btn-2;
+
+          span,
+          i {
+            color: color.adjust($d-btn-2, $lightness: 30%) !important;
+          }
+
+          &:hover {
+            background-color: color.adjust($d-btn-2, $lightness: -5%) !important;
+
+            span,
+            i {
+              color: color.adjust($d-btn-2, $lightness: 40%) !important;
+            }
+          }
+        }
+
+        &.export-word {
+          background-color: color.adjust($d-warning, $lightness: -20%);
+
+          span,
+          i {
+            color: color.adjust($d-warning, $lightness: -2%) !important;
+          }
+
+          &:hover {
+            background-color: color.adjust($d-warning, $lightness: -25%) !important;
+          }
+        }
+
+        &.export-print {
+          background-color: color.adjust($d-primary, $lightness: -10%);
+
+          span,
+          i {
+            color: color.adjust($d-primary, $lightness: 30%) !important;
+          }
+
+          &:hover {
+            background-color: color.adjust($d-primary, $lightness: -5%) !important;
+
+            span,
+            i {
+              color: color.adjust($d-primary, $lightness: 40%) !important;
+            }
+          }
+        }
+
+        &.exporting {
+          opacity: 0.6;
+        }
+
+        .btn-content {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+
+        i {
+          font-size: 16px;
+        }
+
+        .progress-bar {
+          width: 100%;
+          height: 4px;
+          background: rgba($d-border, 0.3); // Transparent progress background
+          border-radius: 3px;
+          margin-top: 6px;
+
+          .progress-fill {
+            height: 100%;
+            width: 50%;
+            background: $d-success;
+            animation: progressIndeterminate 1.5s infinite linear;
+            border-radius: 3px;
+          }
+        }
+      }
+
+      .export-desc {
+        margin-top: 6px;
+        font-size: 11px;
+        color: $d-sub-sub-text;
+      }
+    }
+  }
+
+  .export-history {
+    margin-top: 12px;
+    border-top: 1px solid rgba($d-border, 0.3);
+    padding-top: 8px;
+
+    h4 {
+      font-size: 13px;
+      font-weight: 800;
+      border-bottom: 1px solid $d-sub-sub-text;
+      color: $d-text !important;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .history-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      .history-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        color: $d-sub-sub-text; // Lighter text for history items
+
+        .history-info {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+
+          i {
+            font-size: 14px;
+            color: $d-fuschia; // Primary color for icons
+          }
+
+          .history-details {
+            display: flex;
+            flex-direction: column;
+
+            .filename {
+              color: $d-text; // Darker text for filenames
+            }
+
+            .timestamp {
+              font-size: 11px;
+              color: $d-sub-sub-text; // Lighter text for timestamp
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Animation for progress bar
+@keyframes progressIndeterminate {
+  0% {
+    transform: translateX(-50%) scaleX(0);
+    /* Start from the left with no width */
+    width: 0%;
+  }
+
+  25% {
+    transform: translateX(10%) scaleX(1.2);
+    /* Slight movement and scale */
+    width: 25%;
+  }
+
+  50% {
+    transform: translateX(50%) scaleX(0.8);
+    /* Further movement with scale down */
+    width: 50%;
+  }
+
+  75% {
+    transform: translateX(75%) scaleX(1.1);
+    /* Even further with slight scaling */
+    width: 75%;
+  }
+
+  100% {
+    transform: translateX(100%) scaleX(1);
+    /* End at full width */
+    width: 100%;
+  }
+}
+
+
+
+/* Add this to your Vue component's <style> section */
+
+.export-preview {
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, #5f3dc4, #9775fa);
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+  }
+}
+
+.checkbox {
+
+  .daser3346t {
+    // min-width: 1.2rem !important;
+
+    &:checked {
+      min-width: 1.2rem !important;
+      max-width: 2rem !important;
+    }
+  }
+
+}
+
+.all-select-container {
+  position: absolute;
+  top: -1.2rem;
+  width: 1.5rem;
+
+
+  &.ex238-positional {
+    top: -2.2rem !important;
+  }
+
+
+  .tooltip-container {
+    position: absolute;
+    top: -1.6rem;
+  }
+
+  .all-select-options {
+    position: absolute;
+    top: 0;
+    left: 0;
+    appearance: none;
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 2px solid $d-border;
+    border-radius: 0.25rem;
+    background-color: $d-bg;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+
+
+
+    &:hover {
+      border: 2px solid $d-fuschia;
+    }
+
+    &:checked {
+      outline: 1px solid $d-border;
+      outline-offset: 2px;
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0.3rem;
+        width: 0.3rem;
+        height: 0.7rem;
+        border: 1px solid #d7d7d7;
+        border-width: 0 0.15rem 0.15rem 0;
+        transform: rotate(45deg);
+      }
+    }
+
+  }
+}
+
+.separator-324c {
+  border: 1px solid $d-border;
+  padding: 0.2rem;
+}
+
+
+.report-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

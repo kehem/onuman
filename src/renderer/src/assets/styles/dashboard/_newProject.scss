@@ -1,0 +1,501 @@
+// styles/variables/newProject.scss
+@use '../variables/index' as *;
+@use 'sass:color';
+
+.bordered-all {
+  border: 1px solid $d-border !important;
+}
+
+.short-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: color.adjust($d-bg, $lightness: 5%);
+  margin: 0.5rem 0;
+
+  &.new-bg {
+    background-color: color.adjust($d-border, $lightness: 5%);
+  }
+
+  th,
+  td {
+    border: 1px solid $d-border;
+    padding: 0.5rem;
+
+    &.full-inline {
+      background-color: color.adjust($d-border, $lightness: 5%);
+    }
+  }
+
+  th {
+    background-color: color.adjust($d-border, $lightness: -5%);
+  }
+
+  tr:hover {
+    background-color: color.adjust($d-border, $lightness: -5%);
+  }
+}
+
+.setMixRatioPopup {
+  position: absolute;
+  display: none;
+  left: 80%;
+  width: 15rem;
+  height: auto;
+  padding: 0 0.5rem;
+  border: 1px solid $d-border;
+  background-color: color.adjust($d-bg, $lightness: 5%);
+  border-radius: 0.4rem;
+  z-index: $z-top;
+  box-shadow: $box-shadow;
+
+  .show {
+    display: block !important;
+  }
+
+  textarea {
+    width: 100% !important;
+    min-height: 3rem;
+    resize: vertical;
+  }
+}
+
+.sub-input-wrapper {
+  label {
+    width: 50% !important;
+  }
+}
+
+.plus-button {
+  position: absolute;
+  right: 1rem;
+  top: -1.8rem;
+  background-color: $d-btn-3;
+  border-radius: 50%;
+  border: none;
+  padding: 0.3rem;
+  cursor: pointer;
+
+  i {
+    cursor: pointer;
+  }
+}
+
+.onuman-input-project {
+  display: inline !important;
+  width: 80% !important;
+  padding: 0.5rem !important;
+  border: 1px solid $d-border !important;
+  border-radius: none;
+  outline: none;
+  background-color: color.adjust($d-bg, $lightness: 4%) !important;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: $d-primary !important;
+    box-shadow: 0 0 0 1px $d-btn-1 !important;
+  }
+
+  &::placeholder {
+    color: $d-secondary;
+    font-size: 0.9rem !important;
+    letter-spacing: 0 !important;
+  }
+
+  &::placeholder {
+    color: $d-sub-sub-text;
+    letter-spacing: 2px;
+  }
+
+  textarea {
+    width: 100% !important;
+  }
+}
+
+.project-image {
+  position: relative;
+  width: 100%;
+  height: auto;
+
+  input[type='file'] {
+    margin-top: 1rem;
+    padding: 0;
+    padding-left: 1rem;
+  }
+
+  .project-image-preview {
+    position: relative;
+    top: 100%;
+    margin-top: 1rem;
+    padding: 1rem 0;
+    width: 100%;
+    min-height: 10rem;
+    max-height: 20rem;
+    background-color: color.adjust($d-btn-1, $lightness: -10%);
+    border: 1px dashed $d-btn-3;
+    border-radius: 0.4rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+
+    img {
+      width: 70%;
+      height: 70%;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+}
+
+.onuman-start-with {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid $d-border;
+  border-radius: 0.4rem;
+  width: 100%;
+
+  .checkbox {
+    display: flex;
+    width: inherit;
+    position: relative;
+
+    input[type='radio'] {
+      opacity: 0;
+      position: absolute;
+      pointer-events: none;
+    }
+
+    label {
+      display: flex;
+      width: inherit;
+      font-size: 1rem;
+      position: relative;
+      padding-left: 1.8rem;
+      cursor: pointer;
+      user-select: none;
+      margin-top: -3px;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1.1rem;
+        aspect-ratio: 1;
+        border: 2px solid $d-fuschia;
+        border-radius: 50%;
+        background-color: $d-bg;
+      }
+    }
+
+    input[type='radio']:checked+label::after {
+      content: '\eaeb';
+      font-family: 'mastorsIcons' !important;
+      font-size: 0.9rem;
+      color: $d-bg;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1.1rem;
+      aspect-ratio: 1;
+      background-color: $d-fuschia;
+      border-radius: 50%;
+      transition: all 0.2s ease-in-out;
+    }
+  }
+}
+
+
+
+// SKELETON LOADING STYLES
+.skeleton-container {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.skeleton {
+  background: linear-gradient(90deg,
+      $d-skeleton 25%,
+      $d-skeleton-shimmer 50%,
+      $d-skeleton 75%);
+  background-size: 200% 100%;
+  animation: loading 2s infinite;
+  border-radius: 4px;
+}
+
+.skeleton-header {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin: 5rem 0;
+
+  .skeleton-title {
+    height: 2rem;
+    width: 60%;
+    margin: 0 auto 1rem auto;
+    border-radius: 8px;
+  }
+
+  .skeleton-divider {
+    height: 2px;
+    width: 80%;
+    margin: 0 auto;
+    border-radius: 1px;
+  }
+}
+
+.skeleton-column {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.skeleton-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.skeleton-label {
+  height: 1.5rem;
+  width: 40%;
+  border-radius: 4px;
+}
+
+.skeleton-input {
+  height: 2.5rem;
+  width: 100%;
+  border-radius: 6px;
+}
+
+.skeleton-input-small {
+  height: 2.5rem;
+  width: 48%;
+  border-radius: 6px;
+}
+
+.skeleton-textarea {
+  height: 8rem;
+  width: 100%;
+  border-radius: 6px;
+}
+
+.skeleton-fieldset {
+  height: 8rem;
+  width: 100%;
+  border-radius: 8px;
+  position: relative;
+
+  .skeleton-legend {
+    position: absolute;
+    top: -0.75rem;
+    left: 1rem;
+    height: 1.5rem;
+    width: 30%;
+    background-color: $d-bg;
+    border-radius: 4px;
+  }
+
+  .skeleton-dual-input {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.skeleton-fieldset-large {
+  height: 12rem;
+  width: 100%;
+  border-radius: 8px;
+  position: relative;
+
+  .skeleton-legend {
+    position: absolute;
+    top: -0.75rem;
+    left: 1rem;
+    height: 1.5rem;
+    width: 35%;
+    background-color: $d-bg;
+    border-radius: 4px;
+  }
+}
+
+.skeleton-mix-ratio {
+  height: 4rem;
+  width: 100%;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+
+  .skeleton-button {
+    height: 2.5rem;
+    width: 8rem;
+    border-radius: 6px;
+  }
+
+  .skeleton-icon {
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 50%;
+  }
+}
+
+.skeleton-fieldset-materials {
+  height: 20rem;
+  width: 100%;
+  border-radius: 8px;
+  position: relative;
+
+  .skeleton-legend {
+    position: absolute;
+    top: -0.75rem;
+    left: 1rem;
+    height: 1.5rem;
+    width: 40%;
+    background-color: $d-bg;
+    border-radius: 4px;
+  }
+}
+
+.skeleton-material-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+
+  .skeleton-material-name {
+    height: 2rem;
+    flex: 1;
+    border-radius: 4px;
+  }
+
+  .skeleton-material-price {
+    height: 2rem;
+    width: 6rem;
+    border-radius: 4px;
+  }
+
+  .skeleton-material-delete {
+    height: 2rem;
+    width: 2rem;
+    border-radius: 50%;
+  }
+}
+
+.skeleton-file-input {
+  height: 3rem;
+  width: 100%;
+  border-radius: 6px;
+}
+
+.skeleton-image-preview {
+  height: 12rem;
+  width: 100%;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.skeleton-radio-group {
+  height: 12rem;
+  width: 100%;
+  border-radius: 8px;
+  padding: 1rem;
+
+  .skeleton-radio-title {
+    height: 1.5rem;
+    width: 60%;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+  }
+}
+
+.skeleton-radio-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+
+  .skeleton-radio {
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+  }
+
+  .skeleton-radio-label {
+    height: 1.5rem;
+    flex: 1;
+    border-radius: 4px;
+  }
+}
+
+.skeleton-submit-button {
+  height: 3rem;
+  width: 12rem;
+  border-radius: 8px;
+  margin-left: auto;
+}
+
+// ANIMATIONS
+@keyframes loading {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.stratched-container {
+  width: 70% !important;
+  margin: 0 auto;
+}

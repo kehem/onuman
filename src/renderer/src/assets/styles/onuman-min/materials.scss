@@ -1,0 +1,297 @@
+@use '../variables/index' as *;
+@use 'sass:color';
+
+
+.material-content {
+    padding: 1rem;
+}
+
+
+.two-col-container {
+    display: flex;
+
+    .column-resize-divider {
+        margin-left: 0 !important;
+    }
+
+    aside {
+        border: 1px solid $d-border;
+
+        &:last-child {
+            margin-left: 1.5rem;
+        }
+    }
+}
+
+.img-map32scd {
+    max-width: 4rem;
+    aspect-ratio: 1;
+    object-fit: cover;
+    object-position: center;
+    cursor: zoom-in;
+}
+
+.select-item-war32 {
+    width: 5rem;
+    cursor: pointer;
+}
+
+.checkbox.er232zxsd-asdasd {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+    width: 1.5rem;
+    aspect-ratio: 1;
+    margin: 0 auto;
+
+input[type='checkbox'] {
+        appearance: none;
+        width: 1.2rem;
+        height: 1.2rem;
+        border: 2px solid $d-border;
+        border-radius: 0.25rem;
+        background-color: color.adjust($d-bg, $lightness: -2%);
+        cursor: pointer;
+        position: relative;
+        transition: all 0.2s ease;
+
+        &:checked {
+            background-color: $d-fuschia;
+            border-color: $d-fuschia;
+
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0.3rem;
+                width: 0.3rem;
+                height: 0.7rem;
+                border: 1px solid $d-text;
+                border-width: 0 0.15rem 0.15rem 0;
+                transform: rotate(45deg);
+            }
+        }
+
+        &:hover {
+            border-color: $d-fuschia;
+        }
+
+        &:focus-visible {
+            outline: 2px solid $d-fuschia;
+            outline-offset: 2px;
+        }
+    }
+
+    label {
+        cursor: pointer;
+        user-select: none;
+    }
+}
+
+.fs435sd0-wrsd {
+    position: absolute;
+    top: 3.3rem;
+    left: 3rem;
+    color: $d-sub-sub-text !important;
+    font-size: 0.9rem;
+}
+
+.alo32dfsdcvf234 {
+
+    font-size: 1rem;
+    background-color: $d-btn-3 !important;
+
+    &:hover {
+        background-color: color.adjust($d-btn-3, $lightness: -5%) !important;
+    }
+
+    &:focus {
+        box-shadow: $box-shadow;
+    }
+}
+
+.v54cqwer {
+    width: 4rem;
+}
+
+.fg34fvdk {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    flex-wrap: nowrap;
+}
+
+.dsf345sdf {
+    min-width: 50%;
+    min-height: 85vh;
+}
+
+.sdfsdf345ef {
+    max-height: 73vh;
+}
+
+.small-btn {
+    margin-left: 0.4rem;
+    font-size: 0.7rem;
+    background-color: $d-border;
+    padding: 0.2rem;
+    border-radius: 0.2rem;
+}
+
+
+.max-file-size {
+    position: absolute;
+    left: 0;
+    top: 5.2rem;
+    color: $d-sub-sub-text !important;
+}
+
+.loading-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 16px;
+}
+
+.loading-spinner-small {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 8px;
+}
+
+.modalBox-Action {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .dasun-isama {
+        position: relative;
+        z-index: $z-toper;
+        cursor: pointer;
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            width: 2rem !important;
+            height: 2rem !important;
+            background-color: $d-btn-3 !important;
+            border-radius: 50%;
+            z-index: $z-down;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        &:hover {
+            &::after {
+                opacity: 1;
+                transition: opacity 0.3s ease;
+            }
+
+        }
+    }
+
+    ul.modalBox {
+        position: absolute;
+        right: 2.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: $d-bg;
+        border: 1px solid $d-border;
+        display: flex;
+        flex-direction: column;
+
+        li {
+            padding: 0.5rem 0.8rem;
+            border-bottom: none;
+            text-align: left;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid $d-border;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            &.upda:hover {
+                background-color: $d-primary;
+            }
+
+            &.del:hover {
+                background-color: $d-red;
+            }
+
+            i {
+                margin-top: 3px;
+            }
+        }
+    }
+}
+
+.subTabEdit {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 1.5rem;
+    opacity: 0;
+    transition: all 0.3s ease;
+
+    .m-pencil8 {
+        position: absolute;
+        right: 6px;
+        top: -12px;
+        background-color: $d-primary;
+    }
+
+    .m-trash7 {
+        position: absolute;
+        right: -10px;
+        top: 4px;
+        background-color: $d-red;
+    }
+
+    i {
+        font-size: 0.7rem;
+        padding: 0.2rem;
+        border-radius: 50%;
+        box-shadow: $box-shadow;
+    }
+}
+
+.red-border {
+    border: 2px solid #ef4444 !important;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2) !important;
+
+    &:focus {
+        border-color: #ef4444 !important;
+    }
+}

@@ -1,0 +1,179 @@
+@use '../variables/index' as *;
+@use 'sass:color';
+
+.licenser {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 35rem;
+  height: 100%;
+  min-height: 10rem;
+  background-color: color.adjust($d-bg, $lightness: 2%);
+  border: 1px solid $d-border;
+  padding: 1rem;
+}
+
+.license-key {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .activate-btn {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+  }
+
+  .get-key-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.license-input,
+.onuman-input {
+  width: 4.5rem;
+  padding: 0;
+  border: 1px solid $d-border !important;
+  border-radius: 4px;
+  outline: none;
+  background-color: $d-bg !important;
+  transition: border-color 0.2s;
+}
+
+.license-input {
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.license-input:focus,
+.onuman-input:focus {
+  border-color: $d-primary !important;
+  box-shadow: 0 0 0 1px $d-btn-1 !important;
+}
+
+.onuman-input::placeholder {
+  color: $d-secondary;
+  font-size: 0.9rem !important;
+  letter-spacing: 0.5px !important;
+}
+
+.license-input::placeholder {
+  color: $d-secondary;
+  letter-spacing: 2px;
+}
+
+.onuman-input2 {
+  width: 4.5rem;
+  padding: 0;
+  border: 1px solid $d-border !important;
+  border-radius: 4px;
+  outline: none;
+  background-color: color.adjust($d-bg, $lightness: 4%) !important;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: $d-primary !important;
+    box-shadow: 0 0 0 1px $d-btn-1 !important;
+  }
+
+  &::placeholder {
+    color: $d-secondary;
+    font-size: 0.9rem !important;
+    letter-spacing: 0.5px !important;
+  }
+}
+
+.onuman-input3 {
+  width: 100%;
+  padding: 0.5rem !important;
+  border: 1px solid $d-border !important;
+  border-radius: 4px;
+  outline: none;
+  background-color: color.adjust($d-bg, $lightness: 4%) !important;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: $d-primary !important;
+    box-shadow: 0 0 0 1px $d-btn-1 !important;
+  }
+
+  &::placeholder {
+    color: $d-secondary;
+    font-size: 0.9rem !important;
+    letter-spacing: 0 !important;
+  }
+
+  &::placeholder {
+    color: $d-sub-sub-text;
+    letter-spacing: 2px;
+  }
+
+  textarea {
+    width: 100% !important;
+  }
+}
+
+.onuman-select-box {
+  min-width: 4.5rem;
+  height: 2rem;
+  padding-left: 0.5rem;
+  border: 1px solid $d-border !important;
+  border-radius: 4px;
+  outline: none;
+  background-color: color.adjust($d-bg, $lightness: 4%) !important;
+  transition: border-color 0.2s;
+  appearance: auto; // add this
+  -webkit-appearance: auto; // for Safari
+  -moz-appearance: auto; // for Firefox
+  font-size: 0.8rem !important;
+  color: $d-sub-sub-text !important;
+
+  &:focus {
+    border-color: $d-primary !important;
+    box-shadow: 0 0 0 1px $d-btn-1 !important;
+  }
+
+  &::placeholder {
+    color: $d-secondary;
+    font-size: 0.9rem !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  option {
+    color: $d-sub-sub-text !important;
+    font-size: 0.8rem !important;
+  }
+}
+
+.paste-key {
+  position: absolute;
+  top: -2rem;
+  right: 0;
+  padding: 0.5rem;
+  border: 1px solid $d-primary !important;
+  color: $d-white;
+  i {
+    color: $d-success !important;
+  }
+
+  &:hover {
+    background: $d-primary;
+    color: $d-white;
+  }
+}
+
+.get-trial {
+  color: $d-sub-text !important;
+  text-decoration: dashed !important;
+  text-underline-offset: 5px !important;
+
+  &:hover {
+    color: $d-primary !important;
+  }
+}

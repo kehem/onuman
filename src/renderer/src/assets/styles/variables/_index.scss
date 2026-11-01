@@ -1,0 +1,205 @@
+// styles/variables/index.scss
+@use 'sass:color';
+
+
+
+// DARK VARIBABLES
+// $d-text: #d7d7d7;
+// $d-sub-text: #c8c8c8;
+// $d-sub-sub-text: #a4a4a4;
+// $d-bg: #1E1E1E;
+// $d-border: #333333;
+// $d-primary: #5864b2;
+// $d-secondary: #7b7b7b;
+// $d-btn-1: #4f5d5a;
+// $d-btn-2: #886f58;
+// $d-btn-3: #4f885b;
+// $d-fuschia: #ef5da8;
+// $d-fuschiaDark: #c92278;
+// $d-white: #fcfcfc;
+// $d-black: #111111;
+// $d-red: #d43333;
+// $d-warning: #d8d50e;
+// $d-success: #1de0c6;
+// $d-tooltip-bg: #4b4b4b;
+// $d-tooltip-text: #e0e0e0;
+// $d-popup-bg: #2d2d2d;
+// $d-popup-border: #555555;
+// $d-menu-hover: #404040;
+// $d-skeleton: #505050;
+// $d-skeleton-shimmer: #606060;
+// $d-shadow: rgba(0, 0, 0, 0.199);
+// $d-card-hover: color.adjust($d-bg, $lightness: 2%);
+// $d-metric-bg: color.adjust($d-bg, $lightness: 3%);
+// $box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+// $update-box: #ce00ce1e;
+
+
+
+// DARK VARIABLES (VS Code Dark+ inspired)
+$d-text: #D0D0D0; // Default editor text
+$d-sub-text: #A1A1A1; // Subtle text / comments
+$d-sub-sub-text: #808080; // Disabled or less important text
+$d-bg: #1F1F1F; // Editor background
+$d-border: #3C3C3C; // Divider / border (title bar / panels)
+$d-primary: #007ACC; // VS Code blue accent (status bar, highlights)
+$d-secondary: #5A5A5A; // Sidebar text or icons
+$d-btn-1: #3C3C3C; // Buttons or panels
+$d-btn-2: #cc9600; // Action buttons (blue accent)
+$d-btn-3: #4f885b; // Sidebar / darker button
+$d-fuschia: #d16969; // Fuschia-like highlight (errors)
+$d-fuschiaDark: #c92278; // Darker fuschia
+$d-white: #fcfcfc; // Pure white text if needed
+$d-black: #111111; // Deep black
+$d-red: #f48771; // Error color (VS Code red)
+$d-warning: #dcdcaa; // Warning / yellow
+$d-success: #71ad54; // Success / green
+$d-tooltip-bg: #252526; // Tooltip background
+$d-tooltip-text: #d4d4d4; // Tooltip text
+$d-popup-bg: #2D2D30; // Popup / dropdown
+$d-popup-border: #454545; // Popup border
+$d-menu-hover: #3E3E42; // Hover state in menus
+$d-skeleton: #404040; // Skeleton loader background
+$d-skeleton-shimmer: #505050; // Skeleton shimmer
+$d-shadow: rgba(0, 0, 0, 0.3); // Shadow color
+$d-card-hover: #313138; // Card hover (slightly lighter than bg)
+$d-metric-bg: #2A2A2A; // Metric / panel background
+$box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+$update-box: #ce00ce1e;
+$visualizer-bg: #0e0816;
+
+
+// Z-INDEX
+$z-down: -1;
+$z-ground: 0;
+$z-bottom: 1;
+$z-top: 2;
+$z-toper: 3;
+$z-topest: 4;
+$z-min: -2;
+$z-max: 10;
+$z-dropdown: 100;
+$z-popup: 200;
+
+.white {
+  color: $d-white !important;
+}
+
+.black {
+  color: $d-black !important;
+}
+
+.red {
+  color: $d-red !important;
+}
+
+.warning {
+  color: $d-warning !important;
+}
+
+.success {
+  color: $d-success !important;
+}
+
+.d- {
+  &text {
+    color: $d-text !important;
+  }
+
+  &sub-text {
+    color: $d-sub-text !important;
+  }
+
+  &sub-sub-text {
+    color: $d-sub-sub-text !important;
+  }
+
+  &bg {
+    color: $d-bg !important;
+  }
+
+  &border {
+    color: $d-border !important;
+  }
+
+  &primary {
+    color: $d-primary !important;
+  }
+
+  &secondary {
+    color: $d-secondary !important;
+  }
+
+  &btn-1 {
+    color: $d-btn-1 !important;
+  }
+
+  &btn-2 {
+    color: $d-btn-2 !important;
+  }
+
+  &btn-3 {
+    color: $d-btn-3 !important;
+  }
+
+  &fuschia {
+    color: $d-fuschia !important;
+  }
+}
+
+.uppercase {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.layout-bg {
+  background: color.adjust($d-bg, $lightness: -2%);
+}
+
+.border-bottom {
+  border-bottom: 1px solid $d-border;
+}
+
+// Utility classes
+.m-dots-three-vertical {
+  display: inline-block;
+  width: 4px;
+  height: 16px;
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background-color: $d-text;
+    border-radius: 50%;
+    left: 0;
+  }
+
+  &::before {
+    top: 0;
+    box-shadow: 0 6px 0 $d-text, 0 12px 0 $d-text;
+  }
+}
+
+.bounce-anim {
+  animation: der23k 0.3s ease infinite;
+  background-color: $d-primary !important;
+  transition: all 0.3s ease;
+
+  @keyframes der23k {
+
+    0%,
+    100% {
+      box-shadow: 0 0 10px 2px $d-fuschiaDark;
+      transition: all 0.3s ease;
+    }
+
+    50% {
+      box-shadow: 0 0 10px 2px $d-primary;
+      transition: all 0.3s ease;
+    }
+  }
+}

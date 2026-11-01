@@ -1,0 +1,73 @@
+@use '../variables/index' as *;
+@use 'sass:color';
+
+.price-preview {
+  position: relative;
+  width: 1rem;
+  cursor: pointer;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  z-index: $z-toper;
+
+  &:hover .circle-border {
+    color: $d-warning !important;
+  }
+}
+.circle-border {
+  position: absolute;
+  width: 100%;
+  top: -1.5rem;
+  color: $d-sub-text !important;
+  aspect-ratio: 1;
+  padding: 0.3rem;
+  font-size: 0.6rem;
+  margin-top: 1rem;
+}
+
+.price-list-container {
+  position: relative;
+  width: auto;
+}
+.price-list {
+  position: absolute;
+  bottom: 200%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10rem;
+  height: max-content;
+  z-index: $z-toper;
+
+  .price-item {
+    position: relative;
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    background-color: color.scale($d-bg, $whiteness: 6%);
+    padding: 0.5rem;
+    border-bottom: 1px solid $d-border;
+    color: $d-text;
+
+    &:hover {
+      background-color: color.scale($d-bg, $whiteness: 2%);
+      color: $d-warning;
+    }
+  }
+}
+.ready-mix {
+  td:first-child {
+    font-weight: 600;
+  }
+  td,
+  td > * {
+    color: color.adjust($d-fuschia, $whiteness: 4%);
+    font-weight: 600;
+  }
+}
+
+
+.responsive-reinfo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  margin-bottom: 1rem;
+}

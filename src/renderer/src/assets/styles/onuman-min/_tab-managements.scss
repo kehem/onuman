@@ -1,0 +1,274 @@
+// src/assets/styles/onuman-min/tab-managements.scss
+@use '../variables/index' as *;
+@use 'sass:color';
+
+.tab-managements-container {
+    position: absolute;
+    top: 2.2rem;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: 1.8rem;
+    z-index: $z-bottom;
+
+    .tab-managements {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        z-index: $z-top;
+
+
+
+        .fixed-tabs {
+            position: absolute;
+            z-index: $z-toper;
+            display: flex;
+            height: 100%;
+            background-color: $d-bg;
+
+            .nav-tab {
+                display: flex;
+                align-items: center;
+                height: 103%;
+                margin-top: -1px;
+                background-color: $d-bg;
+                padding: 0 0.5rem;
+                border: 1px solid $d-border;
+                cursor: pointer;
+                transition: all 0.3s ease;
+
+                &:hover {
+                    background-color: $d-primary;
+                    transition: all 0.3s ease;
+                }
+
+                &:last-child {
+                    border-inline-end: 3px solid $d-btn-1;
+                }
+
+                &.disabled {
+                    opacity: 0.4;
+                    background-color: transparent;
+                }
+            }
+
+        }
+
+        .tabs-container {
+            position: relative;
+            background-color: color.adjust($d-bg, $lightness: -3%);
+            display: flex;
+            height: 100%;
+            width: calc(100% - 2rem);
+            overflow-x: auto;
+            scrollbar-width: none;
+            border-bottom: 1px solid $d-border;
+            z-index: $z-top;
+            margin-left: 4.4rem;
+
+            .tab {
+                position: relative;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                padding: 0 2rem;
+                width: auto;
+                height: inherit;
+                cursor: pointer;
+                border-right: 1px solid $d-border;
+                background-color: color.adjust($d-bg, $lightness: -3%);
+                transition: all 0.3s ease;
+
+                .title-icon {
+                    padding-right: 0.5rem;
+                }
+
+                p {
+                    font-style: normal;
+                    margin-top: -3px;
+                    font-size: 0.8rem;
+                    text-wrap: nowrap;
+                }
+
+
+                .shortcut-li {
+                    cursor: pointer;
+                }
+
+                .shortcut-li.disabled {
+                    opacity: 0.4;
+                    pointer-events: none;
+                }
+
+                &.home-tab {
+                    width: 2rem;
+                    padding: 0 0.5rem;
+                    background-color: $d-btn-3;
+
+                    &.active {
+                        background-color: $d-btn-1;
+                    }
+
+                    &:last-child {
+                        background-color: $d-black !important;
+                    }
+                }
+
+                &:last-child {
+                    border-right: 1px solid $d-border;
+                }
+
+                .cross-btn:not(.m-plus) {
+                    opacity: 0;
+                    position: absolute;
+                    right: 5px;
+                    color: $d-sub-text;
+                    transition: all 0.3s ease;
+                    cursor: pointer;
+                }
+
+                &:hover {
+                    background-color: color.adjust($d-border, $lightness: -2%);
+                }
+
+                &:hover .cross-btn {
+                    opacity: 1;
+                    transition: all 0.3s ease;
+                    color: $d-red;
+                }
+
+                &.active {
+                    background-color: $d-bg;
+                    border-bottom: none;
+
+                    .title-icon,
+                    p {
+                        color: $d-btn-2;
+                    }
+
+                    &:not(.home-tab)::after {
+                        content: '';
+                        width: 100%;
+                        left: 0;
+                        position: absolute;
+                        background-color: $d-fuschia;
+                        bottom: 0;
+                        height: 1px;
+                    }
+                }
+            }
+
+            .add-new-tab {
+                position: relative;
+                width: auto;
+                display: flex;
+                align-items: center;
+                font-size: 1.1rem;
+                padding: 0.4rem;
+                cursor: pointer;
+                color: $d-sub-sub-text;
+                transition: all 0.3s ease;
+
+                &:hover {
+                    background-color: $d-border;
+                    transition: all 0.3s ease;
+                }
+            }
+
+        }
+
+        .fixed-button {
+            position: relative;
+            width: auto;
+            height: inherit;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: color.adjust($d-bg, $lightness: -3%);
+            border-bottom: 1px solid $d-border;
+
+            .right-action {
+                position: relative;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 2rem;
+                height: inherit;
+                z-index: $z-top;
+                cursor: pointer;
+                transition: all 0.2s ease;
+
+
+                .m-dots-three-vertical {
+                    position: relative;
+                    width: 100%;
+                    height: 100%;
+
+                    &::before {
+                        position: absolute;
+                        left: 50%;
+                        top: 30%;
+                        transform: translate(-50%, -50%);
+                    }
+
+                    &::after {
+                        display: none;
+                    }
+
+                    &:hover {
+                        background: $d-border !important;
+                        border-radius: 3px;
+                        transition: all 0.2s ease;
+                    }
+                }
+
+            }
+
+            .open-action-modal {
+                position: absolute;
+                right: 3rem;
+                top: 5px;
+                background-color: color.adjust($d-border, $lightness: -6%);
+                display: flex;
+                flex-direction: column;
+                border: 1px solid $d-border;
+
+                li:not(.separator) {
+                    position: relative;
+                    text-wrap: nowrap;
+                    padding: 0.3rem 1rem;
+                    font-size: 0.9rem;
+                    border-bottom: 1px dotted color.adjust($d-border, $lightness: 2%);
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+
+                    i {
+                        margin-top: 5px;
+                    }
+
+                    &:last-child {
+                        border-bottom: none;
+                    }
+
+                    &:hover {
+                        background-color: color.adjust($d-primary, $lightness: -10%);
+                    }
+
+                }
+
+                .no-border {
+                    border: none !important;
+                }
+
+                .separator {
+                    height: 2px;
+                    background-color: color.adjust($d-border, $lightness: 2%);
+                }
+            }
+        }
+    }
+}

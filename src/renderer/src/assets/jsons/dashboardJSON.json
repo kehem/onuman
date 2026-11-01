@@ -1,0 +1,176 @@
+[
+  {
+    "userName": "Surajit Singha Sisir"
+  },
+  {
+    "allProjects": {
+      "Project 1": {
+        "lastUpdate": "2025-05-14T12:30:45Z",
+        "completedSummery": "90",
+        "completed": "90",
+        "Exterior": {
+          "pile": {
+            "lastUpdate": "2025-05-14T12:30:45Z",
+            "pile1": {
+              "allInputs": {
+                "pilePreset": "12 INCH Pile",
+                "pileType": "Rectangle",
+                "pileName": "12 INCH Pile",
+                "pileQuantity": 12,
+                "pileHeight": 12,
+                "pileRadius": 12,
+                "longReinforcement": [
+                  {
+                    "rodQty": 7,
+                    "rodDiameter": "10 mm"
+                  },
+                  {
+                    "rodQty": 7,
+                    "rodDiameter": "20 mm"
+                  }
+                ],
+                "stirrup": [
+                  {
+                    "length": 2,
+                    "rodQty": 7,
+                    "rodDiameter": "6 mm"
+                  },
+                  {
+                    "length": 2,
+                    "rodQty": 7,
+                    "rodDiameter": "10 mm"
+                  },
+                  {
+                    "length": 2,
+                    "rodQty": 7,
+                    "rodDiameter": "20 mm"
+                  }
+                ],
+                "supportImage": "https://kehem.com/pile.png"
+              },
+              "allOutputs": {
+                "pile": [
+                  {
+                    "name": "12 INCH Pile",
+                    "type": "Circular",
+                    "quantity": 12,
+                    "height": 12,
+                    "radius": 12,
+                    "area": 12,
+                    "volume": 12,
+                    "comment": "this is 12 inch pile",
+                    "image": "https://kehem.com/pile12.png"
+                  },
+                  {
+                    "name": "14 INCH Pile",
+                    "type": "Circular",
+                    "quantity": 12,
+                    "height": 12,
+                    "radius": 12,
+                    "area": 12,
+                    "volume": 12,
+                    "comment": "this is 12 inch pile",
+                    "image": "https://kehem.com/pile12.png"
+                  }
+                ],
+                "totalPileVolume": 1520,
+                "totalLongReinforcement": 1520,
+                "totalStirrupWeight": 1520,
+                "totalReinforcementWeight": 1520,
+                "longReinforcement": [
+                  {
+                    "diameter": "10 mm",
+                    "quantity": 7,
+                    "weight": 60
+                  },
+                  {
+                    "diameter": "20 mm",
+                    "quantity": 7,
+                    "weight": 60
+                  }
+                ],
+
+                "stirrup": [
+                  {
+                    "diameter": "6 mm",
+                    "quantity": 7,
+                    "weight": 60
+                  },
+                  {
+                    "diameter": "10 mm",
+                    "quantity": 7,
+                    "weight": 60
+                  },
+                  {
+                    "diameter": "20 mm",
+                    "quantity": 7,
+                    "weight": 60
+                  }
+                ],
+                "totalReinforcement": [
+                  {
+                    "diameter": "6 mm",
+                    "quantity": 7,
+                    "weight": 60
+                  },
+                  {
+                    "diameter": "10 mm",
+                    "quantity": 7,
+                    "weight": 60
+                  },
+                  {
+                    "diameter": "20 mm",
+                    "quantity": 7,
+                    "weight": 60
+                  }
+                ],
+
+                "rccCalculation": {
+                  "totalVolume": "500CFT",
+                  "totalDryVolume": "750CFT",
+                  "readyMixConcrete": {
+                    "totalWastage": 140,
+                    "totalVolume": 500,
+                    "totalCost": 5484
+                  },
+                  "casting": [
+                    {
+                      "material": "Cement",
+                      "ratio": 1,
+                      "volume": 140,
+                      "quantity": 140,
+                      "price": 140,
+                      "totalVolumen": 150
+                    },
+                    {
+                      "material": "Sand",
+                      "ratio": 1,
+                      "volume": 140,
+                      "quantity": 140,
+                      "price": 140
+                    },
+                    {
+                      "material": "Stone",
+                      "ratio": 1,
+                      "volume": 140,
+                      "quantity": 140,
+                      "price": 140
+                    },
+                    {
+                      "material": "Brick Chips",
+                      "ratio": 1,
+                      "volume": 140,
+                      "quantity": 140,
+                      "price": 140
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "project2": {}
+    }
+  }
+]

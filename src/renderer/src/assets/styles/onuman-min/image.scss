@@ -1,0 +1,129 @@
+@use '../variables/index' as *;
+@use 'sass:color';
+
+.upload-progress {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background: $d-metric-bg;
+    border-radius: 6px;
+    border: 1px solid $d-border;
+
+    &.mat-prev {
+        width: 100%;
+        margin-bottom: unset !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .progress-bar {
+        width: 100%;
+        height: 10px;
+        background: $d-secondary;
+        border-radius: 5px;
+        overflow: hidden;
+        margin-bottom: 0.5rem;
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, $d-btn-3, $d-success);
+            transition: width 0.3s ease;
+            border-radius: 5px;
+        }
+    }
+
+    .progress-text {
+        font-size: 0.875rem;
+        color: $d-sub-text;
+        font-weight: 500;
+        text-align: center;
+    }
+}
+
+.image-skeleton {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(90deg, $d-skeleton 25%, $d-skeleton-shimmer 50%, $d-skeleton 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.upload-label {
+    &.disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+}
+
+.remove-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba($d-red, 0.9);
+    color: $d-white;
+    border: none;
+    border-radius: 50%;
+    width: 1.3rem;
+    aspect-ratio: 1;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(2px);
+    z-index: $z-topest;
+
+    &:hover {
+        background: $d-red;
+        transform: scale(1.1);
+    }
+}
+
+.upload-wrapper {
+    position: relative;
+}
+
+.uploading-indicator {
+    display: flex;
+    align-items: center;
+    margin-top: -0.8rem;
+    gap: 0.5rem;
+    color: $d-sub-sub-text;
+    font-size: 0.875rem;
+
+    .uploading-spinner {
+        width: 16px;
+        height: 16px;
+        border: 2px solid $d-border;
+        border-top: 2px solid $d-btn-3;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+}
+
+.upload-success {
+    color: $d-success;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+
+    .success-icon {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: $d-success;
+        color: $d-black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+    }
+}

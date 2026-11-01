@@ -1,0 +1,150 @@
+{
+  "plastering": {
+    "basic_materials": {
+      "cement": {
+        "type": "Ordinary Portland Cement (OPC) or OPC + Lime",
+        "quantity": "10-12 kg per m² for double-coat plaster",
+        "price_amount": 535,
+        "price_unit": "50 kg",
+        "purpose": "Used as the primary binding agent in the plaster mix."
+      },
+      "sand": {
+        "type": "Well-graded river sand or crushed sand",
+        "quantity": "1.5 to 2 times the quantity of cement",
+        "price_amount": 2140,
+        "price_unit": "cubic meter",
+        "purpose": "Acts as the filler in the plaster mix, providing volume and texture."
+      },
+      "lime": {
+        "type": "Hydrated lime or quicklime",
+        "quantity": "1:1 ratio with cement (optional)",
+        "price_amount": 749,
+        "price_unit": "25 kg",
+        "purpose": "Improves workability and durability of plaster, optional based on mix type."
+      },
+      "water": {
+        "type": "Clean, potable water",
+        "quantity": "Depends on mix ratio",
+        "price_amount": 53.5,
+        "price_unit": "1,000 liters",
+        "purpose": "To hydrate the cement and lime, enabling them to set and harden."
+      }
+    },
+    "additives": {
+      "plasticizers": {
+        "price_amount": 1605,
+        "price_unit": "liter",
+        "purpose": "Improves the workability of the plaster mix by reducing water content."
+      },
+      "bonding_agents": {
+        "price_amount": 1070,
+        "price_unit": "liter",
+        "purpose": "Improves adhesion of the plaster to non-porous surfaces."
+      },
+      "waterproofing_agents": {
+        "price_amount": 2140,
+        "price_unit": "liter",
+        "purpose": "Makes plaster resistant to water and moisture penetration."
+      }
+    }
+  },
+  
+  "painting": {
+    "basic_materials": {
+      "primer": {
+        "type": "Oil-based or water-based primer",
+        "price_amount": 1605,
+        "price_unit": "liter",
+        "purpose": "Seals the surface to ensure better adhesion of paint and uniform coverage."
+      },
+      "wall_paint": {
+        "types": [
+          "Emulsion Paint",
+          "Enamel Paint",
+          "Distemper"
+        ],
+        "brands": [
+          "Asian Paints",
+          "Berger",
+          "Nerolac"
+        ],
+        "quantity": "20-25 liters for 2-3 coats",
+        "price_amount": 3210,
+        "price_unit": "4 liters",
+        "purpose": "Provides the colored finish to walls. Different types are used for specific finishes (e.g., emulsion for smooth finishes)."
+      },
+      "textured_paint": {
+        "price_amount": 5350,
+        "price_unit": "5 liters",
+        "purpose": "Used for creating decorative textures like stone, sand, or marble finishes."
+      }
+    },
+    "additives": {
+      "anti_mold_additive": {
+        "price_amount": 1284,
+        "price_unit": "liter",
+        "purpose": "Prevents mold and mildew growth in areas with high humidity, such as bathrooms."
+      },
+      "anti_fungal_additive": {
+        "price_amount": 1284,
+        "price_unit": "liter",
+        "purpose": "Helps prevent fungal growth on painted surfaces exposed to moisture."
+      },
+      "thinner": {
+        "price_amount": 1070,
+        "price_unit": "liter",
+        "purpose": "Dilutes oil-based paints for smoother application or cleaning brushes and equipment."
+      }
+    },
+    "auxiliary_materials": {
+      "wall_fillers_or_putty": {
+        "price_amount": 856,
+        "price_unit": "kg",
+        "purpose": "Fills holes, cracks, and imperfections in the wall before painting for a smooth finish."
+      },
+      "masking_tape": {
+        "price_amount": 214,
+        "price_unit": "roll",
+        "purpose": "Protects trim, windows, and edges from paint splashes and ensures clean lines."
+      },
+      "painters_rags": {
+        "price_amount": 535,
+        "price_unit": "pack (10 rags)",
+        "purpose": "Used to clean excess paint from surfaces, brushes, and spills."
+      },
+      "sandpaper": {
+        "price_amount": 160.5,
+        "price_unit": "pack (5 sheets)",
+        "purpose": "Smoothens the surface after filler application to ensure a flawless paint finish."
+      },
+      "painting_rollers_and_brushes": {
+        "quantity": "2-3 pieces depending on area size",
+        "price_amount": 535,
+        "price_unit": "each",
+        "purpose": "Used for applying paint evenly across surfaces (rollers for large areas, brushes for edges)."
+      },
+      "paint_trays": {
+        "price_amount": 321,
+        "price_unit": "each",
+        "purpose": "Holds paint for easy access when using rollers."
+      }
+    }
+  },
+  "estimated_quantities": {
+    "plastering": {
+      "cement": "12-15 bags (50 kg each)",
+      "sand": "3-4 cubic meters",
+      "lime": "10-12 bags (optional)",
+      "water": "500-600 liters",
+      "purpose": "Estimated quantities for plastering based on a 100m² area."
+    },
+    "painting": {
+      "primer": "3-4 liters",
+      "paint": "20-25 liters (for 2-3 coats)",
+      "putty": "5-7 kg",
+      "sandpaper": "1-2 packs",
+      "brushes_or_rollers": "2-3 pieces",
+      "purpose": "Estimated quantities for painting based on a 100m² area."
+    }
+  }
+}

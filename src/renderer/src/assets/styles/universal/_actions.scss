@@ -1,0 +1,135 @@
+@use '../variables/index' as *;
+@use 'sass:color';
+
+.actioned-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: $z-top;
+
+  .vertical-dotted {
+    z-index: $z-top;
+    position: relative;
+    cursor: pointer;
+
+    &:hover {
+      i::after {
+        content: '';
+        background-color: $d-border;
+        border: 1px solid $d-btn-1;
+        width: 1.8rem;
+        height: 1.8rem;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: $z-down;
+      }
+    }
+  }
+
+  // POPUP
+  .open-actions-popup {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3rem;
+    // padding: 0.5rem;
+    background-color: color.adjust($d-border, $lightness: -4%);
+    box-shadow: $box-shadow;
+    border: 1px solid $d-border;
+    border-radius: 4px;
+    width: 7rem;
+    height: 7.7rem;
+    right: 2.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+
+    &::before {
+      content: '';
+      clip-path: polygon(100% 50%, 0 0, 0 100%);
+      width: 0.7rem;
+      aspect-ratio: 1;
+      position: absolute;
+      right: -0.7rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: color.adjust($d-border, $lightness: -4%);
+    }
+
+    .open-action-btn {
+      position: relative;
+      display: flex;
+      gap: 0.5rem;
+      justify-content: flex-start;
+      padding-left: 0.5rem;
+      align-items: center;
+      width: 5.9rem;
+      height: 2rem;
+      border: none;
+      border-radius: 0.3rem;
+      background-color: $d-btn-1;
+      transition:
+        background-color 0.3s ease,
+        transform 0.2s ease;
+      cursor: pointer;
+
+      &:hover,
+      &:focus {
+        background-color: $d-btn-1;
+        transform: translateY(-2px);
+      }
+      &:hover {
+        box-shadow: $box-shadow;
+        i,
+        p {
+          color: color.adjust($d-success, $lightness: 20%) !important;
+          transition: all 0.3s ease;
+        }
+      }
+
+      &:active {
+        transform: translateY(0);
+        box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+      }
+
+      &:disabled {
+        background-color: color.adjust($d-btn-1, $lightness: 20%);
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+
+      i,
+      p {
+        color: color.adjust($d-primary, $lightness: 20%) !important;
+      }
+
+      &.trash-item {
+        background-color: color.adjust($d-red, $blackness: 30%);
+      }
+
+      &.imaged {
+        background-color: color.adjust($d-primary, $blackness: 30%);
+      }
+    }
+  }
+}
+.covered-image {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 3/2;
+  overflow-y: auto;
+  z-index: $z-toper;
+  padding-right: 0.5rem;
+  margin-top: 1rem;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+}

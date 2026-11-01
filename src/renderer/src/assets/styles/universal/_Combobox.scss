@@ -1,0 +1,66 @@
+@use '../variables/index' as *;
+@use 'sass:color';
+
+.onuman-combobox {
+  position: relative;
+  min-width: 10rem;
+  max-width: 100%;
+}
+
+.combo-inputbox {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.combobox-chevron {
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  transform: translateY(-50%);
+  transition: transform 0.2s;
+  font-size: 1.3rem;
+}
+
+.combobox-chevron.rotate-180 {
+  transform: rotate(180deg) translateY(45%);
+}
+
+.combo-dropdown-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: color.adjust($d-bg, $lightness: 5%);
+  border: 1px solid $d-border;
+  border-radius: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0 0;
+  z-index: $z-top;
+}
+
+.combo-option {
+  position: relative;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  border-bottom: 1px solid color.adjust($d-border, $lightness: 3%);
+  letter-spacing: 0.5px;
+
+  .new-popup {
+    
+  }
+
+  &:last-child {
+    border: none;
+  }
+}
+
+.combo-option:hover,
+.combo-option.focused {
+  background: color.adjust($d-btn-1, $lightness: 5%);
+}

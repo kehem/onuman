@@ -1,0 +1,115 @@
+@use '../variables/index' as *;
+@use 'sass:color';
+
+.success-border-pulse,
+.border-bounce {
+  animation: pulse-onu-border 1s ease-in-out;
+  transition: all 0.3s ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: $update-box;
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+@keyframes pulse-onu-border {
+  20%,
+  40%,
+  65%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 234, 0.7);
+    transition: all 0.3s ease;
+  }
+  0%,
+  30%,
+  60% {
+    box-shadow: 0 0 1px 1px rgba(255, 0, 234, 0.7);
+    transition: all 0.3s ease;
+  }
+}
+
+.bounce-circle {
+  width: 40px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: currentColor;
+  color: #f03355;
+  animation:
+    colorCycle 2s linear infinite,
+    pulseNew 1.5s ease-in-out infinite;
+  box-shadow: 0 0 0 0 currentColor;
+}
+
+@keyframes colorCycle {
+  0% {
+    color: #f03355;
+  }
+  25% {
+    color: #f7c32e;
+  }
+  50% {
+    color: #4ecdc4;
+  }
+  75% {
+    color: #ff6ec7;
+  }
+  100% {
+    color: #f03355;
+  }
+}
+
+@keyframes pulseNew {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 currentColor;
+    opacity: 1;
+  }
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px 5px currentColor;
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 currentColor;
+    opacity: 1;
+  }
+}
+
+.shape-loader {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  position: relative;
+}
+
+.shape-loader::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  height: 100%;
+  width: 150%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.062) 50%,
+    transparent 100%
+  );
+  animation: loading-shimmer 3s infinite;
+}
+
+@keyframes loading-shimmer {
+  0% {
+    left: -150%;
+  }
+  100% {
+    left: 100%;
+  }
+}

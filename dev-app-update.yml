@@ -1,0 +1,4 @@
+# dev-app-update.yml
+provider: generic
+url: https://onuman.kehem.com/auto-updates
+updaterCacheDirName: electron-app-updater

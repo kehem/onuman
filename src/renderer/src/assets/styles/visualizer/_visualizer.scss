@@ -1,0 +1,98 @@
+// src/assets/styles/visualizer.scss
+
+@use '../variables/index' as *;
+@use 'sass:color';
+
+
+// VISUALIZER
+.visualizer {
+  position: absolute;
+  top: -2rem;
+  right: 0;
+  width: 100%;
+  z-index: $z-topest;
+
+
+  .visual-3d {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    .icon-container {
+      position: relative;
+      display: block;
+      width: 2rem;
+      aspect-ratio: 1;
+      background-color: $d-border;
+      display: flex;
+      justify-content: center;
+      border: 1px solid $d-fuschia;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      img {
+        width: calc(100% - 0.6rem);
+      }
+
+      &:hover {
+        background-color: $d-warning;
+        transition: all 0.3s ease;
+
+        img:first-child {
+          transform: rotate(360deg);
+          transition: transform 0.5s ease;
+        }
+      }
+    }
+  }
+}
+
+.slot-3d {
+  position: absolute;
+  top: -3.8rem;
+  width: 100%;
+  height: calc(100vh - 5.5rem);
+  background-color: $visualizer-bg;
+  z-index: $z-toper;
+  border: 1px solid color.adjust($visualizer-bg, $lightness: 10%);
+
+  .slot-action {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -0.5rem;
+      border-bottom: 1px solid $d-border;
+    }
+
+    h2 {
+      color: $d-text;
+      margin: 0 auto;
+    }
+
+    i {
+      margin-top: 0.5rem;
+      margin-right: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 50%;
+      background-color: $d-fuschiaDark;
+      cursor: pointer;
+    }
+  }
+
+  .container-3d {
+    position: relative;
+    width: 100%;
+    height: calc(100% - 2.8rem);
+    margin-top: 0.5rem;
+    padding: 1rem 2rem;
+    background-color: $d-bg;
+  }
+}

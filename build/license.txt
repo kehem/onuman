@@ -1,0 +1,64 @@
+# ONUMAN SOFTWARE LICENSE AGREEMENT
+
+**END USER LICENSE AGREEMENT (EULA)**  
+**KEHEM IT - ONUMAN APPLICATION**
+
+---
+
+## IMPORTANT NOTICE
+Please read this End User License Agreement ("EULA") carefully before installing or using the Onuman software application ("Software"). By installing, copying, or otherwise using the Software, you agree to be bound by the terms of this EULA.
+
+---
+
+## 1. LICENSE GRANT
+KEHEM IT grants you a personal, non-transferable, non-exclusive license to use the Software on your devices in accordance with the terms of this EULA.
+
+## 2. PERMITTED USES
+You may:
+- Install and use the Software on your personal computers and devices
+- Make backup copies of the Software for archival purposes
+- Use the Software for personal and commercial purposes
+
+## 3. RESTRICTIONS
+You may NOT:
+- Distribute, sell, lease, rent, lend, or sublicense the Software
+- Reverse engineer, decompile, or disassemble the Software
+- Remove or alter any copyright, trademark, or other proprietary notices
+- Use the Software for any illegal or unauthorized purpose
+
+## 4. INTELLECTUAL PROPERTY
+The Software and all intellectual property rights therein are and shall remain the exclusive property of KEHEM IT. This EULA does not grant you any rights to trademarks or service marks of KEHEM IT.
+
+## 5. PRIVACY AND DATA COLLECTION
+KEHEM IT respects your privacy. The Software may collect anonymous usage statistics to improve the user experience. No personal information is collected without your explicit consent.
+
+## 6. UPDATES AND MODIFICATIONS
+KEHEM IT may provide updates, patches, or modifications to the Software. Your continued use of the Software after such updates constitutes acceptance of any changes to this EULA.
+
+## 7. TERMINATION
+This license is effective until terminated. Your rights under this license will terminate automatically without notice if you fail to comply with any term of this EULA.
+
+## 8. DISCLAIMER OF WARRANTIES
+THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. KEHEM IT DISCLAIMS ALL WARRANTIES, WHETHER EXPRESS, IMPLIED, OR STATUTORY.
+
+## 9. LIMITATION OF LIABILITY
+IN NO EVENT SHALL KEHEM IT BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE.
+
+## 10. GOVERNING LAW
+This EULA shall be governed by and construed in accordance with the laws of [Your Country/State], without regard to conflict of law principles.
+
+## 11. CONTACT INFORMATION
+For questions about this EULA, please contact:
+
+**KEHEM IT**  
+Email: support@kehem.com  
+Website: https://onuman.kehem.com
+
+---
+
+**By clicking "I Agree" or installing the Software, you acknowledge that you have read this EULA, understand it, and agree to be bound by its terms and conditions.**
+
+---
+
+*Last Updated: January 2025*  
+*© 2025 KEHEM IT. All rights reserved.*

@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "outDir": "./out",
+    "composite": false,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "types": ["node", "vue"],
+    "allowJs": true,
+    "noEmit": true,
+    "lib": ["esnext", "dom"]
+  },
+  "include": [
+    "src/cssGenerator.ts",
+    "electron/**/*",
+    "src/**/*",
+    "server/**/*"
+  ],
+  "exclude": ["node_modules"]
+}

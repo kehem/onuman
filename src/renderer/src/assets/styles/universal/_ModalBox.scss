@@ -1,0 +1,63 @@
+@use '../variables/index' as *;
+@use 'sass:color';
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: $z-topest;
+}
+
+.modal-content {
+  background: $d-bg;
+  padding: 1.5rem;
+  border-radius: 8px;
+  min-width: 500px;
+  max-width: 80%;
+  position: relative;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Transition styles */
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.modal-enter-active .modal-content,
+.modal-leave-active .modal-content {
+  transition: transform 0.3s ease;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+}
+
+.modal-enter-from .modal-content {
+  transform: translateY(-100vh);
+}
+
+.modal-enter-to .modal-content,
+.modal-leave-from .modal-content {
+  transform: translateY(0);
+}
+
+.modal-leave-to .modal-content {
+  transform: translateY(-100vh);
+}

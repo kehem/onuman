@@ -1,0 +1,472 @@
+@use '../variables/index' as *;
+@use 'sass:color';
+
+// OUTPUT SCREEN TABLE
+.formatted-table {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0 auto;
+
+  &.no-overflow {
+    overflow: hidden;
+  }
+
+
+
+  // STICKY TABLE
+  &.sticky-table {
+    // max-height: 500px;
+    overflow-y: auto;
+
+
+
+    thead {
+      position: sticky;
+      top: -1px;
+      z-index: $z-topest;
+    }
+
+    tbody {
+      height: 400px !important;
+    }
+  }
+
+  &.responsive-table {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    margin-bottom: 1rem;
+  }
+
+  .onuman-table {
+    width: 100%;
+    height: max-content;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin: 0 auto;
+
+    &.grid-display {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      margin-bottom: 1rem;
+    }
+
+    .top-named {
+      background-color: color.adjust($d-btn-1, $lightness: -6%);
+
+      &:hover {
+        background-color: color.adjust($d-btn-1, $lightness: -4%);
+      }
+    }
+
+    .max-th {
+      min-width: 10rem !important;
+      white-space: nowrap;
+      text-wrap: nowrap;
+    }
+
+    // TEXT ALIGNMENT
+    &.text- {
+      &left {
+
+        th,
+        td {
+          text-align: left;
+        }
+      }
+
+      &center {
+
+        th,
+        td {
+          text-align: center;
+        }
+      }
+
+      &right {
+
+        th,
+        td {
+          text-align: right;
+        }
+      }
+    }
+
+    // SCROLLABLE BODY
+    &.body-scroll {
+
+      thead,
+      tbody,
+      tr {
+        display: block;
+      }
+
+      thead {
+        width: 100%;
+      }
+
+      tbody {
+        max-height: 10rem;
+        overflow-y: auto;
+        overflow-x: hidden;
+        width: 100%;
+      }
+
+      tr {
+        width: 100%;
+        display: table;
+        table-layout: fixed;
+      }
+    }
+
+    // ROW BORDERS
+    &.row-border- {
+      &left {
+        tr {
+          border-left: 1px solid $d-border;
+        }
+      }
+
+      &top {
+        tr {
+          border-top: 1px solid $d-border;
+
+          &:first-child {
+            border: none;
+          }
+        }
+      }
+
+      &right {
+        tr {
+          border-right: 1px solid $d-border;
+        }
+      }
+
+      &bottom {
+        tr {
+          border-bottom: 1px solid $d-border;
+
+          &:last-child {
+            border: none;
+          }
+        }
+      }
+
+      &all {
+        tr {
+          border: 1px solid $d-border;
+        }
+      }
+    }
+
+    // COLUMN BORDERS
+    &.column-border- {
+      &left {
+
+        th,
+        td {
+          border-left: 1px solid $d-border;
+        }
+      }
+
+      &top {
+
+        th,
+        td {
+          border-top: 1px solid $d-border;
+        }
+      }
+
+      &right {
+
+        th,
+        td {
+          border-right: 1px solid $d-border;
+        }
+      }
+
+      &bottom {
+
+        th,
+        td {
+          border-bottom: 1px solid $d-border;
+        }
+      }
+
+      &all {
+
+        th,
+        td {
+          border: 1px solid $d-border;
+        }
+      }
+    }
+
+    // TABLE WIDTH
+    &.twidth- {
+      &10 {
+        width: 10% !important;
+      }
+
+      &20 {
+        width: 20% !important;
+      }
+
+      &30 {
+        width: 30% !important;
+      }
+
+      &40 {
+        width: 40% !important;
+      }
+
+      &50 {
+        width: 50% !important;
+      }
+
+      &60 {
+        width: 60% !important;
+      }
+
+      &70 {
+        width: 70% !important;
+      }
+
+      &80 {
+        width: 80%;
+      }
+
+      &90 {
+        width: 90%;
+      }
+
+      &100 {
+        width: 100%;
+      }
+    }
+
+    // SUBTOTAL
+    .sub-total {
+      font-weight: bold;
+      background-color: color.adjust($d-border, $lightness: -5%) !important;
+
+      td:first-child {
+        color: #00af75;
+        text-align: right;
+      }
+
+      td:last-child {
+        text-align: left;
+        color: #00af75;
+
+        sup {
+          color: #00af75;
+        }
+      }
+    }
+
+    .rcc-sub {
+      font-weight: bold;
+      background-color: color.adjust($d-border, $lightness: -5%) !important;
+
+      td:first-child {
+        color: #00af75;
+        text-align: right;
+      }
+
+      td:last-child {
+        text-align: center;
+      }
+    }
+
+    // BORDER HOVER COLOR
+    $d-fuschia-border: #198492;
+
+    &.hover-border {
+      tbody>tr {
+        &:hover {
+          border-bottom: 1px solid $d-fuschia-border;
+        }
+      }
+    }
+
+    // COMMENT CONTAINER
+    .comment-container {
+      position: relative;
+      width: 15rem;
+      z-index: $z-bottom;
+
+      .msg-icon {
+        position: absolute;
+        left: -1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        z-index: $z-top;
+
+        &::after {
+          content: '';
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          width: 1.3rem;
+          aspect-ratio: 1;
+          background-color: $d-border;
+          border-radius: 50%;
+          box-shadow: $box-shadow;
+          z-index: $z-down;
+        }
+
+        &:hover::after {
+          background-color: $d-primary;
+        }
+
+        &.m-message-square {
+          transform: scaleX(-1);
+        }
+      }
+
+      .comment-text {
+        display: block;
+        background-color: color.adjust($d-border, $lightness: -4%);
+        border: 1px solid $d-border;
+        border-radius: 2px;
+        width: 100%;
+        min-height: 8rem;
+        max-height: 20rem;
+        position: absolute;
+        top: -1rem;
+        left: 0.5rem;
+
+        .action-btns {
+          position: relative;
+          background-color: $d-border;
+          border-bottom: 1px solid color.adjust($d-border, $lightness: 10%);
+          padding: 0.3rem;
+          display: flex;
+          gap: 8px;
+          justify-content: space-between;
+
+          .last-modified-cmt {
+            font-size: 0.7rem;
+
+            .m-time {
+              font-size: 0.6rem;
+            }
+          }
+
+          .iconed {
+            display: flex;
+            gap: 0.3rem;
+          }
+
+          .m-compose {
+            color: color.adjust($d-primary, $lightness: 10%);
+            font-size: 0.9rem;
+            cursor: pointer;
+
+            &:hover {
+              color: $d-fuschia;
+            }
+          }
+
+          .m-circle-with-cross {
+            color: color.adjust($d-red, $lightness: 10%);
+            cursor: pointer;
+            font-size: 1rem;
+
+            &:hover {
+              color: $d-red;
+            }
+          }
+        }
+
+        .comment-textbox {
+          width: 100%;
+          position: relative;
+          padding: 0.5rem;
+          max-height: 100%;
+
+          textarea {
+            width: inherit;
+            max-height: 15rem;
+            resize: vertical;
+            font-size: 0.8rem;
+            padding: 0.4rem;
+            background-color: color.adjust($d-border, $lightness: -6%);
+
+            &:focus {
+              border-color: $d-primary !important;
+              box-shadow: 0 0 0 1px $d-btn-1 !important;
+            }
+          }
+        }
+      }
+    }
+
+    .action {
+      width: 4rem !important;
+    }
+
+    // MAIN DESIGN
+    th,
+    td {
+      padding: 0.4rem;
+      text-align: left;
+    }
+
+    th {
+      background-color: $d-btn-1;
+      color: $d-text;
+    }
+
+    tr:nth-child(even) {
+      background-color: color.adjust($d-bg, $lightness: 1%);
+    }
+
+    tr:hover {
+      background-color: color.adjust($d-bg, $lightness: 3%);
+    }
+  }
+}
+
+// WIDTH
+.width- {
+
+  &s,
+  &min {
+    max-width: 10rem !important;
+  }
+
+  &sm {
+    max-width: 20% !important;
+  }
+
+  &m {
+    max-width: 40% !important;
+  }
+
+  &l {
+    max-width: 50% !important;
+  }
+
+  &xl {
+    max-width: 60% !important;
+  }
+
+  &xxl {
+    max-width: 70% !important;
+  }
+
+  &xxxl {
+    max-width: 80% !important;
+  }
+
+  &full,
+  &max {
+    max-width: 100% !important;
+  }
+}

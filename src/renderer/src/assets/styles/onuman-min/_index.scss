@@ -1,0 +1,15 @@
+@use '../variables/index' as *;
+@use 'sass:color';
+
+@forward 'basic';
+@forward 'brick';
+@forward 'reports';
+@forward 'not-found';
+@forward 'materials';
+@forward 'image';
+@forward 'tab-managements';
+
+
+.disabled {
+    cursor: not-allowed !important;
+}

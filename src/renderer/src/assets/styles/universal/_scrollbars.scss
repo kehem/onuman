@@ -1,0 +1,57 @@
+@use '../variables/index' as *;
+@use 'sass:color';
+
+.onuman-insider-scrollbar {
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 100dvh;
+  scrollbar-color: $d-border $d-bg;
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+  -ms-overflow-style: none;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $d-border;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $d-secondary;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: $d-btn-2;
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: #f1f1f1;
+  }
+}
+
+.onuman-input-height {
+  height: calc(100vh - 13.4rem);
+}
+
+.onuman-input-height-2 {
+  margin-top: 0.5rem;
+  height: calc(100vh - 11.8rem);
+}
+
+
+.onuman-x-scrollbar {
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+  scrollbar-color: $d-border $d-bg;
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+  -ms-overflow-style: none;
+  scrollbar-width: thin;
+}

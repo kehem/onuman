@@ -1,0 +1,40 @@
+{
+  "organization": {
+    "license": true,
+    "organization": {
+      "id": 1,
+      "companyName": "Samson Letex Co.",
+      "Logo": "https://openhousegroupbd.com/static/openhouse/logo.png",
+      "country": "Bangladesh",
+      "state": "Dhaka",
+      "city": "Gazipur",
+      "addressLine": "Jatrabari",
+      "zipCode": "1001",
+      "tradeLicense": "234234234234",
+      "phoneNumber": "+880-176-626-2626",
+      "emailAddress": "sanjusamson@letex.co",
+      "webOrSlogan": "Your trusted Partner",
+      "created_at": "2025-08-17T08:36:22.975610Z",
+      "license_key": 1
+    },
+    "employee": {
+      "id": 18,
+      "employeeName": "Anirban Singha",
+      "photo": null,
+      "employeeDesignation": "CEO",
+      "employeeId": "001",
+      "employeePhone": "+880-130-771-1384",
+      "EmployeeEmail": "support@kehem.com",
+      "serial_number": "LA44NBCX00FSALMB",
+      "host_name": "DESKTOP-3RK99UF",
+      "os": "win32",
+      "ram": "4GB",
+      "cpu": "Intel(R) Core(TM) i5-1035G1 CPU @ 1.00GHz",
+      "mac": "a4:b1:c1:68:47:82",
+      "access": true,
+      "created_at": "2026-09-30T04:51:01.291012Z",
+      "updated_at": "2026-09-30T04:51:01.291058Z",
+      "company": 1
+    }
+  }
+}

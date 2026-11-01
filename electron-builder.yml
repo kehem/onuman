@@ -1,0 +1,227 @@
+# electron-builder.yml
+appId: com.kehem.onuman
+productName: Onuman
+copyright: Copyright © 2025 KEHEM IT
+
+# Publisher and company information
+publish:
+  provider: generic
+  url: https://onuman.kehem.com/auto-updates
+  channel: latest
+
+# Make sure to generate update info files
+generateUpdatesFilesForAllChannels: true
+
+directories:
+  buildResources: resources
+
+# Files to include/exclude
+files:
+  - '!**/.vscode/*'
+  - '!src/*'
+  - '!electron.vite.config.{js,ts,mjs,cjs}'
+  - '!{.eslintcache,eslint.config.mjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
+  - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
+  - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
+
+# Unpack resources from ASAR
+asarUnpack:
+  - resources/**
+
+# Windows configuration with FIXED certificate configuration
+win:
+  executableName: Onuman
+  icon: resources/icon.ico
+  legalTrademarks: "KEHEM IT"
+  
+  # FIXED: Moved certificate config to signtoolOptions with retry settings
+  signtoolOptions:
+    publisherName: "KEHEM IT"
+    certificateFile: build/codesign.pfx
+    certificatePassword: 17d851d7-251f-4aec-9bc5-ae1e498f9988
+    # Add retry and timeout settings
+    signingHashAlgorithms: ["sha256"]
+    additionalCertificateFile: null
+    rfc3161TimeStampServer: "http://timestamp.digicert.com"
+    timeStampServer: "http://timestamp.digicert.com"
+  
+  target:
+    - target: nsis
+      arch: [x64]
+
+# NSIS installer configuration with enhanced settings
+nsis:
+  artifactName: ${name}-${version}-setup.${ext}
+  oneClick: false
+  perMachine: true
+  allowElevation: true
+  allowToChangeInstallationDirectory: true
+  installerHeaderIcon: resources/icon.ico
+  createDesktopShortcut: always
+  createStartMenuShortcut: true
+  shortcutName: ${productName}
+  uninstallDisplayName: ${productName}
+  runAfterFinish: true
+  language: 1033
+  installerIcon: resources/icon.ico
+  uninstallerIcon: resources/icon.ico
+  warningsAsErrors: false
+  displayLanguageSelector: false
+  license: build/license.txt
+  include: build/installer.nsh
+  guid: "A1B2C3D4-E5F6-7890-ABCD-EF1234567890"
+  deleteAppDataOnUninstall: false
+  multiLanguageInstaller: false
+  packElevateHelper: true
+  differentialPackage: true
+
+# macOS configuration
+mac:
+  icon: resources/icon.icns
+  category: public.app-category.productivity
+  bundleVersion: "1.0.0"
+  bundleShortVersion: "1.0.0"
+  minimumSystemVersion: "10.15.0"
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  darkModeSupport: true
+  type: distribution
+  target:
+    - target: dmg
+      arch: [x64, arm64]
+    - target: zip
+      arch: [x64, arm64]
+  extendInfo:
+    CFBundleDisplayName: "Onuman"
+    CFBundleName: "Onuman"
+    CFBundleShortVersionString: "1.0.0"
+    CFBundleVersion: "1.0.0"
+    NSHumanReadableCopyright: "Copyright © 2025 KEHEM IT"
+    NSCameraUsageDescription: "Application requests access to the device's camera."
+    NSMicrophoneUsageDescription: "Application requests access to the device's microphone."
+    NSDocumentsFolderUsageDescription: "Application requests access to the user's Documents folder."
+    NSDownloadsFolderUsageDescription: "Application requests access to the user's Downloads folder."
+
+# DMG configuration for macOS
+dmg:
+  artifactName: ${name}-${version}.${ext}
+  title: ${productName} ${version}
+  icon: resources/icon.icns
+  background: resources/dmg-background.png
+  contents:
+    - x: 130
+      y: 220
+    - x: 410
+      y: 220
+      type: link
+      path: /Applications
+
+# Linux configuration
+linux:
+  icon: resources/icon.png
+  category: Office
+  maintainer: KEHEM IT <support@kehem.com>
+  vendor: KEHEM IT
+  desktop:
+    Name: Onuman
+    Comment: Open Onuman | KEHEM IT
+    Categories: Office;Productivity;
+    StartupWMClass: Onuman
+  target:
+    - target: AppImage
+      arch: [x64]
+    - target: deb
+      arch: [x64]
+
+# AppImage configuration
+appImage:
+  artifactName: ${name}-${version}.${ext}
+
+# Debian package configuration
+deb:
+  artifactName: ${name}-${version}.${ext}
+  depends: [
+    "libnss3", 
+    "libatk-bridge2.0-0", 
+    "libdrm2", 
+    "libxcomposite1", 
+    "libxdamage1", 
+    "libxrandr2", 
+    "libgbm1", 
+    "libxss1", 
+    "libgconf-2-4 | gsettings-desktop-schemas",
+    "libxtst6",
+    "libatspi2.0-0",
+    "libgtk-3-0",
+    "fontconfig",
+    "libxkbcommon0"
+  ]
+  recommends: [
+    "libappindicator3-1",
+    "libnotify4"
+  ]
+  afterInstall: build/linux-postinstall.sh
+  afterRemove: build/linux-postremove.sh
+
+# Snap configuration
+snap:
+  summary: "Open Onuman | KEHEM IT"
+  description: "Productivity application by KEHEM IT"
+  grade: "stable"
+  confinement: "strict"
+  plugs: ["desktop", "desktop-legacy", "home", "x11", "unity7", "browser-support", "network", "gsettings", "audio-playback", "pulseaudio", "opengl"]
+
+# Flatpak configuration
+flatpak:
+  runtimeVersion: "20.08"
+
+# Build optimization
+npmRebuild: false
+buildDependenciesFromSource: false
+nodeGypRebuild: false
+compression: maximum
+removePackageScripts: true
+removePackageKeywords: true
+
+# Electron download configuration
+electronDownload:
+  mirror: https://npmmirror.com/mirrors/electron/
+
+# Extra metadata
+extraMetadata:
+  name: onuman
+  description: "Open Onuman | KEHEM IT"
+  author:
+    name: "KEHEM IT"
+    email: "support@kehem.com"
+    url: "https://kehem.com"
+  homepage: "https://onuman.kehem.com"
+  repository:
+    type: "git"
+    url: "https://github.com/kehem/onuman.git"
+  bugs:
+    url: "https://github.com/kehem/onuman/issues"
+    email: "support@kehem.com"
+  license: "MIT"
+  keywords: ["productivity", "office", "kehem"]
+
+# Extra resources
+extraResources:
+  - from: "resources/fonts/mastorsIcons.ttf"
+    to: "fonts/mastorsIcons.ttf"
+  - from: "resources/license.txt"
+    to: "license.txt"
+
+# File associations
+fileAssociations:
+  - ext: "onuman"
+    name: "Onuman Document"
+    description: "Onuman Document File"
+    icon: "resources/folders.ico"
+    role: "Editor"
+
+# Protocol associations
+protocols:
+  - name: "onuman"
+    role: "Editor"
+    schemes: ["onuman"]

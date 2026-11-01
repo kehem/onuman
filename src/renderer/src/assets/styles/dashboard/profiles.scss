@@ -1,0 +1,525 @@
+// styles/dashboard/profiles.scss
+@use '../variables/index' as *;
+@use 'sass:color';
+
+
+.profiles {
+  position: relative;
+  display: flex;
+  width: 80%;
+  margin: 0 auto;
+
+
+  .left-columnz {
+    position: relative;
+    display: block;
+    width: 15rem;
+    border: 1px solid $d-border;
+  }
+
+  .right-columnz {
+    position: relative;
+    display: block;
+    flex: 1;
+    border: 1px solid $d-border;
+    border-left: none;
+    background-color: $d-tooltip-bg;
+    padding: 2rem;
+    z-index: $z-top;
+    max-height: 70vh;
+
+    .edit {
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.8rem;
+      background-color: $d-primary;
+      border: none;
+      border-radius: 0.3rem;
+      cursor: pointer;
+      z-index: $z-toper;
+      font-size: 0.9rem;
+      line-height: 1;
+      transition: background-color 0.25s ease, transform 0.15s ease;
+
+      &:hover {
+        background-color: color.adjust($d-primary, $lightness: -10%);
+        transform: translateY(-1px);
+      }
+
+      &:active {
+        transform: translateY(1px) scale(0.98);
+      }
+
+      &:focus {
+        outline: 2px solid color.adjust($d-primary, $lightness: -2%);
+        outline-offset: 2px;
+      }
+    }
+
+  }
+}
+
+.profile-tabs {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  transition: all 0.2s ease;
+
+  .tab {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &.active {
+      background-color: $d-tooltip-bg;
+      border-top: 1px solid $d-border;
+      border-bottom: 1px solid $d-border;
+      transition: all 0.3s ease;
+      z-index: $z-toper;
+      transition: all 0.2s ease;
+
+      i,
+      p {
+        color: $d-red;
+      }
+
+      &::before {
+        content: '';
+        position: absolute;
+        width: 1px;
+        right: -1px;
+        top: 0;
+        bottom: 0;
+        background-color: $d-tooltip-bg;
+      }
+    }
+
+    &:hover {
+      background-color: $d-tooltip-bg;
+      transition: all 0.2s ease;
+    }
+
+    &:first-child {
+      border-top: none;
+    }
+
+  }
+}
+
+.profile,
+.companyInfo {
+  position: relative;
+
+  .main-profile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .img-cont {
+      position: relative;
+      width: 5rem;
+
+      img {
+        width: 5rem;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        object-fit: cover;
+        object-position: center;
+        border: 1px solid $d-border;
+        box-shadow: $box-shadow;
+      }
+
+    }
+
+    .name {
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    .designation {
+      color: $d-sub-text !important;
+      font-size: 0.9rem;
+    }
+
+  }
+
+  .others {
+    position: relative;
+    padding: 2rem 0;
+
+    .tablez {
+      width: auto;
+      table-layout: fixed;
+      border-collapse: collapse;
+      margin: 0 auto;
+
+      td {
+        padding: 0.2rem 0.5rem;
+      }
+    }
+  }
+}
+
+.license {
+  position: relative;
+
+  .expire {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+
+    .license-box {
+      position: relative;
+      border-radius: 0.5rem;
+      border: 1px solid $d-border;
+      padding: 1rem;
+
+      h4 {
+        font-size: 1.5rem;
+        padding: 0.5rem 0;
+      }
+
+      &.created h4 {
+        color: $d-warning;
+      }
+
+      &.expired h4 {
+        color: $d-red;
+      }
+
+
+      .licns-1 {
+        color: color.adjust($d-warning, $lightness: -30%);
+      }
+
+      .licns-2 {
+        color: rgba($d-red, 0.6);
+      }
+
+
+
+    }
+  }
+
+  .license-history {
+    position: relative;
+    margin: 1rem 0;
+
+    .history {
+      display: flex;
+      gap: 0.2rem;
+      align-items: center;
+      padding: 0.5rem 1rem;
+
+      .date {
+        text-underline-offset: 5px;
+        text-decoration-color: $d-sub-sub-text;
+        font-style: italic;
+      }
+
+      &.expired {
+
+        i,
+        p {
+          color: rgba($d-red, 0.8);
+        }
+      }
+
+      i,
+      p {
+        color: $d-sub-text;
+        transition: all 0.3s ease;
+      }
+
+      i {
+        padding-right: 1rem;
+      }
+
+      &:hover i,
+      &:hover p {
+        color: $d-white;
+        transition: all 0.3s ease;
+      }
+    }
+  }
+}
+
+.update-notice {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: $d-sub-sub-text !important;
+  font-size: 0.75rem;
+
+  b {
+    color: $d-sub-text !important;
+  }
+}
+
+.profileSettings {
+  position: relative;
+  padding-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto;
+
+  .form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    label {
+      font-size: 1.1rem;
+    }
+
+    input {
+      color: $d-sub-text;
+      padding-left: 0.6rem;
+    }
+  }
+}
+
+.profile-submit-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.8rem;
+  background-color: $d-primary;
+  border: none;
+  border-radius: 0.3rem;
+  width: 12rem;
+  margin: 0 auto;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  z-index: $z-toper;
+  font-size: 0.9rem;
+  line-height: 1;
+  transition: background-color 0.25s ease, transform 0.15s ease;
+
+  p {
+    font-weight: bold;
+  }
+
+  &:hover {
+    background-color: color.adjust($d-primary, $lightness: -10%);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(1px) scale(0.98);
+  }
+
+  &:focus {
+    outline: 2px solid color.adjust($d-primary, $lightness: -2%);
+    outline-offset: 2px;
+  }
+}
+
+.item-picture {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  & label {
+    font-size: 1.1rem;
+  }
+
+  &.img-preview {
+    flex-direction: row;
+  }
+
+  .preview {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    border: 1px dashed $d-fuschia;
+    padding: 0.5rem;
+    min-width: 8rem;
+    aspect-ratio: 1;
+    border-radius: 0.3rem;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+  }
+
+  .onuman-select-box {
+    height: 2.5rem;
+    font-size: 0.9rem !important;
+  }
+
+  .item {
+    input {
+      margin-top: 0.5rem;
+    }
+
+    .max-file-size {
+      font-size: 0.75rem;
+    }
+  }
+}
+
+.employees-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .users-profile-data {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    height: 22rem;
+
+    .user-profile {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 0.75rem;
+      border: 1px solid $d-border;
+      border-radius: 0.5rem;
+      background: $d-tooltip-bg;
+      transition: box-shadow 0.2s ease;
+
+      &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+
+      .image {
+        width: 5rem;
+
+        img {
+          width: 100%;
+          aspect-ratio: 1;
+          object-fit: cover;
+          object-position: center;
+          border-radius: 0.5rem;
+        }
+      }
+
+      .info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+
+        .user-ctns {
+          display: flex;
+          gap: 0.5rem;
+          align-items: center;
+
+          &.cstm {
+
+            i,
+            span {
+              color: $d-warning;
+            }
+          }
+
+          &.cstm1 {
+
+            i,
+            span {
+              color: $d-btn-3;
+            }
+          }
+
+          &.cstm2 {
+
+            i,
+            span {
+              color: $d-secondary;
+            }
+          }
+        }
+
+        .name {
+          font-weight: 600;
+          font-size: 1.1rem;
+        }
+
+        .role {
+          font-size: 0.875rem;
+          color: $d-warning;
+        }
+
+        .email {
+          font-size: 0.875rem;
+          color: $d-sub-text;
+        }
+
+        .phone {
+          font-size: 0.875rem;
+          color: $d-sub-text;
+        }
+      }
+    }
+  }
+}
+
+/* Responsive tweaks */
+@media (min-width: 768px) {
+  .employees-content {
+    .users-profile-data {
+      gap: 1.5rem;
+
+      .user-profile {
+        padding: 1rem;
+
+        .image {
+          width: 6rem;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .employees-content {
+    .users-profile-data {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+  }
+}
+
+.sadfwe5ec {
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50% !important;
+  background-color: $d-btn-1 !important;
+  margin: 0 auto;
+}

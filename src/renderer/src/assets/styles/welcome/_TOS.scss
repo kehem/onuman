@@ -1,0 +1,31 @@
+@use '../variables/index' as *;
+
+.onuman-tos {
+  width: 90%;
+  height: 50vh;
+  overflow-y: scroll;
+  border: 1px solid $d-border;
+  border-radius: 0.4rem;
+  padding: 1rem;
+}
+.onuman-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.onuman-scrollbar::-webkit-scrollbar-track {
+  background: $d-border;
+  border-radius: 4px;
+}
+
+.onuman-scrollbar::-webkit-scrollbar-thumb {
+  background: $d-secondary;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.onuman-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: $d-btn-2;
+}
+.onuman-scrollbar::-webkit-scrollbar-corner {
+  background: #f1f1f1;
+}

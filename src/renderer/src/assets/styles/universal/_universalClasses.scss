@@ -1,0 +1,642 @@
+@charset "UTF-8";
+@use '../variables/index' as *;
+@use 'sass:color';
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+html {
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+
+  main.main {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  main.dashboard-main {
+    margin-top: 2.2rem;
+  }
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+li {
+  list-style-type: none;
+}
+
+.onuman-icon {
+  position: relative;
+  width: 1rem;
+  aspect-ratio: 1;
+
+  img {
+    width: 100%;
+    aspect-ratio: 1;
+  }
+}
+
+.onuman-logo {
+  position: relative;
+
+  img {
+    width: 100%;
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+.onuman-main-scrollbar {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: calc(100vh - 2.2rem);
+  scrollbar-color: $d-border $d-bg;
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+  -ms-overflow-style: none;
+  scrollbar-width: auto;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $d-border;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $d-secondary;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: $d-btn-2;
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: #f1f1f1;
+  }
+}
+
+// body > img,
+// p,
+// div,
+// aside {
+//   user-select: none;
+//   -webkit-user-select: none;
+//   -moz-user-select: none;
+//   -ms-user-select: none;
+
+//   user-drag: none;
+//   -webkit-user-drag: none;
+// }
+// span {
+//   user-select: text;
+//   -webkit-user-select: text;
+//   -moz-user-select: text;
+//   -ms-user-select: text;
+// }
+// img {
+//   user-drag: none;
+//   -webkit-user-drag: none;
+//   pointer-events: none; /* Optional: disables all mouse events */
+// }
+
+hr {
+  all: unset;
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: $d-border;
+  margin: auto;
+}
+
+.vr {
+  border: 1px solid color.adjust($d-border, $lightness: -3%);
+  width: 1px;
+  height: clamp(80%, 1rem, 50%);
+  border-radius: 2px;
+}
+
+// ALL INPUT CLASSES
+input[type='text'],
+input[type='color'],
+input[type='date'],
+input[type='datetime'],
+input[type='datetime-local'],
+input[type='email'],
+input[type='tel'],
+input[type='week'],
+input[type='month'],
+input[type='time'],
+input[type='search'],
+select,
+option {
+  position: relative;
+  display: block;
+  border: 1px solid $d-border;
+  outline: none;
+  width: 100%;
+  height: 2.5rem;
+  padding: 10px 1.5rem;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+input[type='text']:focus,
+input[type='color']:focus,
+input[type='date']:focus,
+input[type='datetime']:focus,
+input[type='datetime-local']:focus,
+input[type='email']:focus,
+input[type='tel']:focus,
+input[type='week']:focus,
+input[type='month']:focus,
+input[type='time']:focus,
+input[type='search']:focus,
+select:focus,
+option:focus {
+  box-shadow: $d-btn-1 0px 0px 0px 2px;
+  border: 1px solid $d-border;
+  outline: none;
+}
+
+input[type='text']::placeholder,
+input[type='color']::placeholder,
+input[type='date']::placeholder,
+input[type='datetime']::placeholder,
+input[type='datetime-local']::placeholder,
+input[type='email']::placeholder,
+input[type='tel']::placeholder,
+input[type='week']::placeholder,
+input[type='month']::placeholder,
+input[type='time']::placeholder,
+input[type='search']::placeholder,
+select::placeholder,
+option::placeholder {
+  font-size: 1rem;
+  color: $d-sub-sub-text;
+}
+
+input[type='search']::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  width: 20px;
+  aspect-ratio: 1;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='gray' d='M14.348 5.652a1 1 0 00-1.414-1.414L10 7.172 7.066 4.238a1 1 0 00-1.414 1.414L8.828 8.586 5.652 11.762a1 1 0 101.414 1.414L10 10.828l3.066 3.066a1 1 0 001.414-1.414L11.172 8.586l3.176-3.176z'/></svg>") no-repeat center center;
+  background-size: 100%;
+  cursor: pointer;
+}
+
+input[type='color'] {
+  height: 2.5rem;
+  cursor: pointer;
+}
+
+input[type='date'],
+input[type='datetime'],
+input[type='datetime-local'],
+input[type='time'],
+input[type='time'] {
+  min-width: 12rem;
+}
+
+input[type='range'] {
+  width: 100%;
+  height: 2.5rem;
+  padding: 0 1rem;
+  margin: 0;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 0.5rem;
+  background: $d-border;
+  border-radius: 5px;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+input[type='range']::-moz-range-track {
+  width: 100%;
+  height: 0.5rem;
+  background: $d-border;
+  border-radius: 5px;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+input[type='range']::-ms-track {
+  width: 100%;
+  height: 0.5rem;
+  background: $d-border;
+  border-radius: 5px;
+  border: none;
+  color: transparent;
+  transition: all 0.3s ease;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  appearance: none;
+  width: 1.2rem;
+  height: 1.2rem;
+  background: $d-btn-3;
+  border-radius: 50%;
+  border: 2px solid $d-border;
+  margin-top: -0.35rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+input[type='range']::-moz-range-thumb {
+  width: 1.2rem;
+  height: 1.2rem;
+  background: $d-btn-1;
+  border-radius: 50%;
+  border: 2px solid $d-border;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+input[type='range']::-ms-thumb {
+  width: 1.2rem;
+  height: 1.2rem;
+  background: $d-btn-1;
+  border-radius: 50%;
+  border: 2px solid $d-border;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+  background: linear-gradient(to right,
+      $d-btn-1 0%,
+      $d-btn-1 var(--range-progress, 0%),
+      $d-border var(--range-progress, 0%),
+      $d-border 100%);
+}
+
+input[type='range']::-ms-fill-lower {
+  background: $d-btn-1;
+  border-radius: 5px;
+}
+
+input[type='range']::-ms-fill-upper {
+  background: $d-border;
+  border-radius: 5px;
+}
+
+input[type='range']:hover::-webkit-slider-thumb {
+  background: $d-btn-3;
+  transform: scale(1.1);
+}
+
+input[type='range']:hover::-moz-range-thumb {
+  background: $d-btn-3;
+  transform: scale(1.1);
+}
+
+input[type='range']:hover::-ms-thumb {
+  background: $d-btn-3;
+  transform: scale(1.1);
+}
+
+input[type='range']:focus {
+  border: 1px solid $d-border;
+  outline: none;
+}
+
+input[type='range']:focus::-webkit-slider-thumb {
+  box-shadow: #d2e2fb 0px 0px 0px 2px;
+}
+
+input[type='range']:focus::-moz-range-thumb {
+  box-shadow: #d2e2fb 0px 0px 0px 2px;
+}
+
+input[type='range']:focus::-ms-thumb {
+  box-shadow: #d2e2fb 0px 0px 0px 2px;
+}
+
+input[type='range']:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+input[type='range']:disabled::-webkit-slider-thumb {
+  background: $d-sub-sub-text;
+}
+
+input[type='range']:disabled::-moz-range-thumb {
+  background: $d-sub-sub-text;
+}
+
+input[type='range']:disabled::-ms-thumb {
+  background: $d-sub-sub-text;
+}
+
+input[type='range']:disabled::-webkit-slider-runnable-track {
+  background: $d-border;
+}
+
+input[type='range']:disabled::-moz-range-track {
+  background: $d-border;
+}
+
+input[type='range']:disabled::-ms-track {
+  background: $d-border;
+}
+
+input[type='number'] {
+  position: relative;
+  display: block;
+  border: 1px solid $d-border;
+  outline: none;
+  width: 100%;
+  height: 2.5rem;
+  padding: 10px 1.5rem;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  -moz-appearance: textfield;
+}
+
+input[type='number']:hover {
+  border: 1px solid $d-border;
+}
+
+input[type='number']:focus {
+  box-shadow: #d2e2fb 0px 0px 0px 2px;
+  border: 1px solid $d-border;
+  outline: none;
+}
+
+input[type='number']::placeholder {
+  font-size: 1rem;
+  color: $d-sub-sub-text;
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='file'] {
+  position: relative;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  display: block;
+  border: 1px solid $d-border;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  color: $d-sub-sub-text !important;
+  font-size: 0.9rem;
+
+  &::before {
+    content: 'Choose or Drag file..';
+    position: absolute;
+    left: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: $d-btn-1;
+    color: $d-sub-text;
+    border-radius: 3px;
+    border: 1px solid $d-border;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: all 0.3s ease;
+    display: inline-block;
+    transform-style: preserve-3d;
+  }
+
+  &:hover::before {
+    background-color: color.adjust($d-btn-1, $lightness: 4%);
+    border: 1px solid color.adjust($d-btn-1, $lightness: 4%);
+    transition: all 0.3s ease;
+    animation: fileInputPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes fileInputPulse {
+
+    0%,
+    100% {
+      box-shadow: color.adjust($d-btn-1, $lightness: 10%) 0 0 10px;
+    }
+
+    50% {
+      transform: scale(1.01) !important;
+      box-shadow: 0 0 40px color.adjust($d-btn-3, $lightness: 20%);
+    }
+  }
+}
+
+input[type='file']:hover {
+  border: 1px solid $d-border;
+}
+
+input[type='file']:focus {
+  box-shadow: $d-btn-3 0px 0px 0px 2px;
+  border: 1px solid $d-border;
+  outline: none;
+}
+
+input[type='file']::file-selector-button {
+  padding: 0.5rem 50rem;
+  border: none;
+  color: transparent;
+  background: transparent;
+  width: 9.5rem;
+}
+
+
+textarea {
+  position: relative;
+  display: block;
+  border: 1px solid $d-border;
+  outline: none;
+  width: 100%;
+  min-height: 6rem;
+  max-height: 10rem;
+  padding: 10px 1.5rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  resize: both;
+  transition: all 0.1s ease;
+
+  // Scrollbar styling for WebKit browsers
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $d-border;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: color.adjust($d-border, $lightness: -10%);
+  }
+
+  // Scrollbar styling for Firefox
+  scrollbar-color: $d-border transparent;
+  scrollbar-width: thin;
+
+  // Placeholder styling
+  &::placeholder {
+    font-size: 1rem;
+    color: $d-sub-text;
+  }
+
+  &:hover {
+    border: 1px solid $d-border;
+  }
+
+  &:focus {
+    box-shadow: #d2e2fb 0px 0px 0px 2px;
+    border: 1px solid $d-border;
+    outline: none;
+  }
+}
+
+input[type='button'],
+input[type='submit'],
+input[type='reset'] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+  padding: 0 1.5rem;
+  border: none;
+  border-radius: 5px;
+  background: $d-btn-1;
+  color: $d-text;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+input[type='button']:hover,
+input[type='submit']:hover,
+input[type='reset']:hover {
+  background: $d-btn-3;
+}
+
+input[type='button']:focus,
+input[type='submit']:focus,
+input[type='reset']:focus {
+  box-shadow: #d2e2fb 0px 0px 0px 2px;
+  border: 1px solid $d-border;
+  outline: none;
+}
+
+input[type='button']:disabled,
+input[type='submit']:disabled,
+input[type='reset']:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: $d-sub-sub-text;
+}
+
+input[type='search'] {
+  position: relative;
+  display: block;
+  border: 1px solid $d-border;
+  outline: none;
+  width: 100%;
+  height: 2.5rem;
+  padding: 10px 1.5rem;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+input[type='search']:hover {
+  border: 1px solid $d-border;
+}
+
+input[type='search']:focus {
+  box-shadow: #d2e2fb 0px 0px 0px 2px;
+  border: 1px solid $d-border;
+  outline: none;
+}
+
+select {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 2.5rem;
+  padding: 0 2.5rem 0 1.5rem;
+  border: 1px solid $d-border;
+  border-radius: 5px;
+  background: $d-text;
+  appearance: none;
+  transition: all 0.3s ease;
+}
+
+select:before {
+  content: '\f030';
+  font-family: 'mastorsIcons' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  font-family: 'mastorsIcons' !important;
+  position: absolute;
+  right: 1rem;
+  width: 1rem;
+  aspect-ratio: 1;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: $d-sub-sub-text;
+  transition: transform 0.3s ease;
+}
+
+select:hover {
+  border: 1px solid $d-border;
+}
+
+select:focus {
+  box-shadow: $d-border 0px 0px 0px 2px;
+  border: 1px solid $d-border;
+  outline: none;
+}
+
+select:focus:before {
+  transform: translateY(-50%) rotate(180deg);
+}

@@ -1,0 +1,251 @@
+// src/assets/styles/visualizer.scss
+
+@use '../variables/index' as *;
+@use 'sass:color';
+
+.graph-main {
+  position: relative;
+
+}
+
+.graph-container {
+  position: absolute;
+  top: 0;
+  z-index: $z-toper;
+  width: 100%;
+  height: calc(100% - 5.5rem);
+
+  .header {
+    position: relative;
+    display: block;
+    width: inherit;
+    padding: 0.6rem;
+    border-bottom: 1px solid $d-border;
+
+    .cross-icon {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        width: 2rem;
+        aspect-ratio: 1;
+        background-color: $d-btn-1;
+        z-index: $z-down;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      &:hover::after {
+        background-color: $d-red;
+        transition: all 0.3s ease;
+      }
+    }
+
+  }
+
+
+  .contents {
+    position: relative;
+    margin: 0 1rem;
+  }
+
+}
+
+.navigator-tabs {
+  position: relative;
+  display: flex;
+
+  .tab {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.5rem;
+    border: 1px solid $d-border;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    i {
+      margin-top: 0.3rem;
+      font-size: 0.8rem;
+    }
+
+    &:hover {
+      background-color: $d-primary;
+      transition: all 0.3s ease;
+    }
+
+    &.active {
+      background-color: $d-primary;
+      transition: all 0.3s ease;
+    }
+  }
+}
+
+
+.canvas-container {
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: flex;
+  gap: 1rem;
+
+  .canvas {
+    width: auto;
+    height: auto;
+    margin: 1rem 0;
+    text-align: center;
+
+    &.wider {
+      width: 100%;
+    }
+
+
+    &.grid-chart {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 200px);
+      justify-content: center;
+      gap: 1rem;
+    }
+
+
+
+
+
+    .skeleton-header {
+      height: 32px;
+      width: 60%;
+      margin: 0 auto 24px auto;
+    }
+
+    .skeleton-chart-container {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .skeleton-chart {
+      flex: 1;
+      height: 300px;
+      border-radius: 8px;
+    }
+
+    .skeleton-chart.wider {
+      flex: 1.5;
+    }
+
+    .skeleton-pile-section {
+      margin-bottom: 32px;
+    }
+
+    .skeleton-pile-title {
+      height: 24px;
+      width: 40%;
+      margin: 0 auto 20px auto;
+    }
+
+    .skeleton-pile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .skeleton-pile-item {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    .skeleton-pile-name {
+      height: 20px;
+      width: 50%;
+      margin: 0 auto 16px auto;
+    }
+
+    .skeleton-pile-chart {
+      height: 250px;
+      margin-bottom: 16px;
+    }
+
+    .skeleton-pile-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .skeleton-stat-line {
+      height: 16px;
+      width: 70%;
+    }
+
+
+
+
+  }
+}
+
+.pile-summary {
+  margin: 0 auto;
+  padding: 12px;
+  text-align: left;
+  background: $d-border;
+  border-radius: 6px;
+  width: max-content;
+}
+
+
+
+/* Loading and error states */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  min-height: 400px;
+  gap: 16px;
+}
+
+.no-data-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  max-height: 100%;
+}
+
+.no-data-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: center;
+
+  i {
+    font-size: 4rem;
+  }
+
+  p {
+    color: $d-sub-sub-text;
+  }
+}
+
+.no-data-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: $d-btn-1;
+  border-radius: 8px;
+  text-align: center;
+}

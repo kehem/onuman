@@ -1,0 +1,1156 @@
+.scrollbar::-webkit-scrollbar {
+  width: 8px;
+  /* Width of the vertical scrollbar */
+  height: 8px;
+  /* Height of the horizontal scrollbar */
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  /* Light gray background */
+  border-radius: 4px;
+  /* Rounded edges */
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #888;
+  /* Medium gray thumb */
+  border-radius: 4px;
+  /* Rounded edges */
+  transition: background 0.2s ease;
+  /* Smooth transition */
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+  /* Darker gray on hover */
+}
+
+.scrollbar::-webkit-scrollbar-corner {
+  background: #f1f1f1;
+  /* Matches track */
+}
+
+.relative {
+  position: relative;
+}
+
+.cur-pointer,
+.c-pointer {
+  cursor: pointer;
+}
+
+.list-disc,
+.li-disc {
+  list-style-type: disc;
+}
+
+.w-10 {
+  width: 10%;
+}
+
+.w-80 {
+  width: 80%;
+}
+
+.w-90 {
+  width: 90%;
+}
+
+.w-95 {
+  width: 95%;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.h-vh-100 {
+  height: 100vh;
+}
+
+.w--10 {
+  width: 1rem;
+}
+
+.w--100 {
+  width: 10rem;
+}
+
+.w--150 {
+  width: 15rem;
+}
+
+.w-10i {
+  width: 10 !important;
+}
+
+.display-block,
+.d-block,
+.display-blocki,
+.d-blocki {
+  display: block !important;
+}
+
+.show {
+  display: block !important;
+}
+
+.margin-auto,
+.mar-auto,
+.m-auto {
+  margin: auto !important;
+}
+
+.m-l-20 {
+  margin-left: 2rem;
+}
+
+.m-r-03 {
+  margin-right: 0.3rem;
+}
+
+.m-t-02 {
+  margin-top: 0.2rem;
+}
+
+.m-t-05 {
+  margin-top: 0.5rem;
+}
+
+.m-t-10 {
+  margin-top: 1rem;
+}
+
+.m-t-50 {
+  margin-top: 5rem;
+}
+
+.m-t--05 {
+  margin-top: -0.5rem;
+}
+
+.m-b-05 {
+  margin-bottom: 0.5rem;
+}
+
+.m-b-10 {
+  margin-bottom: 1rem;
+}
+
+.m-b-20 {
+  margin-bottom: 2rem;
+}
+
+.m-b-30 {
+  margin-bottom: 3rem;
+}
+
+.m-tb-05,
+.m-bt-05 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.transform-center,
+.transform-centered,
+.abs-centererd,
+.abs-center,
+.centered {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.text-sm,
+.text--sm {
+  font-size: 0.8rem;
+}
+
+.text-md,
+.text--md {
+  font-size: 1.2rem;
+}
+
+.text-lg,
+.text--lg {
+  font-size: 1.4rem;
+}
+
+.text-xl,
+.text--xl {
+  font-size: 1.8rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-u,
+.text-underline {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+
+.text-s,
+.text-solid {
+  text-decoration: solid;
+  text-underline-offset: 5px;
+}
+
+.text-nowrap {
+  white-space: nowrap;
+}
+
+.star::after,
+.staric::after,
+.star-sign::after,
+.mandatory::after {
+  content: '  *';
+  color: #ff0000;
+}
+
+.flex,
+.d-flex,
+.f {
+  display: flex;
+}
+
+.f-col {
+  flex-direction: column;
+}
+
+.f-centered,
+.f-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.f-end-center {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.f-start-center {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.gap-03,
+.g-03,
+.gap--03,
+.g--03 {
+  gap: 0.3rem;
+}
+
+.gap-05,
+.g-05,
+.gap--05,
+.g--05 {
+  gap: 0.5rem;
+}
+
+.gap-06,
+.g-06,
+.gap--06,
+.g--06 {
+  gap: 0.6rem;
+}
+
+.gap-10,
+.g-10,
+.gap--10,
+.g--10 {
+  gap: 1rem;
+}
+
+.gap-15,
+.g-15,
+.gap--15,
+.g--15 {
+  gap: 1.5rem;
+}
+
+.gap-20,
+.g-20,
+.gap--20,
+.g--20 {
+  gap: 2rem;
+}
+
+.grid-base,
+.g-res-10-col-container,
+.grid-res-10-col-container,
+.g-res-9-col-container,
+.grid-res-9-col-container,
+.g-res-8-col-container,
+.grid-res-8-col-container,
+.g-res-7-col-container,
+.grid-res-7-col-container,
+.g-res-6-col-container,
+.grid-res-6-col-container,
+.g-res-5-col-container,
+.grid-res-5-col-container,
+.g-res-4-col-container,
+.grid-res-4-col-container,
+.g-res-3-col-container,
+.grid-res-3-col-container,
+.g-res-2-col-container,
+.grid-res-2-col-container,
+.g-res-container,
+.grid-res-container {
+  display: grid;
+  width: 100%;
+  row-gap: 1rem;
+  grid-template-rows: auto;
+}
+
+.grid-base .column,
+.g-res-10-col-container .column,
+.grid-res-10-col-container .column,
+.g-res-9-col-container .column,
+.grid-res-9-col-container .column,
+.g-res-8-col-container .column,
+.grid-res-8-col-container .column,
+.g-res-7-col-container .column,
+.grid-res-7-col-container .column,
+.g-res-6-col-container .column,
+.grid-res-6-col-container .column,
+.g-res-5-col-container .column,
+.grid-res-5-col-container .column,
+.g-res-4-col-container .column,
+.grid-res-4-col-container .column,
+.g-res-3-col-container .column,
+.grid-res-3-col-container .column,
+.g-res-2-col-container .column,
+.grid-res-2-col-container .column,
+.g-res-container .column,
+.grid-res-container .column {
+  grid-column: span 1;
+}
+
+.grid-base .span-1,
+.g-res-10-col-container .span-1,
+.grid-res-10-col-container .span-1,
+.g-res-9-col-container .span-1,
+.grid-res-9-col-container .span-1,
+.g-res-8-col-container .span-1,
+.grid-res-8-col-container .span-1,
+.g-res-7-col-container .span-1,
+.grid-res-7-col-container .span-1,
+.g-res-6-col-container .span-1,
+.grid-res-6-col-container .span-1,
+.g-res-5-col-container .span-1,
+.grid-res-5-col-container .span-1,
+.g-res-4-col-container .span-1,
+.grid-res-4-col-container .span-1,
+.g-res-3-col-container .span-1,
+.grid-res-3-col-container .span-1,
+.g-res-2-col-container .span-1,
+.grid-res-2-col-container .span-1,
+.g-res-container .span-1,
+.grid-res-container .span-1 {
+  grid-column: span 1;
+}
+
+.grid-base .span-2,
+.g-res-10-col-container .span-2,
+.grid-res-10-col-container .span-2,
+.g-res-9-col-container .span-2,
+.grid-res-9-col-container .span-2,
+.g-res-8-col-container .span-2,
+.grid-res-8-col-container .span-2,
+.g-res-7-col-container .span-2,
+.grid-res-7-col-container .span-2,
+.g-res-6-col-container .span-2,
+.grid-res-6-col-container .span-2,
+.g-res-5-col-container .span-2,
+.grid-res-5-col-container .span-2,
+.g-res-4-col-container .span-2,
+.grid-res-4-col-container .span-2,
+.g-res-3-col-container .span-2,
+.grid-res-3-col-container .span-2,
+.g-res-2-col-container .span-2,
+.grid-res-2-col-container .span-2,
+.g-res-container .span-2,
+.grid-res-container .span-2 {
+  grid-column: span 2;
+}
+
+.grid-base .span-3,
+.g-res-10-col-container .span-3,
+.grid-res-10-col-container .span-3,
+.g-res-9-col-container .span-3,
+.grid-res-9-col-container .span-3,
+.g-res-8-col-container .span-3,
+.grid-res-8-col-container .span-3,
+.g-res-7-col-container .span-3,
+.grid-res-7-col-container .span-3,
+.g-res-6-col-container .span-3,
+.grid-res-6-col-container .span-3,
+.g-res-5-col-container .span-3,
+.grid-res-5-col-container .span-3,
+.g-res-4-col-container .span-3,
+.grid-res-4-col-container .span-3,
+.g-res-3-col-container .span-3,
+.grid-res-3-col-container .span-3,
+.g-res-2-col-container .span-3,
+.grid-res-2-col-container .span-3,
+.g-res-container .span-3,
+.grid-res-container .span-3 {
+  grid-column: span 3;
+}
+
+.grid-base .span-4,
+.g-res-10-col-container .span-4,
+.grid-res-10-col-container .span-4,
+.g-res-9-col-container .span-4,
+.grid-res-9-col-container .span-4,
+.g-res-8-col-container .span-4,
+.grid-res-8-col-container .span-4,
+.g-res-7-col-container .span-4,
+.grid-res-7-col-container .span-4,
+.g-res-6-col-container .span-4,
+.grid-res-6-col-container .span-4,
+.g-res-5-col-container .span-4,
+.grid-res-5-col-container .span-4,
+.g-res-4-col-container .span-4,
+.grid-res-4-col-container .span-4,
+.g-res-3-col-container .span-4,
+.grid-res-3-col-container .span-4,
+.g-res-2-col-container .span-4,
+.grid-res-2-col-container .span-4,
+.g-res-container .span-4,
+.grid-res-container .span-4 {
+  grid-column: span 4;
+}
+
+.grid-base .span-5,
+.g-res-10-col-container .span-5,
+.grid-res-10-col-container .span-5,
+.g-res-9-col-container .span-5,
+.grid-res-9-col-container .span-5,
+.g-res-8-col-container .span-5,
+.grid-res-8-col-container .span-5,
+.g-res-7-col-container .span-5,
+.grid-res-7-col-container .span-5,
+.g-res-6-col-container .span-5,
+.grid-res-6-col-container .span-5,
+.g-res-5-col-container .span-5,
+.grid-res-5-col-container .span-5,
+.g-res-4-col-container .span-5,
+.grid-res-4-col-container .span-5,
+.g-res-3-col-container .span-5,
+.grid-res-3-col-container .span-5,
+.g-res-2-col-container .span-5,
+.grid-res-2-col-container .span-5,
+.g-res-container .span-5,
+.grid-res-container .span-5 {
+  grid-column: span 5;
+}
+
+.grid-base .span-6,
+.g-res-10-col-container .span-6,
+.grid-res-10-col-container .span-6,
+.g-res-9-col-container .span-6,
+.grid-res-9-col-container .span-6,
+.g-res-8-col-container .span-6,
+.grid-res-8-col-container .span-6,
+.g-res-7-col-container .span-6,
+.grid-res-7-col-container .span-6,
+.g-res-6-col-container .span-6,
+.grid-res-6-col-container .span-6,
+.g-res-5-col-container .span-6,
+.grid-res-5-col-container .span-6,
+.g-res-4-col-container .span-6,
+.grid-res-4-col-container .span-6,
+.g-res-3-col-container .span-6,
+.grid-res-3-col-container .span-6,
+.g-res-2-col-container .span-6,
+.grid-res-2-col-container .span-6,
+.g-res-container .span-6,
+.grid-res-container .span-6 {
+  grid-column: span 6;
+}
+
+.grid-base .span-7,
+.g-res-10-col-container .span-7,
+.grid-res-10-col-container .span-7,
+.g-res-9-col-container .span-7,
+.grid-res-9-col-container .span-7,
+.g-res-8-col-container .span-7,
+.grid-res-8-col-container .span-7,
+.g-res-7-col-container .span-7,
+.grid-res-7-col-container .span-7,
+.g-res-6-col-container .span-7,
+.grid-res-6-col-container .span-7,
+.g-res-5-col-container .span-7,
+.grid-res-5-col-container .span-7,
+.g-res-4-col-container .span-7,
+.grid-res-4-col-container .span-7,
+.g-res-3-col-container .span-7,
+.grid-res-3-col-container .span-7,
+.g-res-2-col-container .span-7,
+.grid-res-2-col-container .span-7,
+.g-res-container .span-7,
+.grid-res-container .span-7 {
+  grid-column: span 7;
+}
+
+.grid-base .span-8,
+.g-res-10-col-container .span-8,
+.grid-res-10-col-container .span-8,
+.g-res-9-col-container .span-8,
+.grid-res-9-col-container .span-8,
+.g-res-8-col-container .span-8,
+.grid-res-8-col-container .span-8,
+.g-res-7-col-container .span-8,
+.grid-res-7-col-container .span-8,
+.g-res-6-col-container .span-8,
+.grid-res-6-col-container .span-8,
+.g-res-5-col-container .span-8,
+.grid-res-5-col-container .span-8,
+.g-res-4-col-container .span-8,
+.grid-res-4-col-container .span-8,
+.g-res-3-col-container .span-8,
+.grid-res-3-col-container .span-8,
+.g-res-2-col-container .span-8,
+.grid-res-2-col-container .span-8,
+.g-res-container .span-8,
+.grid-res-container .span-8 {
+  grid-column: span 8;
+}
+
+.grid-base .span-9,
+.g-res-10-col-container .span-9,
+.grid-res-10-col-container .span-9,
+.g-res-9-col-container .span-9,
+.grid-res-9-col-container .span-9,
+.g-res-8-col-container .span-9,
+.grid-res-8-col-container .span-9,
+.g-res-7-col-container .span-9,
+.grid-res-7-col-container .span-9,
+.g-res-6-col-container .span-9,
+.grid-res-6-col-container .span-9,
+.g-res-5-col-container .span-9,
+.grid-res-5-col-container .span-9,
+.g-res-4-col-container .span-9,
+.grid-res-4-col-container .span-9,
+.g-res-3-col-container .span-9,
+.grid-res-3-col-container .span-9,
+.g-res-2-col-container .span-9,
+.grid-res-2-col-container .span-9,
+.g-res-container .span-9,
+.grid-res-container .span-9 {
+  grid-column: span 9;
+}
+
+.grid-base .span-10,
+.g-res-10-col-container .span-10,
+.grid-res-10-col-container .span-10,
+.g-res-9-col-container .span-10,
+.grid-res-9-col-container .span-10,
+.g-res-8-col-container .span-10,
+.grid-res-8-col-container .span-10,
+.g-res-7-col-container .span-10,
+.grid-res-7-col-container .span-10,
+.g-res-6-col-container .span-10,
+.grid-res-6-col-container .span-10,
+.g-res-5-col-container .span-10,
+.grid-res-5-col-container .span-10,
+.g-res-4-col-container .span-10,
+.grid-res-4-col-container .span-10,
+.g-res-3-col-container .span-10,
+.grid-res-3-col-container .span-10,
+.g-res-2-col-container .span-10,
+.grid-res-2-col-container .span-10,
+.g-res-container .span-10,
+.grid-res-container .span-10 {
+  grid-column: span 10;
+}
+
+.g-res-3-col-container,
+.grid-res-3-col-container {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-base,
+.g-res-10-col-container,
+.grid-res-10-col-container,
+.g-res-9-col-container,
+.grid-res-9-col-container,
+.g-res-8-col-container,
+.grid-res-8-col-container,
+.g-res-7-col-container,
+.grid-res-7-col-container,
+.g-res-6-col-container,
+.grid-res-6-col-container,
+.g-res-5-col-container,
+.grid-res-5-col-container,
+.g-res-4-col-container,
+.grid-res-4-col-container,
+.g-res-3-col-container,
+.grid-res-3-col-container,
+.g-res-2-col-container,
+.grid-res-2-col-container,
+.g-res-container,
+.grid-res-container {
+  display: grid;
+  width: 100%;
+  row-gap: 1rem;
+  grid-template-rows: auto;
+}
+
+.grid-base .column,
+.g-res-10-col-container .column,
+.grid-res-10-col-container .column,
+.g-res-9-col-container .column,
+.grid-res-9-col-container .column,
+.g-res-8-col-container .column,
+.grid-res-8-col-container .column,
+.g-res-7-col-container .column,
+.grid-res-7-col-container .column,
+.g-res-6-col-container .column,
+.grid-res-6-col-container .column,
+.g-res-5-col-container .column,
+.grid-res-5-col-container .column,
+.g-res-4-col-container .column,
+.grid-res-4-col-container .column,
+.g-res-3-col-container .column,
+.grid-res-3-col-container .column,
+.g-res-2-col-container .column,
+.grid-res-2-col-container .column,
+.g-res-container .column,
+.grid-res-container .column {
+  grid-column: span 1;
+}
+
+.grid-base .span-1,
+.g-res-10-col-container .span-1,
+.grid-res-10-col-container .span-1,
+.g-res-9-col-container .span-1,
+.grid-res-9-col-container .span-1,
+.g-res-8-col-container .span-1,
+.grid-res-8-col-container .span-1,
+.g-res-7-col-container .span-1,
+.grid-res-7-col-container .span-1,
+.g-res-6-col-container .span-1,
+.grid-res-6-col-container .span-1,
+.g-res-5-col-container .span-1,
+.grid-res-5-col-container .span-1,
+.g-res-4-col-container .span-1,
+.grid-res-4-col-container .span-1,
+.g-res-3-col-container .span-1,
+.grid-res-3-col-container .span-1,
+.g-res-2-col-container .span-1,
+.grid-res-2-col-container .span-1,
+.g-res-container .span-1,
+.grid-res-container .span-1 {
+  grid-column: span 1;
+}
+
+.grid-base .span-2,
+.g-res-10-col-container .span-2,
+.grid-res-10-col-container .span-2,
+.g-res-9-col-container .span-2,
+.grid-res-9-col-container .span-2,
+.g-res-8-col-container .span-2,
+.grid-res-8-col-container .span-2,
+.g-res-7-col-container .span-2,
+.grid-res-7-col-container .span-2,
+.g-res-6-col-container .span-2,
+.grid-res-6-col-container .span-2,
+.g-res-5-col-container .span-2,
+.grid-res-5-col-container .span-2,
+.g-res-4-col-container .span-2,
+.grid-res-4-col-container .span-2,
+.g-res-3-col-container .span-2,
+.grid-res-3-col-container .span-2,
+.g-res-2-col-container .span-2,
+.grid-res-2-col-container .span-2,
+.g-res-container .span-2,
+.grid-res-container .span-2 {
+  grid-column: span 2;
+}
+
+.grid-base .span-3,
+.g-res-10-col-container .span-3,
+.grid-res-10-col-container .span-3,
+.g-res-9-col-container .span-3,
+.grid-res-9-col-container .span-3,
+.g-res-8-col-container .span-3,
+.grid-res-8-col-container .span-3,
+.g-res-7-col-container .span-3,
+.grid-res-7-col-container .span-3,
+.g-res-6-col-container .span-3,
+.grid-res-6-col-container .span-3,
+.g-res-5-col-container .span-3,
+.grid-res-5-col-container .span-3,
+.g-res-4-col-container .span-3,
+.grid-res-4-col-container .span-3,
+.g-res-3-col-container .span-3,
+.grid-res-3-col-container .span-3,
+.g-res-2-col-container .span-3,
+.grid-res-2-col-container .span-3,
+.g-res-container .span-3,
+.grid-res-container .span-3 {
+  grid-column: span 3;
+}
+
+.grid-base .span-4,
+.g-res-10-col-container .span-4,
+.grid-res-10-col-container .span-4,
+.g-res-9-col-container .span-4,
+.grid-res-9-col-container .span-4,
+.g-res-8-col-container .span-4,
+.grid-res-8-col-container .span-4,
+.g-res-7-col-container .span-4,
+.grid-res-7-col-container .span-4,
+.g-res-6-col-container .span-4,
+.grid-res-6-col-container .span-4,
+.g-res-5-col-container .span-4,
+.grid-res-5-col-container .span-4,
+.g-res-4-col-container .span-4,
+.grid-res-4-col-container .span-4,
+.g-res-3-col-container .span-4,
+.grid-res-3-col-container .span-4,
+.g-res-2-col-container .span-4,
+.grid-res-2-col-container .span-4,
+.g-res-container .span-4,
+.grid-res-container .span-4 {
+  grid-column: span 4;
+}
+
+.grid-base .span-5,
+.g-res-10-col-container .span-5,
+.grid-res-10-col-container .span-5,
+.g-res-9-col-container .span-5,
+.grid-res-9-col-container .span-5,
+.g-res-8-col-container .span-5,
+.grid-res-8-col-container .span-5,
+.g-res-7-col-container .span-5,
+.grid-res-7-col-container .span-5,
+.g-res-6-col-container .span-5,
+.grid-res-6-col-container .span-5,
+.g-res-5-col-container .span-5,
+.grid-res-5-col-container .span-5,
+.g-res-4-col-container .span-5,
+.grid-res-4-col-container .span-5,
+.g-res-3-col-container .span-5,
+.grid-res-3-col-container .span-5,
+.g-res-2-col-container .span-5,
+.grid-res-2-col-container .span-5,
+.g-res-container .span-5,
+.grid-res-container .span-5 {
+  grid-column: span 5;
+}
+
+.grid-base .span-6,
+.g-res-10-col-container .span-6,
+.grid-res-10-col-container .span-6,
+.g-res-9-col-container .span-6,
+.grid-res-9-col-container .span-6,
+.g-res-8-col-container .span-6,
+.grid-res-8-col-container .span-6,
+.g-res-7-col-container .span-6,
+.grid-res-7-col-container .span-6,
+.g-res-6-col-container .span-6,
+.grid-res-6-col-container .span-6,
+.g-res-5-col-container .span-6,
+.grid-res-5-col-container .span-6,
+.g-res-4-col-container .span-6,
+.grid-res-4-col-container .span-6,
+.g-res-3-col-container .span-6,
+.grid-res-3-col-container .span-6,
+.g-res-2-col-container .span-6,
+.grid-res-2-col-container .span-6,
+.g-res-container .span-6,
+.grid-res-container .span-6 {
+  grid-column: span 6;
+}
+
+.grid-base .span-7,
+.g-res-10-col-container .span-7,
+.grid-res-10-col-container .span-7,
+.g-res-9-col-container .span-7,
+.grid-res-9-col-container .span-7,
+.g-res-8-col-container .span-7,
+.grid-res-8-col-container .span-7,
+.g-res-7-col-container .span-7,
+.grid-res-7-col-container .span-7,
+.g-res-6-col-container .span-7,
+.grid-res-6-col-container .span-7,
+.g-res-5-col-container .span-7,
+.grid-res-5-col-container .span-7,
+.g-res-4-col-container .span-7,
+.grid-res-4-col-container .span-7,
+.g-res-3-col-container .span-7,
+.grid-res-3-col-container .span-7,
+.g-res-2-col-container .span-7,
+.grid-res-2-col-container .span-7,
+.g-res-container .span-7,
+.grid-res-container .span-7 {
+  grid-column: span 7;
+}
+
+.grid-base .span-8,
+.g-res-10-col-container .span-8,
+.grid-res-10-col-container .span-8,
+.g-res-9-col-container .span-8,
+.grid-res-9-col-container .span-8,
+.g-res-8-col-container .span-8,
+.grid-res-8-col-container .span-8,
+.g-res-7-col-container .span-8,
+.grid-res-7-col-container .span-8,
+.g-res-6-col-container .span-8,
+.grid-res-6-col-container .span-8,
+.g-res-5-col-container .span-8,
+.grid-res-5-col-container .span-8,
+.g-res-4-col-container .span-8,
+.grid-res-4-col-container .span-8,
+.g-res-3-col-container .span-8,
+.grid-res-3-col-container .span-8,
+.g-res-2-col-container .span-8,
+.grid-res-2-col-container .span-8,
+.g-res-container .span-8,
+.grid-res-container .span-8 {
+  grid-column: span 8;
+}
+
+.grid-base .span-9,
+.g-res-10-col-container .span-9,
+.grid-res-10-col-container .span-9,
+.g-res-9-col-container .span-9,
+.grid-res-9-col-container .span-9,
+.g-res-8-col-container .span-9,
+.grid-res-8-col-container .span-9,
+.g-res-7-col-container .span-9,
+.grid-res-7-col-container .span-9,
+.g-res-6-col-container .span-9,
+.grid-res-6-col-container .span-9,
+.g-res-5-col-container .span-9,
+.grid-res-5-col-container .span-9,
+.g-res-4-col-container .span-9,
+.grid-res-4-col-container .span-9,
+.g-res-3-col-container .span-9,
+.grid-res-3-col-container .span-9,
+.g-res-2-col-container .span-9,
+.grid-res-2-col-container .span-9,
+.g-res-container .span-9,
+.grid-res-container .span-9 {
+  grid-column: span 9;
+}
+
+.grid-base .span-10,
+.g-res-10-col-container .span-10,
+.grid-res-10-col-container .span-10,
+.g-res-9-col-container .span-10,
+.grid-res-9-col-container .span-10,
+.g-res-8-col-container .span-10,
+.grid-res-8-col-container .span-10,
+.g-res-7-col-container .span-10,
+.grid-res-7-col-container .span-10,
+.g-res-6-col-container .span-10,
+.grid-res-6-col-container .span-10,
+.g-res-5-col-container .span-10,
+.grid-res-5-col-container .span-10,
+.g-res-4-col-container .span-10,
+.grid-res-4-col-container .span-10,
+.g-res-3-col-container .span-10,
+.grid-res-3-col-container .span-10,
+.g-res-2-col-container .span-10,
+.grid-res-2-col-container .span-10,
+.g-res-container .span-10,
+.grid-res-container .span-10 {
+  grid-column: span 10;
+}
+
+.g-res-2-col-container,
+.grid-res-2-col-container {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.bordered-all {
+  border: 1px solid #808080;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.bordered-circle {
+  min-width: 2rem;
+  max-width: 10rem;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #808080;
+  border-radius: 50%;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 0.2rem;
+  font-size: 1rem;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn[disabled] {
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: rgb(0, 110.7, 229.5);
+}
+
+.btn-primary:active {
+  background-color: rgb(0, 98.4, 204);
+}
+
+.btn-primary:focus {
+  background-color: rgb(0, 98.4, 204);
+  box-shadow: 0 0 0 2px rgb(102, 175.8, 255);
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background-color: rgb(97.2, 105.3, 112.5);
+}
+
+.btn-secondary:active {
+  background-color: rgb(86.4, 93.6, 100);
+}
+
+.btn-secondary:focus {
+  background-color: rgb(86.4, 93.6, 100);
+  box-shadow: 0 0 0 2px rgb(165.8369098712, 172.2566523605, 177.9630901288);
+}
+
+.btn-nav-secondary {
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.btn-nav-secondary:hover {
+  box-shadow: 0 0 0 2px rgb(165.8369098712, 172.2566523605, 177.9630901288);
+}
+
+.btn-nav-secondary:active {
+  box-shadow: 0 0 0 2px rgb(165.8369098712, 172.2566523605, 177.9630901288);
+}
+
+.btn-nav-secondary:focus {
+  background-color: rgb(86.4, 93.6, 100);
+  box-shadow: 0 0 0 2px rgb(165.8369098712, 172.2566523605, 177.9630901288);
+}
+
+.btn-warning {
+  background-color: #ff9800;
+  color: #fff;
+}
+
+.btn-warning:hover {
+  background-color: rgb(229.5, 136.8, 0);
+}
+
+.btn-warning:active {
+  background-color: rgb(204, 121.6, 0);
+}
+
+.btn-warning:focus {
+  background-color: rgb(204, 121.6, 0);
+  box-shadow: 0 0 0 2px rgb(255, 193.2, 102);
+}
+
+.btn-calm {
+  background-color: #2196f3;
+  color: #fff;
+}
+
+.btn-calm:hover {
+  background-color: rgb(12.7384615385, 136.9384615385, 235.6615384615);
+}
+
+.btn-calm:active {
+  background-color: rgb(11.3230769231, 121.7230769231, 209.4769230769);
+}
+
+.btn-calm:focus {
+  background-color: rgb(11.3230769231, 121.7230769231, 209.4769230769);
+  box-shadow: 0 0 0 2px rgb(121.8, 192, 247.8);
+}
+
+.btn-alert {
+  background-color: #e91e63;
+  color: #fff;
+}
+
+.btn-alert:hover {
+  background-color: rgb(215.6174089069, 21.0825910931, 87.2052631579);
+}
+
+.btn-alert:active {
+  background-color: rgb(191.6599190283, 18.7400809717, 77.5157894737);
+}
+
+.btn-alert:focus {
+  background-color: rgb(191.6599190283, 18.7400809717, 77.5157894737);
+  box-shadow: 0 0 0 2px rgb(241.8, 120, 161.4);
+}
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-overlay .modal {
+  position: relative;
+  border-radius: 8px;
+  transform: translateY(-100%);
+  border: 1px solid var(--border);
+}
+
+.modal-overlay .modal-1 {
+  animation: slideIn 0.5s forwards;
+}
+
+.modal-overlay .modal-1 .modal-abs {
+  position: sticky;
+  width: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: row;
+  height: 3rem;
+  padding-bottom: 1rem;
+  background-color: var(--div);
+  border-bottom: 1px solid var(--border);
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.modal-overlay .modal-1 .cross-btn {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--sub-text);
+  transition: all 0.3s ease;
+}
+
+.modal-overlay .modal-1 .cross-btn:hover::after {
+  content: '';
+  position: absolute;
+  width: 2rem;
+  aspect-ratio: 1;
+  background-color: #f44336;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  transition: all 0.3s ease;
+}
+
+.modal-overlay .modal-1 .cross-btn:hover {
+  color: var(--text);
+  transition: all 0.3s ease;
+}
+
+.modal-overlay .modal-1 .modal .main-content {
+  position: relative;
+  width: 100%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem 1.5rem;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+  scroll-behavior: smooth;
+  scroll-snap-type: mandatory;
+  scroll-padding: 0.5rem;
+  scroll-padding-top: 10px;
+}
+
+/* //TEXT ELLIPSIS CLASS */
+.text-dotted-1 {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: block-axis;
+}
+
+.text-dotted-2 {
+  -webkit-box-orient: block-axis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.text-dotted-3 {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: block-axis;
+}
+
+.text-dotted-4 {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: block-axis;
+}
+
+.text-dotted-5 {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: block-axis;
+}
