@@ -34,7 +34,12 @@ apiClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   if (motherboardID.value) {
     config.headers['serialID'] = motherboardID.value
   }
-  config.headers['Content-Type'] = 'application/json'
+  if (typeof FormData !== 'undefined' && config.data instanceof FormData) {
+    // Axios must let the browser supply the multipart boundary.
+    config.headers.delete('Content-Type')
+  } else if (!config.headers.has('Content-Type')) {
+    config.headers['Content-Type'] = 'application/json'
+  }
   return config
 })
 

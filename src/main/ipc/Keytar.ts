@@ -1,12 +1,13 @@
 // main/ipc/Keytar.ts
 
-import { ipcMain } from 'electron'
+import { app, ipcMain } from 'electron'
 import keytar from 'keytar'
 import { Low } from 'lowdb'
 import { JSONFile } from 'lowdb/node'
 import si from 'systeminformation'
 import { execSync } from 'child_process'
-import { readFileSync } from 'fs'
+import { existsSync, readFileSync, copyFileSync, mkdirSync } from 'fs'
+import { join, resolve } from 'path'
 import { platform } from 'os'
 
 const SERVICE = 'my-electron-app'
@@ -20,13 +21,22 @@ type StoreData = {
   [key: string]: any
 }
 
-const adapter = new JSONFile<StoreData>('electron-data.json')
-const db = new Low<StoreData>(adapter, {})
+let db: Low<StoreData>
 
 let handlersInitialized = false
 
 async function initDb() {
   console.log('[UserStore] Initializing LowDB...')
+  const userDataPath = app.getPath('userData')
+  mkdirSync(userDataPath, { recursive: true })
+  const storePath = join(userDataPath, 'electron-data.json')
+  const legacyPath = resolve('electron-data.json')
+  // Preserve data written by earlier versions, without continuing to write in
+  // the installation or current working directory.
+  if (!existsSync(storePath) && legacyPath !== storePath && existsSync(legacyPath)) {
+    copyFileSync(legacyPath, storePath)
+  }
+  db = new Low<StoreData>(new JSONFile<StoreData>(storePath), {})
   await db.read()
   db.data ||= {}
   console.log('[UserStore] LowDB initialized')
@@ -191,7 +201,7 @@ export async function initUserStoreHandlers() {
     console.log('[IPC] get-license-key called')
     try {
       const key = await keytar.getPassword(SERVICE, 'licenseKey')
-      return key || ''
+      return key || db.data._secureData?.licenseKey || ''
     } catch (err) {
       console.warn('[IPC] Keytar failed, checking JSON fallback:', err)
       return db.data._secureData?.licenseKey || ''
@@ -214,17 +224,23 @@ export async function initUserStoreHandlers() {
     console.log('[IPC] get-motherboard-id called')
     try {
       const id = await keytar.getPassword(SERVICE, 'motherboardID')
-      return id || ''
+      return id || db.data._secureData?.motherboardID || db.data.motherboardID || ''
     } catch (err) {
       console.warn('[IPC] Keytar failed, checking JSON fallback:', err)
       return db.data._secureData?.motherboardID || db.data.motherboardID || ''
     }
   })
 
-  // DYNAMIC ID REFRESH
-  console.log('[UserStore] Starting motherboard ID auto-refresh...')
-  // updateStoredMotherboardID()
-  // setInterval(updateStoredMotherboardID, 60 * 60 * 1000)
+  // Populate the device ID once on a new installation and keep it stable.
+  console.log('[UserStore] Checking stored motherboard ID...')
+  const storedID = await (async () => {
+    try {
+      return (await keytar.getPassword(SERVICE, 'motherboardID')) || db.data._secureData?.motherboardID || db.data.motherboardID
+    } catch {
+      return db.data._secureData?.motherboardID || db.data.motherboardID
+    }
+  })()
+  if (!storedID) await updateStoredMotherboardID()
 
   // GENERIC JSON STORAGE (non-sensitive)
   ipcMain.handle('store:set', async (_event, key: string, value: any) => {

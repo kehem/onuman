@@ -139,7 +139,7 @@ import ModalBox from '../../components/UI/ModalBox.vue';
 import { useToast } from '../../composables/Toast'
 const { showToast } = useToast()
 import { useApi } from '../../composables/useApi'
-const { get, post } = useApi()
+const { get, post, setToken } = useApi()
 import Tooltip from '../../components/Initializers/ToolTip.vue';
 
 
@@ -205,14 +205,18 @@ const activateLicense = async () => {
         licenseError.value = 'License key must be 16 characters';
         return;
     }
-    const serialId = await window.electronAPI.getMotherboardID();
-
     try {
-        const response = await get(`/api/verify/${licenseKey}?serialId=${serialId}`);
+        const serialId = await window.electronAPI.getMotherboardID();
+        if (!serialId) {
+            licenseError.value = 'Could not retrieve this device’s serial ID. Please contact support.';
+            return;
+        }
+        const response = await get(`/api/verify/${encodeURIComponent(licenseKey)}?serialId=${encodeURIComponent(serialId)}`);
 
         if (response.status === true) {
             licenseError.value = '';
             await window.electronAPI.storeLicenseKey(licenseKey);
+            setToken(licenseKey);
 
             if (response.serialId === true) {
                 router.push('/dashboard')
@@ -224,7 +228,7 @@ const activateLicense = async () => {
     } catch (error: any) {
         console.error('License activation error:', error);
 
-        if (error.response && error.response?.error === "Trial expired") {
+        if (error.response && error.response?.data?.error === "Trial expired") {
             showToast('warning', "Your trial period has expired. Please activate the product with a license key.", 10000, 'right-bottom');
         } else {
             showToast('error', "Failed to verify license. Please contact with ONUMAN support.", 8000, 'right-bottom');
