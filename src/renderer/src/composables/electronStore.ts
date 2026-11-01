@@ -2,9 +2,9 @@
 
 export const useElectronStore = () => {
   // Type the key and value parameters for clarity
-  const set = (key: string, value: any): void => {
+  const set = async (key: string, value: any): Promise<void> => {
     // Directly call the 'set' function on the electronAPI store from the main process
-    window.electronAPI.store.set(key, value)
+    await window.electronAPI.store.set(key, value)
   }
 
   // Use async/await for getting values from the store

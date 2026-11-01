@@ -53,12 +53,12 @@ export function useImageUploader() {
   // UPLOAD IMAGE TO SERVER
   async function uploadToServer(file: File): Promise<string> {
     try {
-      const { apiClient } = await useApi()
+      const { post } = useApi()
 
       const formData = new FormData()
       formData.append('image', file, file.name)
 
-      const response = await apiClient.post('/api/img_upload', formData, {
+      const response = await post<{ status?: string; image_url?: string }>('/api/img_upload', formData, {
         onUploadProgress: (progressEvent) => {
           if (progressEvent.total) {
             uploadProgress.value = Math.round(
@@ -69,8 +69,8 @@ export function useImageUploader() {
         transformRequest: [(data) => data], // LET BROWSER SET HEADERS AUTOMATICALLY
       })
 
-      if (response.data?.status === 'success' && response.data?.image_url) {
-        return response.data.image_url
+      if (response?.status === 'success' && response?.image_url) {
+        return response.image_url
       } else {
         throw new Error('SERVER DID NOT RETURN IMAGE URL.')
       }

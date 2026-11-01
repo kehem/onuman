@@ -129,14 +129,8 @@ export async function startServer(): Promise<http.Server> {
   })
 }
 
-export async function getServerAddress(): Promise<string | null> {
-  try {
-    const res = await fetch(`http://localhost:${PORT}/server-ip`)
-    if (!res.ok) throw new Error('Could not fetch server IP')
-    const { ip, port } = await res.json()
-    return `http://${ip}:${port}`
-  } catch (err) {
-    console.error('Fetch server address error:', err)
-    return null
-  }
+// The server listens on IPv4; do not probe "localhost", which may resolve to
+// IPv6 (::1) and make a successful first launch look like a startup failure.
+export async function getServerAddress(): Promise<string> {
+  return `http://${getLocalIp()}:${PORT}`
 }

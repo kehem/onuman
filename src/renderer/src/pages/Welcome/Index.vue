@@ -21,92 +21,51 @@ import { useElectronStore } from '../../composables/electronStore';
 const { set: setOrganization } = useElectronStore()
 import { useToast } from '../../composables/Toast'
 import { useRouter } from 'vue-router';
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
+import { checkStartupLicense } from '../../composables/checkStartupLicense';
 
 const { showToast } = useToast()
 const router = useRouter();
-const isLoading = ref(true);
-
-
 const fetchData = async () => {
-
     try {
-        const res = await get('/api/license');
-
-        // Check if response and data exist
-        if (!res || !res) {
-            throw new Error('Invalid response from server');
-        }
-
-        await setOrganization('organization', res);
-
-        // Get both license key and serial ID
-        const licenseKey = await window.electronAPI.getLicenseKey();
-        const serialId = await window.electronAPI.getMotherboardID();
-
-        // Your stated logic: both license key and serial ID are required
-        if (!licenseKey || !serialId) {
-            showToast('error', 'License key or Serial ID missing. Please enter license information.');
-            router.push('/license');
-            return;
-        }
-
-        // If both exist, check the API response for license validity
-        if (res.license === false) {
-            showToast('error', 'License expired or invalid. Please contact support.');
-            router.push('/license');
+        const result = await checkStartupLicense(
+            () => window.electronAPI.getLicenseKey(),
+            () => window.electronAPI.getMotherboardID(),
+            () => get('/api/license')
+        );
+        if (result.status === 'missing-license') {
+            await router.replace('/license');
+        } else if (result.status === 'missing-serial') {
+            showToast('error', 'Could not retrieve this device’s serial ID. Please contact support.');
+            await router.replace('/license');
         } else {
-            showToast('success', 'License verified successfully!');
-            router.push('/dashboard');
-        }
-
-    } catch (err: any) {
-        console.error('API Error Details:', err);
-
-        // Check if error response exists
-        if (err.response) {
-            console.log('Error Response Status:', err.response.status);
-            console.log('Error Response Data:', err.response);
-
-            const errorData = err.response;
-
-            // Handle specific API error responses
-            if (errorData) {
-                if (errorData.license === false) {
-                    showToast('error', 'License not found. Please contact support.');
-                    router.push('/license');
-                } else if (errorData.org === false) {
-                    showToast('error', 'Organization not found. Please contact support.', 'infinite');
-                    router.push('/CompanyInfo');
-                } else if (errorData.employee === false) {
-                    showToast('error', 'Employee does not exist', 'infinite');
-                    router.push('/CompanyInfo');
-                } else if (errorData.access === false) {
-                    showToast('error', 'Access Denied. Contact your administration', 'infinite');
-                }
+            await setOrganization('organization', result.data);
+            if (result.data.license === false) {
+                showToast('error', 'License expired or invalid. Please contact support.');
+                await router.replace('/license');
             } else {
-                showToast('error', `Server error: ${err.response.status}`);
+                await router.replace('/dashboard');
             }
-        } else if (err.request) {
-            // Network error
-            console.error('Network error - no response received');
-            showToast('error', 'Network error. Please check your connection.');
-        } else {
-            // Other errors
-            console.error('Request setup error:', err.message);
-            showToast('error', 'Request failed. Please try again.');
         }
-
-        // On any error, redirect to license page as fallback
-        router.push('/license');
-    } finally {
-        isLoading.value = false;
+    } catch (err: any) {
+        console.error('License check failed:', err);
+        const errorData = err.response?.data;
+        if (errorData?.license === false) {
+            showToast('error', 'License expired or invalid. Please contact support.');
+            await router.replace('/license');
+        } else if (errorData?.org === false || errorData?.employee === false) {
+            showToast('error', 'Please complete your organization information.');
+            await router.replace('/CompanyInfo');
+        } else {
+            showToast('error', errorData?.access === false
+                ? 'Access denied. Please contact your administrator.'
+                : err.response
+                ? 'Unable to verify your license. Please try again or contact support.'
+                : 'Unable to reach the license server. Please check your connection.');
+            await router.replace('/license');
+        }
     }
 }
 
-onMounted(async () => {
-    setTimeout(() => {
-        fetchData();
-    }, 5000);
-});
+onMounted(fetchData);
 </script>
