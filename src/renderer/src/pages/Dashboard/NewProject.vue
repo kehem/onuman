@@ -220,11 +220,12 @@
 
               <!-- PREVIEW -->
               <div class="support-image-preview">
-                <img v-if="imageUrl || imageURL" :src="imageURL || imageUrl" alt="Support Image" loading="lazy" />
+                <ProjectImage :src="imageURL || imageUrl" alt="Project image" />
                 <button v-if="imageUrl || imageURL" type="button" class="remove-image" @click="removeImage">
                   <i class="m-cross1"></i>
                 </button>
-              </div><br>
+              </div>
+              <p v-if="!imageUrl && !imageURL" class="text-sm">The Onuman image will be used if you don’t upload one.</p><br>
 
               <!-- INPUT FILE -->
               <div class="upload-wrapper" v-if="(!imageUrl && !imageURL) || isUploading">
@@ -261,6 +262,7 @@ import DatePicker from '../../components/UI/DatePicker.vue'
 import OnumanCombobox from '../../components/Initializers/OnumanCombobox.vue'
 import Tooltip from '../../components/Initializers/ToolTip.vue'
 import BottomBar from '../../components/Dashboard/BottomBar.vue'
+import ProjectImage from '../../components/Dashboard/ProjectImage.vue'
 import { useToast } from '../../composables/Toast'
 import { useApi } from '../../composables/useApi'
 import { useValidators } from '../../composables/useValidators'
@@ -518,7 +520,7 @@ const submitAddProject = async () => {
     endDate: selectedEndDate.value?.toISOString().split('T')[0] || '',
     buildingType: selectedBuildingType.value || '',
     clientPhone: clientPhoneNumber.value || '',
-    projectImage: imageUrl.value || imageURL.value || '',
+    projectImage: imageURL.value || imageUrl.value || '',
     totalUnit: parseInt(projectFormData.totalUnit, 10) || 0,
     totalUnderGroundFloors: projectFormData.totalUnderGroundFloors === 'No Underground' 
       ? 0 

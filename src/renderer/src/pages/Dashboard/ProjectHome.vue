@@ -140,11 +140,13 @@
 
               <div class="project-visual">
                 <div class="project-image">
-                  <div v-if="imageLoading" class="image-skeleton">
-                    <div class="skeleton skeleton-image"></div>
-                  </div>
-                  <img v-show="!imageLoading" :src="projectData.projectImage" :alt="projectData.projectName"
-                    @load="handleImageLoad" @error="handleImageError" class="project-img" />
+                  <ProjectImage :src="projectData.projectImage" :alt="projectData.projectName">
+                    <template #loading>
+                      <div class="image-skeleton">
+                        <div class="skeleton skeleton-image"></div>
+                      </div>
+                    </template>
+                  </ProjectImage>
                   <div class="image-overlay">
                     <div class="overlay-stats">
                       <div class="stat-chip">
@@ -426,6 +428,7 @@ import { useToast } from '../../composables/Toast'
 const { showToast } = useToast()
 import DefaultLayouts from '../../layouts/DefaultLayouts.vue'
 import BottomBar from '../../components/Dashboard/BottomBar.vue'
+import ProjectImage from '../../components/Dashboard/ProjectImage.vue'
 import { useApi } from '../../composables/useApi'
 const { get, put } = useApi()
 import { Material, RootObject, MixRatioItem } from '../../Interfaces/ViewMaterialsData'
@@ -435,7 +438,6 @@ const route = useRoute()
 // Reactive variables
 const loading = ref(true)
 const error = ref('')
-const imageLoading = ref(true)
 const showMaterialPopup = ref(false)
 const showMixRatioPopup = ref(false)
 
@@ -724,15 +726,6 @@ const fetchProjectData = async () => {
   } finally {
     loading.value = false
   }
-}
-
-// Image handling
-const handleImageLoad = () => {
-  imageLoading.value = false
-}
-
-const handleImageError = () => {
-  imageLoading.value = false
 }
 
 // Navigation functions

@@ -128,11 +128,13 @@
 
             <div class="project-image-container" @click="goToProjectDetail(item)">
               <div class="proj-image">
-                <div v-if="imageLoadingStates[item.id]" class="skeleton-card-img">
-                  <div class="skeleton skeleton-image"></div>
-                </div>
-                <img v-show="!imageLoadingStates[item.id]" :src="item.projectImage" :alt="item.projectName"
-                  @load="handleImageLoad(item.id)" @error="handleImageError(item.id)" />
+                <ProjectImage :src="item.projectImage" :alt="item.projectName">
+                  <template #loading>
+                    <div class="skeleton-card-img">
+                      <div class="skeleton skeleton-image"></div>
+                    </div>
+                  </template>
+                </ProjectImage>
               </div>
             </div>
 
@@ -282,6 +284,7 @@ import { useToast } from '../../composables/Toast'
 const { showToast } = useToast()
 import DefaultLayouts from '../../layouts/DefaultLayouts.vue'
 import BottomBar from '../../components/Dashboard/BottomBar.vue'
+import ProjectImage from '../../components/Dashboard/ProjectImage.vue'
 import { Project, WelcomeData } from '../../Interfaces/Project'
 import { useApi } from '../../composables/useApi'
 const { get, delete: del } = useApi()
@@ -369,11 +372,6 @@ const fetchData = async (page: number = 1) => {
       totalPages.value = Math.ceil(totalItems.value / itemsPerPage.value)
     }
 
-    // Initialize image loading states for all projects
-    projectList.value.forEach(project => {
-      imageLoadingStates.value[project.id] = true
-    })
-
     // Apply current sorting after fetching data
     applySorting()
 
@@ -412,19 +410,6 @@ const closeMenus = (event?: Event) => {
     }
   }
   activeMenu.value = null
-}
-
-// Add this reactive variable to track image loading states
-const imageLoadingStates = ref<Record<string, boolean>>({})
-
-// Add this method to handle image load events
-const handleImageLoad = (projectId: number) => {
-  imageLoadingStates.value[projectId] = false
-}
-
-// Add this method to handle image error events
-const handleImageError = (projectId: number) => {
-  imageLoadingStates.value[projectId] = false
 }
 
 const goToProjectDetail = (item: Project) => {
