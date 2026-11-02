@@ -30,94 +30,9 @@
                         <!-- ------------------------------------------
                      * BEAM TABLE
                      * ------------------------------------------ -->
-                        <section class="formatted-table" style="width: 95%;">
-                            <h2 class="text-center">BEAM</h2>
-                            <table class="onuman-table text-center row-border-all beam-border-all hover-border">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Quantity</th>
-                                        <th>Height</th>
-                                        <th>Width</th>
-                                        <th>Length</th>
-                                        <th><b>Area</b></th>
-                                        <th><b>Volume</b></th>
-                                        <th class="action">Action</th>
-                                    </tr>
-                                </thead>
+                        <StructuralResults :columns="getResponse" :type="type" :totalVolume="totalVolume" kind="beam"
+                            @edit="handleDataFromActions" @delete="handleDelete" />
 
-                                <tbody class="onuman-insider-scrollbar">
-                                    <!-- ------------------------------------------
-                                 * LOOP THROUGH EACH BEAM ENTRY
-                                 * ------------------------------------------ -->
-                                    <tr v-for="beam in getResponse" :key="beam.id">
-                                        <td>
-                                            <Comments :typeid="beam.id" :type="type" />
-                                            {{ beam.name }}
-                                        </td>
-                                        <td>{{ formatNumber(beam.quantity) }}</td>
-                                        <td>{{ formatNumber(unitStore.convertUnit('mm', beam.height)) }} {{
-                                            unitStore.targetUnit }}</td>
-                                        <td>
-                                            <span v-if="beam.width !== undefined && beam.width > 0">
-                                                {{ formatNumber(unitStore.convertUnit('mm', beam.width)) }} {{
-                                                    unitStore.targetUnit }}
-                                            </span>
-                                            <span v-else style="color: #ac5;">N/A</span>
-                                        </td>
-                                        <td>
-                                            <span v-if="beam.length !== undefined && beam.length > 0">
-                                                {{ formatNumber(unitStore.convertUnit('mm', beam.length)) }} {{
-                                                    unitStore.targetUnit }}
-                                            </span>
-                                            <span v-else style="color: #ac5;">N/A</span>
-                                        </td>
-                                        <td>
-                                            {{ formatNumber(unitStore.convertUnit('mm', beam.area, 2)) }} {{
-                                                unitStore.targetUnit }}<sup>2</sup>
-                                        </td>
-                                        <td>
-                                            {{ formatNumber(unitStore.convertUnit('mm', beam.volume, 3)) }} {{
-                                                unitStore.targetUnit }}<sup>3</sup>
-                                        </td>
-                                        <td class="action">
-                                            <Actions :type="type" :sectionDATA="beam" @send-data="handleDataFromActions"
-                                                @delete-data="handleDelete" />
-                                        </td>
-                                    </tr>
-
-                                    <!-- ------------------------------------------
-                                 * TOTAL VOLUME AND DRY VOLUME
-                                 * ------------------------------------------ -->
-                                    <tr class="sub-total">
-                                        <td colspan="6">Total Volume</td>
-                                        <td colspan="2">
-                                            {{ formatNumber(unitStore.convertUnit('mm', totalVolume, 3)) }} {{
-                                                unitStore.targetUnit }}<sup>3</sup>
-                                        </td>
-                                    </tr>
-                                    <tr class="sub-total">
-                                        <td colspan="6">Total Dry Volume</td>
-                                        <td colspan="2">
-                                            {{ formatNumber(unitStore.convertUnit('mm', totalVolume * 1.54, 3)) }} {{
-                                                unitStore.targetUnit }}<sup>3</sup>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </section>
-
-                        <!-- ------------------------------------------
-                     * REINFORCEMENT AND STIRRUPS TABLE
-                     * ------------------------------------------ -->
-                        <div class="expand-details">
-                            <Reinforcements :reinforcements="onlyReinforcements" />
-                            <Stirrups :stirrups="onlyStirrups" :projectName="projectName" />
-                        </div>
-
-                        <!-- ------------------------------------------
-                     * RCC CALCULATION BLOCK
-                     * ------------------------------------------ -->
                         <RCCCalculation :projectId="projectId" :type="type" :totalVolume="totalVolume" />
                     </div>
 
@@ -141,23 +56,18 @@
 import { ref, computed, watch, nextTick, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import DefaultLayouts from '../../layouts/DefaultLayouts.vue';
-import Comments from '../../components/Dashboard/Comments.vue';
+import StructuralResults from '../../components/OUTPUTS/StructuralResults.vue';
 import CurrentPath from '../../components/Dashboard/CurrentPath.vue';
 import BottomBar from '../../components/Dashboard/BottomBar.vue';
 import BeamInputs from '../../components/INPUTS/BEAM/BeamInputs.vue';
-import Actions from '../../components/OUTPUTS/Actions.vue';
 import Tabs from '../../components/OUTPUTS/Tabs.vue';
-import Reinforcements from '../../components/OUTPUTS/Reinforcements.vue';
-import Stirrups from '../../components/OUTPUTS/Stirrups.vue';
 import RCCCalculation from '../../components/OUTPUTS/RCCCalculation.vue';
 import { useToast } from '../../composables/Toast';
 import { useApi } from '../../composables/useApi';
 const { get, delete: del } = useApi()
 
-import { formatNumber } from '../../composables/DecimalNumberValidator';
-import { useUnitStore } from '../../stores/unitStore';
 import { BeamItem } from '../../Interfaces/Beam';
-import { InputItems, GroupedReinforcement } from '../../Interfaces/Inputs';
+import { InputItems } from '../../Interfaces/Inputs';
 import { useSimpleColumnResize } from '../../composables/useColumnResize';
 const { container, leftPanel, rightPanel } = useSimpleColumnResize()
 
@@ -167,11 +77,10 @@ const toggleStore = useToggleViewStore()
 import Graph from '../../components/OUTPUTS/BEAM/Graph.vue';
 
 /* ------------------------------------------
- * INITIALIZE TOAST, ROUTER, UNIT STORE
+ * INITIALIZE TOAST AND ROUTER
  * ------------------------------------------ */
 const { showToast } = useToast();
 const router = useRouter();
-const unitStore = useUnitStore();
 
 /* ------------------------------------------
  * COMPUTED: PROJECT ID & UNIT FROM URL
@@ -204,50 +113,6 @@ const totalVolume = computed(() => {
 });
 
 /* ------------------------------------------
- * COMPUTED: GROUPED REINFORCEMENTS
- * ------------------------------------------ */
-const onlyReinforcements = computed<GroupedReinforcement[]>(() => {
-    return getResponse.value.map(beam => ({
-        columnName: beam.name,
-        beamName: beam.name,
-        reinforcements: (beam.reinforcements || []).map(reinforcement => ({
-            rod_qty: reinforcement.rod_qty,
-            rod_diameter: reinforcement.rod_diameter,
-            support: reinforcement.support ?? false,
-            weight: reinforcement.weight ?? 0,
-            columnName: beam.name,
-        })),
-    }));
-});
-
-/* ------------------------------------------
- * COMPUTED: GROUPED STIRRUPS
- * ------------------------------------------ */
-const onlyStirrups = computed(() => {
-    const grouped: Record<string, any> = {};
-    getResponse.value.forEach(beam => {
-        const stirrups = beam.stirrups || [];
-        if (!grouped[beam.name]) {
-            grouped[beam.name] = {
-                beamName: beam.name,
-                columnName: beam.name,
-                stirrups: []
-            };
-        }
-        grouped[beam.name].stirrups.push(...stirrups.map(s => ({
-            ...s,
-            beamName: beam.name,
-            weight: Number(s.weight) || 0,
-            total_ring: Number(s.total_ring) || 0,
-            diameter: Number(s.diameter) || 0,
-            deduction: Number(s.deduction) || 0,
-            height: s.height !== undefined ? Number(s.height) : undefined,
-        })));
-    });
-    return Object.values(grouped);
-});
-
-/* ------------------------------------------
  * TABS: FLOOR & SUB TAB OPTIONS
  * ------------------------------------------ */
 const totalFloors = Number(useRoute().query.totalFloors);
@@ -276,7 +141,6 @@ function handleSubTabSelect(value: string) {
     selectedSubTab.value = value;
 }
 
-const projectName = computed(() => getResponse.value.map(p => p.name));
 
 /* ------------------------------------------
  * FETCH BEAM DATA BASED ON SELECTED TAB

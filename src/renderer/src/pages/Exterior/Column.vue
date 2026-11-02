@@ -21,87 +21,13 @@
               @update:selectedMainTab="handleMainTabSelect" @update:selectedSubTab="handleSubTabSelect"
               :itemType="'Column Type'" :initialMainTab="initialMainTab" :initialSubTab="initialSubTab" />
 
-            <!-- COLUMN TABLE -->
-            <section class="formatted-table" style="width: 95%;">
-              <h2 class="text-center">COLUMN</h2>
-              <table class="onuman-table text-center row-border-all column-border-all hover-border actioned">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Shape</th>
-                    <th>Quantity</th>
-                    <th>Height</th>
-                    <th v-if="hasRectangleColumn">Width</th>
-                    <th v-if="hasRectangleColumn">Length</th>
-                    <th>Diameter</th>
-                    <th><b>Area</b></th>
-                    <th><b>Volume</b></th>
-                    <th class="action">Action</th>
-                  </tr>
-                </thead>
+            <StructuralResults :columns="getResponse" :type="type" :total-volume="totalVolume"
+              @edit="handleDataFromActions" @delete="handleDelete" />
 
-                <tbody class="onuman-insider-scrollbar">
-                  <tr v-for="column in getResponse" :key="column.id">
-                    <td>
-                      <Comments :typeid="column.id" :type="type" />
-                      {{ column.name }}
-                    </td>
-                    <td>{{ column.type }}</td>
-                    <td>{{ formatNumber(column.quantity) }}</td>
-                    <td>{{ formatNumber(unitStore.convertUnit('mm', column.height)) }} {{ unitStore.targetUnit }}</td>
-                    <td v-if="hasRectangleColumn">
-                      <span v-if="column.width !== undefined && column.width > 0">{{
-                        formatNumber(unitStore.convertUnit('mm',
-                          column.width)) }} {{ unitStore.targetUnit }}</span>
-                      <span v-else style="color: #ac5;">N/A</span>
-                    </td>
-                    <td v-if="hasRectangleColumn">
-                      <span v-if="column.length !== undefined && column.length > 0">{{
-                        formatNumber(unitStore.convertUnit('mm', column.length)) }} {{ unitStore.targetUnit }}</span>
-                      <span v-else style="color: #ac5;">N/A</span>
-                    </td>
-
-                    <td>
-                      <span v-if="column.diameter !== undefined && column.diameter > 0">{{
-                        formatNumber(unitStore.convertUnit('mm', column.diameter)) }} {{ unitStore.targetUnit }}</span>
-                      <span v-else style="color: #ac5;">N/A</span>
-                    </td>
-
-                    <td>{{ formatNumber(unitStore.convertUnit('mm', column.area, 2)) }} {{ unitStore.targetUnit
-                    }}<sup>2</sup></td>
-                    <td>{{ formatNumber(unitStore.convertUnit('mm', column.volume, 3)) }} {{ unitStore.targetUnit
-                    }}<sup>3</sup></td>
-                    <td class="action">
-                      <Actions :type="type" :sectionDATA="column" @send-data="handleDataFromActions"
-                        @delete-data="handleDelete" />
-                    </td>
-                  </tr>
-                  <tr class="sub-total">
-                    <td :colspan="hasRectangleColumn ? 7 : 6">Total Volume</td>
-                    <td :colspan="hasRectangleColumn ? 3 : 2">{{ formatNumber(unitStore.convertUnit('mm', totalVolume,
-                      3))
-                    }}
-                      {{ unitStore.targetUnit }}<sup>3</sup></td>
-                  </tr>
-                  <tr class="sub-total">
-                    <td :colspan="hasRectangleColumn ? 7 : 6">Total Dry Volume</td>
-                    <td :colspan="hasRectangleColumn ? 3 : 2">{{ formatNumber(unitStore.convertUnit('mm', totalVolume *
-                      1.54, 3))
-                    }}
-                      {{ unitStore.targetUnit }}<sup>3</sup></td>
-                  </tr>
-                </tbody>
-              </table>
-            </section>
-
-            <div class="expand-details">
-              <!-- LONG REINFORCEMENTS TABLE -->
-              <Reinforcements :reinforcements="onlyReinforcements" />
-
-              <!-- ONLY STIRRUPS TABLE -->
-              <Stirrups :stirrups="onlyStirrups" :projectName="projectName" />
+            <div class="overall-calculation-heading">
+              <p>OVERALL / CURRENT SELECTION</p>
+              <h2>CC calculation</h2>
             </div>
-
             <!-- RCC CALCULATION -->
             <RCCCalculation :projectId="projectId" :type="type" :totalVolume="totalVolume" />
 
@@ -120,16 +46,12 @@ import { ref, computed, watch, onMounted, nextTick } from 'vue';
 import DefaultLayouts from '../../layouts/DefaultLayouts.vue';
 import { useRouter } from 'vue-router';
 import { ColumnItem } from '../../Interfaces/Column';
-import Comments from '../../components/Dashboard/Comments.vue';
 import { useToast } from '../../composables/Toast';
 import CurrentPath from '../../components/Dashboard/CurrentPath.vue';
-import Actions from '../../components/OUTPUTS/Actions.vue';
 import ColumnInputs from '../../components/INPUTS/COLUMN/ColumnInputs.vue';
+import StructuralResults from '../../components/OUTPUTS/StructuralResults.vue';
 import { useApi } from '../../composables/useApi';
 const { get, delete: del } = useApi()
-import Reinforcements from '../../components/OUTPUTS/Reinforcements.vue';
-import Stirrups from '../../components/OUTPUTS/Stirrups.vue';
-import { formatNumber } from '../../composables/DecimalNumberValidator';
 import RCCCalculation from '../../components/OUTPUTS/RCCCalculation.vue';
 import BottomBar from '../../components/Dashboard/BottomBar.vue';
 import { useRoute } from 'vue-router';
@@ -144,10 +66,8 @@ import Graph from '../../components/OUTPUTS/COLUMN/Graph.vue';
 
 
 // UNIT CONVERSION
-import { useUnitStore } from '../../stores/unitStore';
 import Tabs from '../../components/OUTPUTS/Tabs.vue';
 import { InputItems } from '../../Interfaces/Inputs';
-const unitStore = useUnitStore();
 
 const { showToast } = useToast();
 const router = useRouter();
@@ -173,55 +93,9 @@ const selectedColumnData = ref<ColumnItem | null>(null);
 const initialMainTab = ref<number | null>(null);
 const initialSubTab = ref<string | null>(null);
 
-// Computed property to check for Rectangle columns
-const hasRectangleColumn = computed(() => {
-  return getResponse.value.some(column => column.type === 'Rectangle' && column.width !== undefined && column.width >= 1);
-});
-
 // Total volume
 const totalVolume = computed(() => {
   return getResponse.value.reduce((sum, column) => sum + (column.volume || 0), 0);
-});
-
-// ONLY REINFORCEMENTS
-const onlyReinforcements = computed(() => {
-  return getResponse.value.map(column => ({
-    columnName: column.name,
-    reinforcements: (column.reinforcements || []).map(reinforcement => ({
-      ...reinforcement,
-      columnName: column.name,
-      weight: reinforcement.weight ?? 0,
-    })),
-  }));
-});
-
-// ONLY STIRRUP
-const onlyStirrups = computed(() => {
-  const grouped: Record<string, any> = {};
-
-  getResponse.value.forEach(column => {
-    const stirrups = column.stirrups || [];
-
-    if (!grouped[column.name]) {
-      grouped[column.name] = {
-        columnName: column.name,
-        pileName: column.name,
-        stirrups: []
-      };
-    }
-
-    grouped[column.name].stirrups.push(...stirrups.map(s => ({
-      ...s,
-      columnName: column.name,
-      weight: Number(s.weight) || 0,
-      total_ring: Number(s.total_ring) || 0,
-      diameter: Number(s.diameter) || 0,
-      deduction: Number(s.deduction) || 0,
-      height: s.height !== undefined ? Number(s.height) : undefined,
-    })));
-  });
-
-  return Object.values(grouped);
 });
 
 // FLOOR AND COLUMN TYPE TAB COMPONENT
@@ -250,8 +124,6 @@ function handleMainTabSelect(value: number) {
 function handleSubTabSelect(value: string) {
   selectedSubTab.value = value;
 }
-
-const projectName = computed(() => getResponse.value.map(p => p.name));
 
 // Fetch latest column data (for initial load)
 const fetchLatestColumnData = async () => {
@@ -344,3 +216,9 @@ onMounted(() => {
   fetchLatestColumnData();
 });
 </script>
+
+<style scoped>
+.overall-calculation-heading { margin: 0 1.25rem 0.8rem; }
+.overall-calculation-heading p { margin: 0 0 0.3rem; color: #8aaba4; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.13em; }
+.overall-calculation-heading h2 { margin: 0; color: #e2e9e7; font-size: 1.1rem; }
+</style>
