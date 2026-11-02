@@ -20,6 +20,18 @@ test('reinforcement and stirrup details are visible without a toggle on every re
     assert.deepEqual(errors, [], name)
     assert.doesNotMatch(source, /showDetails|toggleDetails|Details View|Hide Details/, name)
     const nodes = descendants(baseParse(descriptor.template.content))
+    if (name !== 'Slab') {
+      const result = nodes.find(n => n.tag === 'StructuralResults')
+      assert.ok(result, name)
+      const kind = { Pile: 'pile', Footing: 'footing', Beam: 'beam', 'Lift-Share-Wall': 'wall' }[name]
+      if (kind) assert.ok(result.props.some(p => p.type === 6 && p.name === 'kind' && p.value?.content === kind), name)
+      for (const event of ['edit', 'delete']) assert.ok(result.props.some(p => p.type === 7 && p.name === 'on' && p.arg?.content === event), `${name} ${event}`)
+      assert.ok(nodes.some(n => n.tag === 'RCCCalculation'), name)
+      assert.ok(nodes.some(n => n.tag === 'Graph'), name)
+      if (name === 'Beam' || name === 'Column') assert.ok(nodes.some(n => n.tag === 'Tabs'), name)
+      assert.ok(!result.props.some(p => p.type === 7 && ['if', 'show', 'for'].includes(p.name)), name)
+      continue
+    }
     const sections = nodes.filter(n => hasClass(n, 'expand-details'))
     assert.equal(sections.length, 1, name)
     const section = sections[0]

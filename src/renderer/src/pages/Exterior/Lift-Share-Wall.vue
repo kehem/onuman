@@ -16,75 +16,9 @@
         <aside ref="rightPanel" class="span-8 onuman-insider-scrollbar onuman-input-height-2">
           <div v-if="toggleStore.isDetailedView">
             <!-- LIFT SHARE WALL TABLE -->
-            <section class="formatted-table" style="width: 95%;">
-              <h2 class="text-center">LIFT SHARE WALL</h2>
-              <table class="onuman-table text-center row-border-all column-border-all hover-border actioned">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Quantity</th>
-                    <th>Height</th>
-                    <th>Clear Cover</th>
-                    <th>Width</th>
-                    <th>Length</th>
-                    <th><b>Area</b></th>
-                    <th><b>Volume</b></th>
-                    <th class="action">Action</th>
-                  </tr>
-                </thead>
+            <StructuralResults :columns="getResponse" :type="type" :totalVolume="totalVolume" kind="wall"
+              @edit="handleDataFromActions" @delete="handleDelete" />
 
-                <tbody class="onuman-insider-scrollbar">
-                  <tr v-for="column in getResponse" :key="column.id">
-                    <td>
-                      <Comments :typeid="column.id" :type="type" />
-                      {{ column.name }}
-                    </td>
-                    <td>{{ formatNumber(column.quantity) }}</td>
-                    <td>{{ formatNumber(unitStore.convertUnit('mm', column.height)) }} {{ unitStore.targetUnit }}</td>
-                    <td>{{ formatNumber(unitStore.convertUnit('mm', column.clear_cover)) }} {{ unitStore.targetUnit }}
-                    </td>
-                    <td>
-                      <span>{{ formatNumber(unitStore.convertUnit('mm', column.width)) }} {{ unitStore.targetUnit
-                      }}</span>
-                    </td>
-                    <td>
-                      <span>{{ formatNumber(unitStore.convertUnit('mm', column.length ?? 0)) }} {{ unitStore.targetUnit
-                      }}</span>
-                    </td>
-
-                    <td>{{ formatNumber(unitStore.convertUnit('mm', column.area, 2)) }} {{ unitStore.targetUnit
-                    }}<sup>2</sup></td>
-                    <td>{{ formatNumber(unitStore.convertUnit('mm', column.volume, 3)) }} {{ unitStore.targetUnit
-                    }}<sup>3</sup></td>
-                    <td class="action">
-                      <Actions :type="type" :sectionDATA="column" @send-data="handleDataFromActions"
-                        @delete-data="handleDelete" />
-                    </td>
-                  </tr>
-                  <tr class="sub-total">
-                    <td colspan="7">Total Volume</td>
-                    <td colspan="2">{{ formatNumber(unitStore.convertUnit('mm', totalVolume, 3)) }}
-                      {{ unitStore.targetUnit }}<sup>3</sup></td>
-                  </tr>
-                  <tr class="sub-total">
-                    <td colspan="7">Total Dry Volume</td>
-                    <td colspan="2">{{ formatNumber(unitStore.convertUnit('mm', totalVolume * 1.54, 3))
-                    }}
-                      {{ unitStore.targetUnit }}<sup>3</sup></td>
-                  </tr>
-                </tbody>
-              </table>
-            </section>
-
-            <div class="expand-details">
-              <!-- LONG REINFORCEMENTS TABLE -->
-              <Reinforcements :reinforcements="onlyReinforcements" />
-
-              <!-- ONLY STIRRUPS TABLE -->
-              <Stirrups :stirrups="onlyStirrups" :projectName="projectName" />
-            </div>
-
-            <!-- RCC CALCULATION -->
             <RCCCalculation :projectId="projectId" :type="type" :totalVolume="totalVolume" />
           </div>
           <Graph v-if="toggleStore.isGraphView" />
@@ -108,12 +42,9 @@ import { useToggleViewStore } from '../../stores/useToggleViewStore'
 const toggleStore = useToggleViewStore()
 
 import DefaultLayouts from '../../layouts/DefaultLayouts.vue';
-import Comments from '../../components/Dashboard/Comments.vue';
+import StructuralResults from '../../components/OUTPUTS/StructuralResults.vue';
 import CurrentPath from '../../components/Dashboard/CurrentPath.vue';
-import Actions from '../../components/OUTPUTS/Actions.vue';
 import LiftInputs from '../../components/INPUTS/LIFT/LiftInputs.vue';
-import Reinforcements from '../../components/OUTPUTS/Reinforcements.vue';
-import Stirrups from '../../components/OUTPUTS/Stirrups.vue';
 import RCCCalculation from '../../components/OUTPUTS/RCCCalculation.vue';
 import BottomBar from '../../components/Dashboard/BottomBar.vue';
 import Graph from '../../components/OUTPUTS/LIFT/Graph.vue';
@@ -123,9 +54,7 @@ import { InputItems } from '../../Interfaces/Inputs';
 import { useToast } from '../../composables/Toast';
 import { useApi } from '../../composables/useApi';
 const { get, delete: del } = useApi()
-import { formatNumber } from '../../composables/DecimalNumberValidator';
 import { useSimpleColumnResize } from '../../composables/useColumnResize';
-import { useUnitStore } from '../../stores/unitStore';
 
 /* ============================
  * COLUMN RESIZING HANDLER
@@ -158,11 +87,6 @@ watch(
     }
   }
 )
-
-/* ============================
- * UNIT STORE (FOR CONVERSIONS)
- * ============================ */
-const unitStore = useUnitStore();
 
 /* ============================
  * COMPUTED: PROJECT ID FROM URL
@@ -201,64 +125,10 @@ const totalVolume = computed(() => {
 });
 
 /* ============================
- * COMPUTED: REINFORCEMENTS ONLY
- * ============================ */
-const onlyReinforcements = computed(() => {
-  return getResponse.value.map(column => ({
-    columnName: column.name,
-    reinforcements: (column.reinforcements || []).map(reinforcement => ({
-      ...reinforcement,
-      columnName: column.name,
-      weight: reinforcement.weight ?? 0,
-    })),
-  }));
-});
-
-/* ============================
- * COMPUTED: STIRRUPS ONLY
- * ============================ */
-const onlyStirrups = computed(() => {
-  const grouped: Record<string, any> = {};
-
-  getResponse.value.forEach(column => {
-    const stirrups = column.stirrups || [];
-
-    if (!grouped[column.name]) {
-      grouped[column.name] = {
-        columnName: column.name,
-        pileName: column.name,
-        stirrups: []
-      };
-    }
-
-    grouped[column.name].stirrups.push(...stirrups.map(s => ({
-      ...s,
-      columnName: column.name,
-      weight: Number(s.weight) || 0,
-      total_ring: Number(s.total_ring) || 0,
-      diameter: Number(s.diameter) || 0,
-      deduction: Number(s.deduction) || 0,
-      height: s.height !== undefined ? Number(s.height) : undefined,
-    })));
-  });
-
-  return Object.values(grouped);
-});
-
-/* ============================
- * COMPUTED: PROJECT NAME LIST
- * ============================ */
-const projectName = computed(() => getResponse.value.map(p => p.name));
-
-/* ============================
  * FUNCTION: FETCH COLUMN DATA FROM API
  * ============================ */
 const fetchColumnData = async () => {
   try {
-
-
-
-
 
 
     const response = await get(`/api/lift/list?projectId=${projectId.value}`);
