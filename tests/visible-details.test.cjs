@@ -19,6 +19,7 @@ test('reinforcement and stirrup details are visible without a toggle on every re
     const { descriptor, errors } = parseSfc(source)
     assert.deepEqual(errors, [], name)
     assert.doesNotMatch(source, /showDetails|toggleDetails|Details View|Hide Details/, name)
+    if (name === 'Column') assert.doesNotMatch(source, /overall-calculation-heading|OVERALL \/ CURRENT SELECTION|<h2>CC calculation<\/h2>/i)
     const nodes = descendants(baseParse(descriptor.template.content))
     if (name !== 'Slab') {
       const result = nodes.find(n => n.tag === 'StructuralResults')
