@@ -1,7 +1,8 @@
 <template>
     <!-- ------------------------- COMMENT CONTAINER ------------------------- -->
-    <div class="comment-container" ref="commentRef" title="Comment">
-        <i class="m-message-square msg-icon" @click="showComment"></i>
+    <div class="comment-container" :class="{ 'inline-comment': inline }" ref="commentRef" title="Comment">
+        <button v-if="inline" type="button" class="comment-button" @click="showComment"><i class="m-message-square" aria-hidden="true"></i> Comment</button>
+        <i v-else class="m-message-square msg-icon" @click="showComment"></i>
 
         <!-- ------------------------- LOADING SKELETON ------------------------- -->
         <span class="comment-text" v-if="isLoading">
@@ -46,7 +47,8 @@ const { get, put } = useApi()
 // ------------------------- DEFINE PROPS -------------------------
 const props = defineProps<{
     type: string,
-    typeid: number
+    typeid: number,
+    inline?: boolean
 }>();
 
 // ------------------------- STATE VARIABLES -------------------------
@@ -155,6 +157,16 @@ const sendComment = async (event: Event) => {
 </script>
 
 <style scoped>
+.inline-comment { position: relative; z-index: 10; }
+.comment-button { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.45rem 0.7rem; border: 1px solid #49605a; border-radius: 0.35rem; background: #263b36; color: #dcebe6; font-size: 0.75rem; cursor: pointer; }
+.comment-button:hover, .comment-button:focus-visible { background: #36534b; outline: 2px solid #8abeb0; outline-offset: 2px; }
+.inline-comment .comment-text { display: block; position: absolute; right: 0; top: calc(100% + 0.4rem); width: min(15rem, 80vw); min-height: 8rem; background: #292f2e; border: 1px solid #52645f; border-radius: 0.35rem; box-shadow: 0 6px 20px #0008; }
+.inline-comment .action-btns { display: flex; justify-content: space-between; gap: 0.5rem; padding: 0.5rem; background: #394642; }
+.inline-comment .last-modified-cmt { font-size: 0.7rem; }
+.inline-comment .iconed { display: flex; gap: 0.5rem; }
+.inline-comment .iconed i { cursor: pointer; }
+.inline-comment .comment-textbox { padding: 0.5rem; }
+.inline-comment textarea { width: 100%; max-height: 15rem; resize: vertical; padding: 0.4rem; background: #222b29; color: #edf3f0; }
 /* ------------------------- SKELETON LOADING STYLES ------------------------- */
 .skeleton {
     position: relative;

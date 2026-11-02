@@ -1,6 +1,17 @@
 <!-- SRC/COMPONENTS/OUTPUTS/ACTIONS.VUE -->
 <template>
-    <div class="actioned-container" ref="containerRef">
+    <div v-if="inline" class="inline-actions">
+        <button type="button" @click="updateInputs"><i class="m-pen1" aria-hidden="true"></i> Edit</button>
+        <button type="button" class="delete-action" @click="deleteData"><i class="m-trash1" aria-hidden="true"></i> Delete</button>
+        <button type="button" @click="openModal"><i class="m-image2" aria-hidden="true"></i> Image</button>
+        <ModalBox :is-open="isModalOpen" :show-close-button="true" @close="closeModal">
+            <div v-if="imageUrl" class="covered-image onuman-scrollbar">
+                <img :src="imageUrl" alt="Support Image" class="modal-image" />
+            </div>
+            <div v-else class="no-image-found"><i class="m-image"></i><p>No image available</p></div>
+        </ModalBox>
+    </div>
+    <div v-else class="actioned-container" ref="containerRef">
         <span class="vertical-dotted" @click="openActions"><i class="m-dots-three-vertical"></i></span>
         <!-- POPUP -->
         <div v-if="isOpenActions" class="open-actions-popup">
@@ -42,6 +53,7 @@ import { InputItems } from "../../Interfaces/Inputs";
 const props = defineProps<{
     type: string
     sectionDATA: Record<string, any>
+    inline?: boolean
 }>()
 
 // EMIT delete event
@@ -51,19 +63,14 @@ const emit = defineEmits<{
 }>()
 
 const deleteData = () => {
-    emit('delete-data', itemId);
+    emit('delete-data', props.sectionDATA.id);
     isOpenActions.value = false;
 };
 
 
-const sectionData = props.sectionDATA as InputItems;
-
-// PILE ID
-const itemId = props.sectionDATA.id;
-
 // UPDATE INPUTS
 const updateInputs = () => {
-    emit('send-data', sectionData);
+    emit('send-data', props.sectionDATA as InputItems);
     isOpenActions.value = false;
 };
 
@@ -72,7 +79,7 @@ const isModalOpen = ref(false);
 const imageUrl = ref<string | null>(null);
 
 const openModal = () => {
-    imageUrl.value = sectionData.imageUrl ?? null;
+    imageUrl.value = props.sectionDATA.imageUrl ?? null;
     isModalOpen.value = true;
 };
 
@@ -101,3 +108,10 @@ onBeforeUnmount(() => {
     document.removeEventListener('click', handleClickOutside);
 });
 </script>
+
+<style scoped>
+.inline-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.inline-actions button { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.45rem 0.7rem; border: 1px solid #49605a; border-radius: 0.35rem; background: #263b36; color: #dcebe6; font-size: 0.75rem; cursor: pointer; }
+.inline-actions button:hover, .inline-actions button:focus-visible { background: #36534b; outline: 2px solid #8abeb0; outline-offset: 2px; }
+.inline-actions .delete-action { color: #ffd1c9; border-color: #79524d; background: #422f2d; }
+</style>
