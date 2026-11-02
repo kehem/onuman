@@ -24,10 +24,6 @@
             <StructuralResults :columns="getResponse" :type="type" :total-volume="totalVolume"
               @edit="handleDataFromActions" @delete="handleDelete" />
 
-            <div class="overall-calculation-heading">
-              <p>OVERALL / CURRENT SELECTION</p>
-              <h2>CC calculation</h2>
-            </div>
             <!-- RCC CALCULATION -->
             <RCCCalculation :projectId="projectId" :type="type" :totalVolume="totalVolume" />
 
@@ -216,9 +212,3 @@ onMounted(() => {
   fetchLatestColumnData();
 });
 </script>
-
-<style scoped>
-.overall-calculation-heading { margin: 0 1.25rem 0.8rem; }
-.overall-calculation-heading p { margin: 0 0 0.3rem; color: #8aaba4; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.13em; }
-.overall-calculation-heading h2 { margin: 0; color: #e2e9e7; font-size: 1.1rem; }
-</style>

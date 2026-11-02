@@ -29,6 +29,12 @@ function createHost() {
 }
 function all(node, predicate) { return [ ...(predicate(node) ? [node] : []), ...node.children.flatMap(n => all(n, predicate)) ] }
 const text = node => [node.text, ...node.children.map(text)].join(' ')
+function assertNoExplanatoryCopy(root) {
+  const rendered = text(root)
+  for (const pattern of [/PROJECT RESULTS/i, /\b\w+ output\b/i, /Overview and connected details/i, /CONNECTED RESULTS/i, /Details by/i, /is shown with its own reinforcements/i, /OVERALL \/ CURRENT SELECTION/i, /Includes reinforcement and stirrup weight values/i]) {
+    assert.doesNotMatch(rendered, pattern)
+  }
+}
 
 async function loadComponent() {
   const { build } = await import('vite')
@@ -74,6 +80,8 @@ test('column results keep each record, actions, units and overall totals connect
   try {
     host.render(h({ setup: () => () => h(component, { columns: columns.value, type: 'exterior/column', totalVolume: 56633693.184, onEdit: value => { edited = value }, onDelete: value => { deleted = value } }) }), host.root)
     await nextTick()
+    assertNoExplanatoryCopy(host.root)
+    assert.equal(all(host.root, n => n.props['aria-label'] === 'Column details').length, 1)
     const cards = all(host.root, n => n.type === 'article')
     assert.equal(cards.length, 3)
     assert.equal(cards[0].props['aria-labelledby'], 'column-result-1')
@@ -127,6 +135,7 @@ test('other structural outputs keep duplicate-name details, page fields, totals 
     try {
       host.render(h(component, { columns: data, kind, type: 'exterior/' + kind, totalVolume: 28316846.592, onEdit: value => { edited = value }, onDelete: value => { deleted = value } }), host.root)
       await nextTick()
+      assertNoExplanatoryCopy(host.root)
       const cards = all(host.root, n => n.type === 'article')
       assert.equal(cards.length, 2, kind)
       assert.equal(cards[0].props['aria-labelledby'], 'column-result-41', kind)

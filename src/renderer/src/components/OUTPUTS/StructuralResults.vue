@@ -1,18 +1,9 @@
 <template>
-  <section class="structural-results" aria-labelledby="structural-output-title">
-    <header class="results-header">
-      <div>
-        <p class="eyebrow">PROJECT RESULTS / {{ itemLabel.toUpperCase() }}</p>
-        <h1 id="structural-output-title">{{ itemLabel }} output</h1>
-        <p class="intro">Overview and connected details for the current selection.</p>
-      </div>
-      <span class="view-label">Detailed view</span>
-    </header>
+  <section class="structural-results" :aria-label="`${itemLabel} results`">
 
     <section class="overview" aria-labelledby="items-overview-title">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">CURRENT SELECTION</p>
           <h2 id="items-overview-title">{{ itemLabel }} overview</h2>
         </div>
       </div>
@@ -55,14 +46,7 @@
       <p v-if="!columns.length" class="empty-state">No {{ itemLabel.toLowerCase() }}s in this selection yet.</p>
     </section>
 
-    <section class="connected-results" aria-labelledby="item-details-title">
-      <div class="section-heading details-heading">
-        <div>
-          <p class="eyebrow">CONNECTED RESULTS</p>
-          <h2 id="item-details-title">Details by {{ itemLabel.toLowerCase() }}</h2>
-          <p class="section-description">Each {{ itemLabel.toLowerCase() }} is shown with its own reinforcements and stirrups.</p>
-        </div>
-      </div>
+    <section class="connected-results" :aria-label="`${itemLabel} details`">
 
       <article v-for="column in columns" :key="column.id" class="column-card" :aria-labelledby="`column-result-${column.id}`">
         <header class="card-header">
@@ -134,9 +118,8 @@
 
       <section v-if="kind === 'column'" class="weight-breakdown" aria-labelledby="weight-breakdown-title">
         <div class="section-heading">
-          <div><p class="eyebrow">OVERALL / CURRENT SELECTION</p><h2 id="weight-breakdown-title">Reinforcement weight by diameter</h2></div>
+          <h2 id="weight-breakdown-title">Reinforcement weight by diameter</h2>
         </div>
-        <p class="section-description">Includes reinforcement and stirrup weight values. Stirrup details display the supplied weight as Kg/ft.</p>
         <table v-if="weightByDiameter.length" class="detail-table weight-table">
           <thead><tr><th scope="col">Diameter</th><th scope="col">Weight (kg)</th></tr></thead>
           <tbody><tr v-for="row in weightByDiameter" :key="row.diameter ?? 'unspecified'">
@@ -210,17 +193,14 @@ const dimension = (value: number | undefined) => value !== undefined && value > 
 
 <style scoped>
 .structural-results { color: #e2e9e7; padding: 1.15rem clamp(0.8rem, 2vw, 2rem) 1.5rem; }
-.results-header, .section-heading, .card-header, .card-heading, .detail-heading { display: flex; align-items: center; }
-.results-header, .section-heading, .card-header { justify-content: space-between; gap: 1rem; }
-.results-header { margin: 0 0 1.35rem; }
+.section-heading, .card-header, .card-heading, .detail-heading { display: flex; align-items: center; }
+.section-heading, .card-header { justify-content: space-between; gap: 1rem; }
 .eyebrow { color: #8aaba4; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.13em; margin: 0 0 0.35rem; }
-h1, h2, h3, h4, p { margin: 0; }
-h1 { font-size: 1.5rem; font-weight: 650; letter-spacing: -0.02em; }
+h2, h3, h4, p { margin: 0; }
 h2 { font-size: 1.1rem; font-weight: 650; }
 h3 { font-size: 1rem; font-weight: 650; overflow-wrap: anywhere; }
 h4 { font-size: 0.9rem; font-weight: 600; }
-.intro, .section-description { color: #a4b3b0; font-size: 0.8rem; line-height: 1.5; margin-top: 0.35rem; }
-.view-label, .shape-label { color: #afd4ca; background: #273c38; border: 1px solid #39554e; border-radius: 999px; font-size: 0.7rem; padding: 0.35rem 0.65rem; white-space: nowrap; }
+.shape-label { color: #afd4ca; background: #273c38; border: 1px solid #39554e; border-radius: 999px; font-size: 0.7rem; padding: 0.35rem 0.65rem; white-space: nowrap; }
 .overview, .column-card { background: #232b2a; border: 1px solid #3b4845; border-radius: 0.55rem; }
 .overview { padding: 1.1rem; }
 .volume-summary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.7rem; margin: 1rem 0; }
@@ -236,7 +216,6 @@ small { color: #a5b6b1; font-size: 0.72em; font-weight: 500; }
 .column-id { display: block; color: #a5b6b1; font-size: 0.67rem; }
 .empty-state, .empty-detail { color: #a4b3b0; font-size: 0.8rem; padding: 1rem 0; }
 .connected-results { margin-top: 1.7rem; }
-.details-heading { margin-bottom: 1rem; }
 .column-card { margin-bottom: 0.85rem; }
 .card-header { padding: 1rem 1.15rem; border-bottom: 1px solid #394642; }
 .card-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 0.5rem; }
@@ -260,5 +239,5 @@ small { color: #a5b6b1; font-size: 0.72em; font-weight: 500; }
 .weight-total strong { font-variant-numeric: tabular-nums; }
 .weight-summary { display: flex; flex-wrap: wrap; gap: 1rem 2rem; padding: 1rem 1.2rem; background: #1e2826; border: 1px solid #3b4845; border-radius: 0.5rem; }
 .weight-summary strong { display: block; color: #d5eee6; margin-top: 0.3rem; font-size: 0.9rem; font-variant-numeric: tabular-nums; }
-@media (max-width: 800px) { .card-header { flex-wrap: wrap; } .card-controls { justify-content: flex-start; } .volume-summary { grid-template-columns: 1fr; } .view-label { display: none; } .overview-table .column-table { font-size: 0.65rem; } }
+@media (max-width: 800px) { .card-header { flex-wrap: wrap; } .card-controls { justify-content: flex-start; } .volume-summary { grid-template-columns: 1fr; } .overview-table .column-table { font-size: 0.65rem; } }
 </style>
