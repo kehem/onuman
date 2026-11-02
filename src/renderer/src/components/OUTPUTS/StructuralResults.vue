@@ -26,7 +26,7 @@
           <strong>{{ formatNumber(unitStore.convertUnit('mm', totalVolume * 1.54, 3)) }} <small>{{ unitStore.targetUnit }}<sup>3</sup></small></strong>
         </div>
       </div>
-      <div v-if="columns.length" class="formatted-table overview-table">
+      <div v-if="kind !== 'column' && columns.length" class="formatted-table overview-table">
         <table class="onuman-table column-table">
           <thead>
             <tr>
@@ -52,7 +52,7 @@
           </tbody>
         </table>
       </div>
-      <p v-else class="empty-state">No {{ itemLabel.toLowerCase() }}s in this selection yet.</p>
+      <p v-if="!columns.length" class="empty-state">No {{ itemLabel.toLowerCase() }}s in this selection yet.</p>
     </section>
 
     <section class="connected-results" aria-labelledby="item-details-title">
@@ -73,15 +73,21 @@
               <h3 :id="`column-result-${column.id}`">{{ column.name }}</h3>
             </div>
           </div>
-          <span v-if="hasShape" class="shape-label">{{ column.type }}</span>
+          <div class="card-controls">
+            <span v-if="hasShape" class="shape-label">{{ column.type }}</span>
+            <template v-if="kind === 'column'">
+              <Actions inline :type="type" :sectionDATA="column" @send-data="emit('edit', $event)" @delete-data="emit('delete', $event)" />
+              <Comments inline :typeid="column.id" :type="type" />
+            </template>
+          </div>
         </header>
 
         <div class="column-properties">
           <div><span>Quantity</span><strong>{{ formatNumber(column.quantity) }}</strong></div>
           <div><span>Height</span><strong>{{ formatNumber(unitStore.convertUnit('mm', column.height)) }} {{ unitStore.targetUnit }}</strong></div>
           <div v-if="kind === 'wall'"><span>Clear cover</span><strong>{{ linearValue(column.clear_cover) }}</strong></div>
-          <div v-if="!hasShape || column.type === 'Rectangle'"><span>Width</span><strong>{{ kind === 'wall' ? linearValue(column.width) : dimension(column.width) }}</strong></div>
-          <div v-if="!hasShape || column.type === 'Rectangle'"><span>Length</span><strong>{{ kind === 'wall' ? linearValue(column.length) : dimension(column.length) }}</strong></div>
+          <div v-if="!hasShape || column.type === 'Rectangle' || (column.width !== undefined && column.width > 0)"><span>Width</span><strong>{{ kind === 'wall' ? linearValue(column.width) : dimension(column.width) }}</strong></div>
+          <div v-if="!hasShape || column.type === 'Rectangle' || (column.length !== undefined && column.length > 0)"><span>Length</span><strong>{{ kind === 'wall' ? linearValue(column.length) : dimension(column.length) }}</strong></div>
           <div v-if="hasShape"><span>Diameter</span><strong>{{ dimension(column.diameter) }}</strong></div>
           <div><span>Area</span><strong>{{ formatNumber(unitStore.convertUnit('mm', column.area, 2)) }} {{ unitStore.targetUnit }}<sup>2</sup></strong></div>
           <div><span>Volume</span><strong>{{ formatNumber(unitStore.convertUnit('mm', column.volume, 3)) }} {{ unitStore.targetUnit }}<sup>3</sup></strong></div>
@@ -126,7 +132,22 @@
         </div>
       </article>
 
-      <div class="weight-summary" aria-label="Overall weights for the current selection">
+      <section v-if="kind === 'column'" class="weight-breakdown" aria-labelledby="weight-breakdown-title">
+        <div class="section-heading">
+          <div><p class="eyebrow">OVERALL / CURRENT SELECTION</p><h2 id="weight-breakdown-title">Reinforcement weight by diameter</h2></div>
+        </div>
+        <p class="section-description">Includes reinforcement and stirrup weight values. Stirrup details display the supplied weight as Kg/ft.</p>
+        <table v-if="weightByDiameter.length" class="detail-table weight-table">
+          <thead><tr><th scope="col">Diameter</th><th scope="col">Weight (kg)</th></tr></thead>
+          <tbody><tr v-for="row in weightByDiameter" :key="row.diameter ?? 'unspecified'">
+            <td>{{ row.diameter === null ? 'Unspecified diameter' : `${row.diameter} mm` }}</td>
+            <td>{{ formatNumber(row.weight) }} kg</td>
+          </tr></tbody>
+        </table>
+        <p v-else class="empty-detail">No reinforcement or stirrup weight data available.</p>
+        <div class="weight-total"><span>Total reinforcement weight</span><strong>{{ formatNumber(combinedWeight) }} kg</strong></div>
+      </section>
+      <div v-else class="weight-summary" aria-label="Overall weights for the current selection">
         <div><span>Total reinforcement weight</span><strong>{{ formatNumber(totalReinforcementWeight) }}</strong></div>
         <div><span>Total stirrup weight</span><strong>{{ formatNumber(totalStirrupWeight) }} <small>Kg</small></strong></div>
       </div>
@@ -163,6 +184,24 @@ const totalReinforcementWeight = computed(() => props.columns.reduce((total, col
   total + (column.reinforcements || []).reduce((sum, item) => sum + (item.weight || 0), 0), 0))
 const totalStirrupWeight = computed(() => props.columns.reduce((total, column) =>
   total + (column.stirrups || []).reduce((sum, item) => sum + (Number(item.weight) || 0), 0), 0))
+// The API's existing weight values are used as-is, matching the previous subtotals.
+// Missing/invalid diameters are retained in an unspecified bucket rather than losing weight.
+const weightByDiameter = computed(() => {
+  const totals = new Map<number | null, number>()
+  const add = (diameter: unknown, weight: unknown) => {
+    const numericDiameter = Number(diameter)
+    const key = diameter != null && Number.isFinite(numericDiameter) && numericDiameter > 0 ? numericDiameter : null
+    const numericWeight = Number(weight)
+    totals.set(key, (totals.get(key) ?? 0) + (Number.isFinite(numericWeight) ? numericWeight : 0))
+  }
+  for (const column of props.columns) {
+    for (const reinforcement of column.reinforcements || []) add(reinforcement.rod_diameter, reinforcement.weight)
+    for (const stirrup of column.stirrups || []) add(stirrup.diameter, stirrup.weight)
+  }
+  return [...totals].map(([diameter, weight]) => ({ diameter, weight }))
+    .sort((a, b) => a.diameter === null ? 1 : b.diameter === null ? -1 : a.diameter - b.diameter)
+})
+const combinedWeight = computed(() => weightByDiameter.value.reduce((sum, row) => sum + row.weight, 0))
 const linearValue = (value: number | undefined) => `${formatNumber(unitStore.convertUnit('mm', value ?? 0))} ${unitStore.targetUnit}`
 const dimension = (value: number | undefined) => value !== undefined && value > 0
   ? `${formatNumber(unitStore.convertUnit('mm', value))} ${unitStore.targetUnit}`
@@ -200,6 +239,7 @@ small { color: #a5b6b1; font-size: 0.72em; font-weight: 500; }
 .details-heading { margin-bottom: 1rem; }
 .column-card { margin-bottom: 0.85rem; }
 .card-header { padding: 1rem 1.15rem; border-bottom: 1px solid #394642; }
+.card-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 0.5rem; }
 .card-heading { gap: 0.8rem; min-width: 0; }
 .card-marker { display: block; width: 0.25rem; height: 2.4rem; border-radius: 1rem; background: #8abeb0; flex-shrink: 0; }
 .column-properties { display: flex; flex-wrap: wrap; gap: 0.8rem 1.8rem; padding: 1rem 1.15rem; background: #1f2826; border-bottom: 1px solid #394642; }
@@ -213,7 +253,12 @@ small { color: #a5b6b1; font-size: 0.72em; font-weight: 500; }
 .detail-table th, .detail-table td { padding: 0.55rem 0.6rem; border-bottom: 1px solid #3a4743; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .detail-table th { color: #a5b6b1; font-weight: 500; }
 .detail-table td { color: #e3eeea; }
+.weight-breakdown { padding: 1.1rem 1.2rem; background: #1e2826; border: 1px solid #3b4845; border-radius: 0.5rem; }
+.weight-table { margin-top: 0.9rem; }
+.weight-table th:last-child, .weight-table td:last-child { text-align: right; }
+.weight-total { display: flex; justify-content: space-between; gap: 1rem; padding-top: 1rem; color: #d5eee6; font-size: 0.9rem; }
+.weight-total strong { font-variant-numeric: tabular-nums; }
 .weight-summary { display: flex; flex-wrap: wrap; gap: 1rem 2rem; padding: 1rem 1.2rem; background: #1e2826; border: 1px solid #3b4845; border-radius: 0.5rem; }
 .weight-summary strong { display: block; color: #d5eee6; margin-top: 0.3rem; font-size: 0.9rem; font-variant-numeric: tabular-nums; }
-@media (max-width: 800px) { .volume-summary { grid-template-columns: 1fr; } .view-label { display: none; } .overview-table .column-table { font-size: 0.65rem; } }
+@media (max-width: 800px) { .card-header { flex-wrap: wrap; } .card-controls { justify-content: flex-start; } .volume-summary { grid-template-columns: 1fr; } .view-label { display: none; } .overview-table .column-table { font-size: 0.65rem; } }
 </style>
