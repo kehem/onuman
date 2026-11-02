@@ -211,9 +211,9 @@ watch([selectedPile, columnData], ([newPresetName, newPileData]) => {
 });
 
 // REINFORCEMENT HEIGHT GET FROM COLUMN BASIC VUE
-watch([columnHeight, basicOriginalValues.value], ([newHeight, newOriginal]) => {
+watch([columnHeight, () => basicOriginalValues.value.columnHeight], ([newHeight, newOriginal]) => {
     const formattedHeight = newHeight?.trim() || '';
-    const formattedOriginal = newOriginal.columnHeight?.trim() || '';
+    const formattedOriginal = newOriginal?.trim() || '';
 
     reinforcements.value.forEach((r) => {
         // Only update if empty
@@ -246,7 +246,7 @@ const populateForm = (data: ColumnItem, isPreset = false) => {
 
 
     selectedPile.value = data.name || '';
-    columnType.value = data.column_type === 'long';
+    columnType.value = data.column_type === 'short';
     columnShape.value = data.type === 'Circular';
     columnName.value = isPreset ? '' : data.name || '';
     columnQty.value = data.quantity?.toString() || '';
@@ -300,10 +300,12 @@ const populateForm = (data: ColumnItem, isPreset = false) => {
         deduction: s.deduction ? `${s.deduction} mm` : '',
         diameter: s.diameter ? `${s.diameter} mm` : '',
         length: s.length ? `${s.length} mm` : '',
-        height: s.height ? `${s.height} mm` : '',
+        height: (s.height ?? s.length) ? `${s.height ?? s.length} mm` : '',
         deduction_original: s.deduction_original || '',
         diameter_original: s.diameter_original || '',
-        height_original: s.height_original || ''
+        height_original: s.height_original || '',
+        length_original: s.length_original || '',
+        weight_original: s.weight_original || ''
     })) || [];
 
     imageURL.value = data.imageUrl || null;
@@ -317,15 +319,7 @@ const populateForm = (data: ColumnItem, isPreset = false) => {
 /* ------------------------------------------
  * FORM FIELD CHANGE DETECTION
  * ------------------------------------------ */
-watch(() => props.columnData, (newData) => {
-    if (newData) populateForm(newData, false);
-}, { immediate: true });
-
 watch(columnShape, () => {
-    if (columnShape.value) {
-        columnWidth.value = '';
-        columnLength.value = '';
-    }
     checkForChanges();
 });
 
@@ -398,7 +392,7 @@ const getFormDataJson = () => ({
     projectId: props.projectID,
     selectedPile: selectedPile.value,
     ...(columnType.value === false
-        ? { floor: selectedFloors.value.sort((a, b) => a - b).join(',') }
+        ? { floor: [...selectedFloors.value].sort((a, b) => a - b).join(',') }
         : { floor: 0 }),
     column_type: columnType.value ? 'short' : 'long',
     type: columnShape.value ? 'Circular' : 'Rectangle',
@@ -408,12 +402,12 @@ const getFormDataJson = () => ({
     height_original: basicOriginalValues.value.columnHeight || '',
     clear_cover: parseFloat(stripMm(clearCover.value)) || 0,
     clear_cover_original: basicOriginalValues.value.clearCover || '',
-    width: columnType.value ? 0 : parseFloat(stripMm(columnWidth.value)) || 0,
-    width_original: basicOriginalValues.value.columnWidth || '',
-    length: columnType.value ? 0 : parseFloat(stripMm(columnLength.value)) || 0,
-    length_original: basicOriginalValues.value.columnLength || '',
-    diameter: parseFloat(stripMm(columnRadius.value)) || 0,
-    diameter_original: basicOriginalValues.value.columnRadius || '',
+    width: columnShape.value ? 0 : parseFloat(stripMm(columnWidth.value)) || 0,
+    width_original: columnShape.value ? '' : basicOriginalValues.value.columnWidth || '',
+    length: columnShape.value ? 0 : parseFloat(stripMm(columnLength.value)) || 0,
+    length_original: columnShape.value ? '' : basicOriginalValues.value.columnLength || '',
+    diameter: columnShape.value ? parseFloat(stripMm(columnRadius.value)) || 0 : 0,
+    diameter_original: columnShape.value ? basicOriginalValues.value.columnRadius || '' : '',
     reinforcements: reinforcements.value.map(r => ({
         rod_qty: parseFloat(r.qty.trim()) || 0,
         rod_diameter: r.diameter || 0,
@@ -439,7 +433,7 @@ const getFormDataJson = () => ({
         ...stirrups.value.map(s => ({
             deduction: parseFloat(stripMm(s.deduction)) || 0,
             diameter: parseFloat(stripMm(s.diameter)) || 0,
-            height: parseFloat(stripMm(s.length ?? '')) || 0,
+            height: parseFloat(stripMm(s.height ?? '')) || 0,
             deduction_original: s.deduction_original || '',
             diameter_original: s.diameter_original || '',
             length_original: s.length_original || '',
@@ -451,6 +445,10 @@ const getFormDataJson = () => ({
     imageUrl: imageURL.value,
     preset: saveAsPreset.value
 });
+watch(() => props.columnData, (newData) => {
+    if (newData) populateForm(newData, false);
+}, { immediate: true });
+
 const reloadWindow = () => window.location.reload();
 /* ------------------------------------------
  * FORM SUBMIT & RESET
@@ -467,10 +465,11 @@ const submitForm = async (event: Event) => {
 
         showToast('success', `${formMode.value === 'update' ? 'Updated' : 'Created'} successfully`);
         emit('submit-response', response);
-        if (formMode.value === 'create') resetForm(); reloadWindow();
-        if (formMode.value === 'update') resetForm(); reloadWindow();
-    } catch (error) {
-        showToast('error', 'Submission failed');
+        resetForm();
+        reloadWindow();
+    } catch (error: any) {
+        const message = error.response?.data?.message || error.response?.data?.error;
+        showToast('error', typeof message === 'string' ? message : 'Column submission failed. Please try again.');
     }
 };
 
