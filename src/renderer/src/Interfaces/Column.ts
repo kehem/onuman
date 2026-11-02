@@ -39,7 +39,7 @@ export interface ColumnItem {
   id: number
   projectId: number
   selectedFloors: [number]
-  floor: number
+  floor: number | string | number[]
   column_type: string
   beam_type: string
   type: string

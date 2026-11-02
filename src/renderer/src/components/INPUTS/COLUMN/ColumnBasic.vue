@@ -46,7 +46,6 @@ const props = defineProps<{
 watch(
     () => props.selectedFloors,
     (newVal) => {
-        console.log('Received selectedFloors from parent:', newVal)
         selected.value = [...newVal]
     },
     { immediate: true }
@@ -56,10 +55,15 @@ watch(
  * EMITS: HANDLE VALUE UPDATES AND VALIDATION
  * ------------------------------------------ */
 const emit = defineEmits<{
-    (
-        e: `update:${'columnType' | 'columnShape' | 'columnName' | 'columnQty' | 'columnHeight' | 'clearCover' | 'columnWidth' | 'columnLength' | 'columnRadius'}`,
-        value: string | boolean
-    ): void
+    (e: 'update:columnType', value: boolean): void
+    (e: 'update:columnShape', value: boolean): void
+    (e: 'update:columnName', value: string): void
+    (e: 'update:columnQty', value: string): void
+    (e: 'update:columnHeight', value: string): void
+    (e: 'update:clearCover', value: string): void
+    (e: 'update:columnWidth', value: string): void
+    (e: 'update:columnLength', value: string): void
+    (e: 'update:columnRadius', value: string): void
     (e: 'update:selectedFloors', value: number[]): void
 
     (e: 'input:validate', event: Event, field: string): void
