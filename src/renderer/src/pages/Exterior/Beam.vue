@@ -108,19 +108,9 @@
                         </section>
 
                         <!-- ------------------------------------------
-                     * EXPANDABLE DETAILS SECTION (TOGGLE REINFORCEMENT & STIRRUPS)
-                     * ------------------------------------------ -->
-                        <div class="expantion" @click="toggleDetails">
-                            <Tooltip content="Click to show reinforcements and stirrups" position="left">
-                                <span v-if="!showDetails">Details View</span>
-                                <span v-else>Hide Details</span>
-                            </Tooltip>
-                        </div>
-
-                        <!-- ------------------------------------------
                      * REINFORCEMENT AND STIRRUPS TABLE
                      * ------------------------------------------ -->
-                        <div class="expand-details" v-if="showDetails">
+                        <div class="expand-details">
                             <Reinforcements :reinforcements="onlyReinforcements" />
                             <Stirrups :stirrups="onlyStirrups" :projectName="projectName" />
                         </div>
@@ -152,7 +142,6 @@ import { ref, computed, watch, nextTick, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import DefaultLayouts from '../../layouts/DefaultLayouts.vue';
 import Comments from '../../components/Dashboard/Comments.vue';
-import Tooltip from '../../components/Initializers/ToolTip.vue';
 import CurrentPath from '../../components/Dashboard/CurrentPath.vue';
 import BottomBar from '../../components/Dashboard/BottomBar.vue';
 import BeamInputs from '../../components/INPUTS/BEAM/BeamInputs.vue';
@@ -176,7 +165,6 @@ const { container, leftPanel, rightPanel } = useSimpleColumnResize()
 import { useToggleViewStore } from '../../stores/useToggleViewStore'
 const toggleStore = useToggleViewStore()
 import Graph from '../../components/OUTPUTS/BEAM/Graph.vue';
-
 
 /* ------------------------------------------
  * INITIALIZE TOAST, ROUTER, UNIT STORE
@@ -380,14 +368,5 @@ const handleDelete = async (id: string) => {
         showToast('error', errorMessage, 5000, 'right-bottom');
         console.error('Delete beam error:', error);
     }
-};
-
-
-/* ------------------------------------------
- * TOGGLE DETAILS VIEW FOR STIRRUPS/REINFORCEMENTS
- * ------------------------------------------ */
-const showDetails = ref(false);
-const toggleDetails = () => {
-    showDetails.value = !showDetails.value;
 };
 </script>

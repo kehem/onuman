@@ -94,13 +94,7 @@
               </table>
             </section>
 
-            <div class="expantion" @click="toggleDetails">
-              <Tooltip content="Click to show reinforcements and stirrups" position="left">
-                <span v-if="!showDetails">Details View</span>
-                <span v-else>Hide Details</span>
-              </Tooltip>
-            </div>
-            <div class="expand-details" v-if="showDetails">
+            <div class="expand-details">
               <!-- LONG REINFORCEMENTS TABLE -->
               <Reinforcements :reinforcements="onlyReinforcements" />
 
@@ -128,7 +122,6 @@ import { useRouter } from 'vue-router';
 import { ColumnItem } from '../../Interfaces/Column';
 import Comments from '../../components/Dashboard/Comments.vue';
 import { useToast } from '../../composables/Toast';
-import Tooltip from '../../components/Initializers/ToolTip.vue';
 import CurrentPath from '../../components/Dashboard/CurrentPath.vue';
 import Actions from '../../components/OUTPUTS/Actions.vue';
 import ColumnInputs from '../../components/INPUTS/COLUMN/ColumnInputs.vue';
@@ -345,11 +338,6 @@ const handleDelete = async (id: string) => {
   }
 };
 
-// DETAILS VIEW
-const showDetails = ref(false);
-const toggleDetails = () => {
-  showDetails.value = !showDetails.value;
-};
 
 // Initialize component on mount
 onMounted(() => {

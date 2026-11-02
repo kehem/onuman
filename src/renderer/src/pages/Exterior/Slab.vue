@@ -104,14 +104,7 @@
               </table>
             </section>
 
-            <div class="expantion" @click="toggleDetails">
-              <Tooltip content="Click to show reinforcements and stirrups" position="left">
-                <span v-if="!showDetails">Details View</span>
-                <span v-else>Hide Details</span>
-              </Tooltip>
-            </div>
-
-            <div class="expand-details" v-if="showDetails">
+            <div class="expand-details">
               <!-- LONG REINFORCEMENTS TABLE -->
               <Reinforcements :reinforcements="onlyReinforcements" :topBar="topBar" :crankBar="crankBar"
                 @editTopBar="handleEditTopBar" @editCrankBar="handleEditCrankBar"
@@ -141,7 +134,6 @@ import { SlabItem } from '../../Interfaces/Slab';
 import { TopBar, CrankBar } from '../../Interfaces/Inputs';
 import Comments from '../../components/Dashboard/Comments.vue';
 import { useToast } from '../../composables/Toast';
-import Tooltip from '../../components/Initializers/ToolTip.vue';
 import CurrentPath from '../../components/Dashboard/CurrentPath.vue';
 import Actions from '../../components/OUTPUTS/Actions.vue';
 import SlabInputs from '../../components/INPUTS/SLAB/SlabInputs.vue';
@@ -458,14 +450,6 @@ const handleDelete = async (id: string | number) => {
     showToast('error', errorMessage, 5000, 'right-bottom');
     console.error('Delete slab error:', error);
   }
-};
-
-/* ------------------------------------------
- * TOGGLE DETAILS VIEW
- * ------------------------------------------ */
-const showDetails = ref(false);
-const toggleDetails = () => {
-  showDetails.value = !showDetails.value;
 };
 
 /* ------------------------------------------
