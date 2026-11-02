@@ -51,7 +51,9 @@ apiClient.interceptors.response.use(
       error.response?.data?.error ||
       error.message ||
       'An error occurred'
-    showToast('info', message)
+    if (!(error.config as (InternalAxiosRequestConfig & { suppressErrorToast?: boolean }) | undefined)?.suppressErrorToast) {
+      showToast('info', message)
+    }
     return Promise.reject(error)
   }
 )

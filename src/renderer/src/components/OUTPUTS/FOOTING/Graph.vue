@@ -31,6 +31,9 @@
                     </div>
                 </aside>
 
+                <!-- Failed requests are not empty chart data. -->
+                <GraphError v-else-if="graphError" :message="graphError" @retry="fetchGraphData" />
+
                 <!-- MAIN GRAPH -->
                 <aside v-else class="graph overview">
 
@@ -78,7 +81,7 @@
                         <div class="no-data-content">
                             <i class="m-piechart"></i>
                             <h2>No Chart Data Available</h2>
-                            <p>Unable to load chart data. Please add data</p>
+                            <p>No chart data is available for this selection. Add data to see a chart.</p>
                         </div>
                     </div>
 
@@ -93,8 +96,9 @@ import { ref, computed, onMounted } from 'vue'
 import { RCC } from '../../../Interfaces/Inputs'
 import ChartComponent from '../../EXTRA/ChartComponent.vue'
 import { useRouter } from 'vue-router'
-import { useToast } from '../../../composables/Toast'
 import { useApi } from '../../../composables/useApi'
+import { useGraphData } from '../../../composables/useGraphData'
+import GraphError from '../GraphError.vue'
 
 /* TYPES */
 type ChartDataset = {
@@ -110,7 +114,6 @@ type ChartDataset = {
 /* COMPOSABLES */
 const { get } = useApi()
 const router = useRouter()
-const { showToast } = useToast()
 
 /* ROUTE PARAMS */
 const projectId = computed(() => {
@@ -119,37 +122,17 @@ const projectId = computed(() => {
 })
 
 /* STATE */
-const graphData = ref<any>('')
-const isLoading = ref(false)
+const { graphData: parsedGraphData, graphError, isLoading, loadGraphData } = useGraphData(get)
 
 /* API FETCH */
 const fetchGraphData = async () => {
-    isLoading.value = true
-    try {
-        graphData.value = await get(`/api/footing/graph?projectId=${projectId.value}`)
-    } catch (error: any) {
-        const msg = error.response?.message || error.message || 'Failed to fetch footing data'
-        showToast('error', msg, 5000, 'right-bottom')
-    } finally {
-        isLoading.value = false
-    }
+    await loadGraphData(`/api/footing/graph?projectId=${projectId.value}`)
 }
 onMounted(fetchGraphData)
 
 /* VALIDATION HELPERS */
 const isValidPileData = (pile: any): boolean =>
     pile?.weights?.length > 0 && pile.weights.some((w: any) => w.weight > 0)
-
-/* PARSED GRAPH DATA */
-const parsedGraphData = computed(() => {
-    if (!graphData.value) return null
-    try {
-        return typeof graphData.value === 'string' ? JSON.parse(graphData.value) : graphData.value
-    } catch (err) {
-        console.error('Graph Data Parse Error:', err)
-        return null
-    }
-})
 
 /* PILE DATA */
 const PileList = computed(() => parsedGraphData.value?.material_cost ?? [])

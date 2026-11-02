@@ -35,6 +35,9 @@
                     </div>
                 </aside>
 
+                <!-- Failed requests are not empty chart data. -->
+                <GraphError v-else-if="graphError" :message="graphError" @retry="fetchGraphData" />
+
                 <!-- MAIN GRAPH -->
                 <aside v-else class="graph overview">
 
@@ -82,7 +85,7 @@
                         <div class="no-data-content">
                             <i class="m-piechart"></i>
                             <h2>No Chart Data Available</h2>
-                            <p>Unable to load chart data. Please add data</p>
+                            <p>No chart data is available for this selection. Add data to see a chart.</p>
                         </div>
                     </div>
 
@@ -97,8 +100,9 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { RCC } from '../../../Interfaces/Inputs'
 import ChartComponent from '../../EXTRA/ChartComponent.vue'
 import { useRouter, useRoute } from 'vue-router'
-import { useToast } from '../../../composables/Toast'
 import { useApi } from '../../../composables/useApi'
+import { useGraphData } from '../../../composables/useGraphData'
+import GraphError from '../GraphError.vue'
 import Tabs from '../Tabs.vue'
 
 /* TYPES */
@@ -122,7 +126,6 @@ const props = defineProps<{
 const { get } = useApi()
 const router = useRouter()
 const route = useRoute()
-const { showToast } = useToast()
 
 /* ROUTE PARAMS */
 const projectId = computed(() => {
@@ -136,11 +139,9 @@ const mainTabs = Array.from({ length: totalFloors }, (_, i) => i + 1)
 
 /* TAB STATE */
 const selectedMainTab = ref<number | null>(props.initialMainTab || 1)
-const isInitialLoadComplete = ref(false)
 
 /* STATE */
-const graphData = ref<any>('')
-const isLoading = ref(false)
+const { graphData: parsedGraphData, graphError, isLoading, loadGraphData } = useGraphData(get)
 
 /* TAB HANDLERS */
 const handleMainTabSelect = (value: number) => {
@@ -154,18 +155,7 @@ const fetchGraphData = async () => {
         return
     }
 
-    isLoading.value = true
-    try {
-        graphData.value = await get(`/api/brick/graph/${selectedMainTab.value}?projectId=${projectId.value}`)
-    } catch (error: any) {
-        const msg = error.response?.message || error.message || 'Failed to fetch brick data'
-        showToast('error', msg, 5000, 'right-bottom')
-    } finally {
-        isLoading.value = false
-        if (!isInitialLoadComplete.value) {
-            isInitialLoadComplete.value = true
-        }
-    }
+    await loadGraphData(`/api/brick/graph/${selectedMainTab.value}?projectId=${projectId.value}`)
 }
 
 /* LIFECYCLE */
@@ -184,17 +174,6 @@ watch([selectedMainTab], ([main]) => {
 /* VALIDATION HELPERS */
 const isValidPileData = (pile: any): boolean =>
     pile?.weights?.length > 0 && pile.weights.some((w: any) => w.weight > 0)
-
-/* PARSED GRAPH DATA */
-const parsedGraphData = computed(() => {
-    if (!graphData.value) return null
-    try {
-        return typeof graphData.value === 'string' ? JSON.parse(graphData.value) : graphData.value
-    } catch (err) {
-        console.error('Graph Data Parse Error:', err)
-        return null
-    }
-})
 
 /* MATERIAL DATA */
 const PileList = computed(() => parsedGraphData.value?.material_cost ?? [])
