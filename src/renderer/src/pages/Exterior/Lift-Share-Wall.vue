@@ -76,13 +76,7 @@
               </table>
             </section>
 
-            <div class="expantion" @click="toggleDetails">
-              <Tooltip content="Click to show reinforcements and stirrups" position="left">
-                <span v-if="!showDetails">Details View</span>
-                <span v-else>Hide Details</span>
-              </Tooltip>
-            </div>
-            <div class="expand-details" v-if="showDetails">
+            <div class="expand-details">
               <!-- LONG REINFORCEMENTS TABLE -->
               <Reinforcements :reinforcements="onlyReinforcements" />
 
@@ -115,7 +109,6 @@ const toggleStore = useToggleViewStore()
 
 import DefaultLayouts from '../../layouts/DefaultLayouts.vue';
 import Comments from '../../components/Dashboard/Comments.vue';
-import Tooltip from '../../components/Initializers/ToolTip.vue';
 import CurrentPath from '../../components/Dashboard/CurrentPath.vue';
 import Actions from '../../components/OUTPUTS/Actions.vue';
 import LiftInputs from '../../components/INPUTS/LIFT/LiftInputs.vue';
@@ -331,11 +324,4 @@ const handleDelete = async (id: string) => {
   }
 };
 
-/* ============================
- * DETAILS VIEW TOGGLE
- * ============================ */
-const showDetails = ref(false);
-const toggleDetails = () => {
-  showDetails.value = !showDetails.value;
-};
 </script>

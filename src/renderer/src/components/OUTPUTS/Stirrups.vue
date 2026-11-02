@@ -1,8 +1,9 @@
 <template>
   <section>
-    <fieldset class="reinforcements-fieldset" v-if="isStirrups">
+    <fieldset class="reinforcements-fieldset">
       <legend>Stirrups</legend>
-      <section class="formatted-table responsive-table">
+      <p v-if="!isStirrups" class="text-center">No stirrup data available.</p>
+      <section v-else class="formatted-table responsive-table">
         <fieldset class="reinforcements-fieldset" v-for="(item, index) in props.stirrups" :key="index">
           <legend>{{ item.pileName }}</legend>
 

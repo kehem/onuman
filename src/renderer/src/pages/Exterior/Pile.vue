@@ -91,13 +91,7 @@
               </table>
             </section>
 
-            <div class="expantion" @click="toggleDetails">
-              <Tooltip content="Click to show reinforcements and stirrups" position="left">
-                <span v-if="!showDetails">Details View</span>
-                <span v-else>Hide Details</span>
-              </Tooltip>
-            </div>
-            <div class="expand-details" v-if="showDetails">
+            <div class="expand-details">
               <!-- LONG REINFORCEMENTS TABLE -->
               <Reinforcements :reinforcements="onlyReinforcements" />
 
@@ -127,7 +121,6 @@ import { GroupedReinforcement, InputItems, RCC } from '../../Interfaces/Inputs';
 import { OnlyStirrups, PileItem } from '../../Interfaces/Pile';
 import Comments from '../../components/Dashboard/Comments.vue';
 import { useToast } from '../../composables/Toast';
-import Tooltip from '../../components/Initializers/ToolTip.vue';
 import CurrentPath from '../../components/Dashboard/CurrentPath.vue';
 import Actions from '../../components/OUTPUTS/Actions.vue';
 import PileInputs from '../../components/INPUTS/PileInputs.vue';
@@ -306,11 +299,6 @@ const handleRCCUpdate = (value: RCC | null) => {
   CCCalculation.value = value;
 };
 
-// DETAILS VIEW
-const showDetails = ref(false);
-const toggleDetails = () => {
-  showDetails.value = !showDetails.value;
-};
 
 onMounted(fetchPileData);
 </script>
