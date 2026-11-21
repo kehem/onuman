@@ -268,7 +268,7 @@ $border: #9ba3af;
   width: 100%;
   height: 100%;
   overflow: auto;
-  background: #e8eaed;
+  background: var(--sw-canvas, #e8eaed);
   padding: 12px;
 }
 
@@ -280,7 +280,9 @@ $border: #9ba3af;
   font-family: Calibri, 'Segoe UI', sans-serif;
   font-size: 13px;
   color: $ink;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+  border-radius: var(--sw-radius, 12px);
+  box-shadow: var(--sw-shadow, 0 1px 4px rgba(0, 0, 0, 0.18));
+  overflow: hidden;
 }
 
 /* TITLE BLOCK */

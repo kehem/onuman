@@ -29,7 +29,7 @@
                     <div class="progress-fill"></div>
                 </div>
             </button>
-            <p class="export-desc">Spreadsheet format (CSV)</p>
+            <p class="export-desc">Real .xlsx workbook from the backend</p>
         </div>
 
         <!-- WORD EXPORT -->

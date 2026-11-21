@@ -2,7 +2,7 @@
 
 <template>
   <DefaultLayouts>
-    <div class="main-screen project-insider">
+    <div class="main-screen project-insider reports-page">
       <br><br>
       <h1 class="text-center">Reports</h1><br>
 
@@ -346,34 +346,6 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-/* VIEW SWITCH STYLES */
-.report-view-switch {
-  display: flex;
-  gap: 6px;
-  padding: 6px 10px;
-
-  .view-switch-btn {
-    padding: 4px 14px;
-    border: 1px solid #c3c9d2;
-    border-radius: 4px;
-    background: #f2f4f7;
-    color: #4a5568;
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.15s ease;
-
-    &:hover {
-      background: #e2e8f0;
-    }
-
-    &.active {
-      background: #1f3864;
-      border-color: #1f3864;
-      color: #fff;
-    }
-  }
-}
-
 /* LAYOUT STYLES */
 .onuman-input-height-2 {
   margin-top: 0;
