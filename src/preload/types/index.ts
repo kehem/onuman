@@ -65,6 +65,7 @@ export interface ElectronAPI {
     printToPDF: (htmlContent: string) => Promise<string | null>
     exportToWord: (htmlContent: string) => Promise<string | null>
     exportToExcel: (data: any) => Promise<string | null>
+    saveReportXlsx: (bytes: Uint8Array, filename?: string) => Promise<string | null>
     exportToCSV: (data: any) => Promise<string | null>
     exportToJSON: (data: any) => Promise<string | null>
     saveReportToTemp: (htmlContent: string) => Promise<string | null>

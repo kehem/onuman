@@ -1,7 +1,8 @@
 // /src/composables/Exports/useExportOperations.ts
 
 import { ref } from 'vue';
-import type { ExportStatus, ExportHistoryItem } from '../../pages/Reports/Types/ReportFormTypes';
+import type { ExportStatus, ExportHistoryItem, ReportDocument } from '../../pages/Reports/Types/ReportFormTypes';
+import { useApi } from '../useApi';
 
 // EXPORT OPERATIONS COMPOSABLE
 export function useExportOperations() {
@@ -13,57 +14,14 @@ export function useExportOperations() {
     const exportStatus = ref<ExportStatus>({ message: '', type: '', path: null });
     const exportHistory = ref<ExportHistoryItem[]>([]);
 
-    // HELPER FUNCTION TO EXTRACT DATA FROM HTML FOR EXCEL EXPORT
-    const extractDataFromHTML = (htmlContent: string): any[] => {
+    // HELPER FUNCTION TO PARSE THE FILENAME FROM Content-Disposition
+    const filenameFromDisposition = (disposition: string | undefined, fallback: string): string => {
+        const match = /filename\*?=(?:UTF-8'')?"?([^";]+)"?/i.exec(disposition || '');
+        if (!match?.[1]) return fallback;
         try {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(htmlContent, 'text/html');
-            const tables = doc.querySelectorAll('table');
-            const extractedData: any[] = [];
-
-            tables.forEach((table) => {
-                const rows = table.querySelectorAll('tr');
-                const tableData: any[] = [];
-
-                rows.forEach((row) => {
-                    const cells = row.querySelectorAll('td, th');
-                    const rowData: any = {};
-
-                    cells.forEach((cell, cellIndex) => {
-                        const cellText = cell.textContent?.trim() || '';
-                        rowData[`Column_${cellIndex + 1}`] = cellText;
-                    });
-
-                    if (Object.keys(rowData).length > 0) {
-                        tableData.push(rowData);
-                    }
-                });
-
-                if (tableData.length > 0) {
-                    extractedData.push(...tableData);
-                }
-            });
-
-            // IF NO TABLE DATA, EXTRACT TEXT CONTENT
-            if (extractedData.length === 0) {
-                const textContent = doc.body?.textContent?.trim() || '';
-                const lines = textContent.split('\n').filter(line => line.trim());
-
-                lines.forEach((line, index) => {
-                    extractedData.push({ 'Line': index + 1, 'Content': line.trim() });
-                });
-            }
-
-            return extractedData.length > 0 ? extractedData : [{
-                'Error': 'No data could be extracted from the report'
-            }];
-
-        } catch (error) {
-            console.error('Error extracting data from HTML:', error);
-            return [{
-                'Error': 'Failed to extract data from report',
-                'Details': error instanceof Error ? error.message : 'Unknown error'
-            }];
+            return decodeURIComponent(match[1]);
+        } catch {
+            return match[1];
         }
     };
 
@@ -119,11 +77,13 @@ export function useExportOperations() {
         }
     };
 
-    // EXCEL EXPORT FUNCTION
-    const exportToExcel = async (htmlContent: string): Promise<void> => {
-        if (!htmlContent) {
+    // EXCEL EXPORT FUNCTION - DOWNLOADS THE REAL .XLSX FROM THE BACKEND
+    // (POST /api/report/final_report/excel turns the report document into
+    // the workbook - the same document the workbook view renders on screen)
+    const exportToExcel = async (document: ReportDocument | null): Promise<void> => {
+        if (!document || !Array.isArray(document.rows) || document.rows.length === 0) {
             exportStatus.value = {
-                message: 'No report to export to Excel',
+                message: 'Generate the report first - the Excel workbook is built from the report document',
                 type: 'error',
                 path: null
             };
@@ -134,24 +94,35 @@ export function useExportOperations() {
             isExporting.value = true;
             isExportingExcel.value = true;
 
-            const exportData = extractDataFromHTML(htmlContent);
-            const excelPath = await window.electronAPI.exportToExcel(exportData);
+            const { apiClient, initialize } = useApi();
+            await initialize();
+
+            const response = await apiClient.post('/api/report/final_report/excel', document, {
+                responseType: 'arraybuffer'
+            });
+
+            const filename = filenameFromDisposition(
+                response.headers?.['content-disposition'] as string | undefined,
+                'final_report.xlsx'
+            );
+            const bytes = new Uint8Array(response.data as ArrayBuffer);
+            const excelPath = await window.electronAPI.saveReportXlsx(bytes, filename);
 
             if (excelPath) {
                 exportStatus.value = {
-                    message: `Excel file saved to ${excelPath}`,
+                    message: `Excel workbook saved to ${excelPath}`,
                     type: 'success',
                     path: excelPath
                 };
                 exportHistory.value.unshift({
                     type: 'excel',
-                    filename: excelPath.split('/').pop() || 'report.csv',
+                    filename: excelPath.split('/').pop() || filename,
                     path: excelPath,
                     timestamp: Date.now(),
                 });
             } else {
                 exportStatus.value = {
-                    message: 'Failed to export to Excel',
+                    message: 'Failed to save the Excel workbook',
                     type: 'error',
                     path: null
                 };

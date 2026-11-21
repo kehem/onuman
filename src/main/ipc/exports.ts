@@ -96,6 +96,36 @@ export function setupExportHandlers() {
         }
     })
 
+    // SAVE THE BACKEND-GENERATED XLSX WORKBOOK HANDLER
+    ipcMain.handle('save-report-xlsx', async (_, bytes, filename) => {
+        try {
+            const downloadsPath = ensureDownloadsDir()
+            const safeName =
+                typeof filename === 'string' &&
+                /^[^\\/:*?"<>|]+$/.test(filename) &&
+                /\.(xlsx|xls)$/i.test(filename)
+                    ? filename
+                    : generateFilename('report', 'xlsx')
+            const filePath = path.join(downloadsPath, safeName)
+
+            fs.writeFileSync(filePath, Buffer.from(bytes))
+
+            // EMIT EXPORT COMPLETE EVENT
+            const mainWindow = BrowserWindow.getFocusedWindow()
+            mainWindow?.webContents.send('export-complete', {
+                type: 'excel',
+                path: filePath,
+                filename: safeName
+            })
+
+            console.log('✅ XLSX workbook saved successfully:', filePath)
+            return filePath
+        } catch (error) {
+            console.error('❌ XLSX save error:', error)
+            return null
+        }
+    })
+
     // EXPORT TO WORD (HTML) HANDLER
     ipcMain.handle('export-to-word', async (_, htmlContent) => {
         try {
