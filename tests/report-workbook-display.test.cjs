@@ -1,4 +1,7 @@
-require('ts-node').register({ transpileOnly: true, compilerOptions: { module: 'CommonJS', moduleResolution: 'node' } })
+require('ts-node').register({
+  transpileOnly: true,
+  compilerOptions: { module: 'CommonJS', moduleResolution: 'node' }
+})
 const { test } = require('node:test')
 const assert = require('node:assert/strict')
 const {
@@ -20,12 +23,12 @@ const doc = {
     // PART A: MEASUREMENTS COMPUTED LIKE THE WORKBOOK FORMULAS
     { k: 'part', label: 'Part A' },
     { k: 'item', sl: '01', desc: 'Earth work' },
-    { k: 'm', label: 'Building Area', no: 1, l: 18, w: 11 },          // -> 198.00
-    { k: 'm', label: 'Extra', no: 2, l: 1, w: 1, h: 1 },              // -> 2.00
-    { k: 't', unit: 'SQM' },                                           // -> 200.00
-    { k: 'rate', rate: 19, unit: 'SQM', per: true },                   // -> Tk 3,800.00
-    { k: 'cost' },                                                     // -> Tk 3,800.00
-    { k: 'part_total', label: 'Total A', sum_parts: [] },              // -> Tk 3,800.00
+    { k: 'm', label: 'Building Area', no: 1, l: 18, w: 11 }, // -> 198.00
+    { k: 'm', label: 'Extra', no: 2, l: 1, w: 1, h: 1 }, // -> 2.00
+    { k: 't', unit: 'SQM' }, // -> 200.00
+    { k: 'rate', rate: 19, unit: 'SQM', per: true }, // -> Tk 3,800.00
+    { k: 'cost' }, // -> Tk 3,800.00
+    { k: 'part_total', label: 'Total A', sum_parts: [] }, // -> Tk 3,800.00
 
     // PART B: MATERIAL TOTALS DRIVE THE @-RATE
     // (part references in the summary use the ORIGINAL part indexes -
@@ -36,13 +39,13 @@ const doc = {
     { k: 'mats' },
     { k: 'mat_total', label: 'Total Cement', qty: 10, unit: 'Bags' },
     { k: 'rate', label: 'Cement', rate: 570, unit: 'Bag', per: true }, // -> Tk 5,700.00
-    { k: 'cost' },                                                     // -> Tk 5,700.00
-    { k: 'part_total', label: 'Total B', sum_parts: [0] }              // -> Tk 9,500.00
+    { k: 'cost' }, // -> Tk 5,700.00
+    { k: 'part_total', label: 'Total B', sum_parts: [0] } // -> Tk 9,500.00
   ],
   summary: [
-    { label: 'Total A', part: 1 },                                     // -> Tk 3,800.00
-    { label: 'Total B', part: 2 },                                     // -> Tk 9,500.00
-    { label: 'Grand Total', sum_of: [0, 1] }                           // -> Tk 13,300.00
+    { label: 'Total A', part: 1 }, // -> Tk 3,800.00
+    { label: 'Total B', part: 2 }, // -> Tk 9,500.00
+    { label: 'Grand Total', sum_of: [0, 1] } // -> Tk 13,300.00
   ]
 }
 
@@ -92,7 +95,10 @@ test('part totals roll up the part rates and sum_parts references', () => {
 
 test('summary lines resolve part references and sum_of chains', () => {
   const { summary } = resolveDisplay(doc)
-  assert.deepEqual(summary.map((line) => line.amount), [3800, 9500, 13300])
+  assert.deepEqual(
+    summary.map((line) => line.amount),
+    [3800, 9500, 13300]
+  )
   assert.equal(summary[2].label, 'Grand Total')
 })
 
