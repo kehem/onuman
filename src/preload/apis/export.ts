@@ -24,6 +24,10 @@ export const exportAPI = {
     exportToExcel: (data: any) =>
         ipcRenderer.invoke('export-to-excel', data) as Promise<string | null>,
 
+    // SAVE THE BACKEND-GENERATED XLSX WORKBOOK
+    saveReportXlsx: (bytes: Uint8Array, filename?: string) =>
+        ipcRenderer.invoke('save-report-xlsx', bytes, filename) as Promise<string | null>,
+
     // EXPORT TO CSV
     exportToCSV: (data: any) =>
         ipcRenderer.invoke('export-to-csv', data) as Promise<string | null>,

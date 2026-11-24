@@ -161,3 +161,74 @@ export type OperationType = typeof OPERATIONS[number];
 export type PropertyType = typeof PROPERTIES[number];
 export type MaterialType = typeof MATERIALS[number];
 export type SelectOptionType = 'all' | 'specific';
+
+// ------------------------------------------
+// * REPORT DOCUMENT (EXCEL WORKBOOK SOURCE)
+// Mirrors the document dict consumed by the
+// backend excel writer (report/excel_report.py)
+// ------------------------------------------
+
+// ROW KINDS RENDERED BY THE WORKBOOK
+export type ReportRowKind =
+    | 'part'
+    | 'item'
+    | 'sub'
+    | 'm'
+    | 't'
+    | 'mat'
+    | 'mats'
+    | 'mat_total'
+    | 'rate'
+    | 'cost'
+    | 'part_total'
+    | 'blank'
+    | 'note';
+
+// SINGLE ROW OF THE REPORT DOCUMENT
+export interface ReportRow {
+    k: ReportRowKind;
+    label?: string;
+    desc?: string;
+    sl?: string | number;
+    notes?: string;
+    no?: number | string | null;
+    l?: number | string | null;
+    w?: number | string | null;
+    h?: number | string | null;
+    qty?: number | string | null;
+    unit?: string;
+    rate?: number | string | null;
+    amount?: number | string | null;
+    per?: boolean;
+    bold?: boolean;
+    indent?: number;
+    sum_parts?: number[];
+    from?: string;
+    [key: string]: any;
+}
+
+// SUMMARY LINE CLOSING THE REPORT
+export interface ReportSummaryEntry {
+    label?: string;
+    amount?: number | string | null;
+    part?: number;
+    sum_of?: number[];
+    formula?: string;
+}
+
+// FULL REPORT DOCUMENT (POST /api/report/final_report/document)
+export interface ReportDocument {
+    title?: string;
+    company?: string;
+    project?: string;
+    description?: string;
+    address?: string;
+    est_no?: string;
+    date?: string;
+    client?: string;
+    architect?: string;
+    currency?: string;
+    sheet_title?: string;
+    rows: ReportRow[];
+    summary?: ReportSummaryEntry[];
+}

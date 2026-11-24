@@ -2,7 +2,7 @@
 
 <template>
   <DefaultLayouts>
-    <div class="main-screen project-insider">
+    <div class="main-screen project-insider reports-page">
       <br><br>
       <h1 class="text-center">Reports</h1><br>
 
@@ -17,13 +17,26 @@
         <!-- RIGHT PANEL - REPORT RESULTS -->
         <aside ref="rightPanel" class="span-8 onuman-insider-scrollbar onuman-input-height-2">
           <section class="report-result">
-            <aside class="report-response" v-html="HTMLResponse" v-if="HTMLResponse"></aside>
+
+            <!-- VIEW SWITCH: WORKBOOK (MIRRORS THE .XLSX) / HTML REPORT -->
+            <div class="report-view-switch" v-if="HTMLResponse && reportDocument">
+              <button type="button" class="view-switch-btn" :class="{ active: viewMode === 'workbook' }"
+                @click="viewMode = 'workbook'">Workbook</button>
+              <button type="button" class="view-switch-btn" :class="{ active: viewMode === 'html' }"
+                @click="viewMode = 'html'">Report</button>
+            </div>
+
+            <!-- WORKBOOK VIEW (EXACTLY WHAT THE .XLSX CONTAINS) -->
+            <ReportWorkbookView v-if="showWorkbook && reportDocument" :document="reportDocument" />
+
+            <!-- CLASSIC HTML REPORT -->
+            <aside class="report-response" v-else-if="showHtml" v-html="HTMLResponse"></aside>
             <aside v-else class="report-response-await">
               <div class="bounce-circle"></div>
             </aside>
 
             <!-- ENHANCED INTERACTIVE REPORT ACTIONS -->
-            <section class="report-actions-enhanced" v-if="HTMLResponse">
+            <section class="report-actions-enhanced" v-if="HTMLResponse || reportDocument">
 
               <!-- EXPORT STATUS BANNER COMPONENT -->
               <ExportStatusBanner :exportStatus="exportStatus" @dismiss="handleStatusDismiss"
@@ -48,10 +61,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import DefaultLayouts from '../../layouts/DefaultLayouts.vue';
 import BottomBar from '../../components/Dashboard/BottomBar.vue';
 import ReportFormComponent from './Components/ReportFormComponent.vue';
+import ReportWorkbookView from './Components/ReportWorkbookView.vue';
 import ExportStatusBanner from './IndexComponents/ExportStatusBanner.vue';
 import ExportActionsComponent from './IndexComponents/ExportActionsComponent.vue';
 import ExportHistoryComponent from './IndexComponents/ExportHistoryComponent.vue';
@@ -62,6 +76,7 @@ import { useExportHelpers } from '../../composables/Exports/useExportHelpers';
 import type {
   Project,
   FormSubmissionPayload,
+  ReportDocument,
   AVAILABLE_DATA
 } from './Types/ReportFormTypes';
 import {
@@ -101,7 +116,18 @@ const {
 // ------------------------------------------
 const projectList = ref<Project[]>([]);
 const HTMLResponse = ref('');
+const reportDocument = ref<ReportDocument | null>(null);
+const viewMode = ref<'workbook' | 'html'>('workbook');
 const isSubmittingReport = ref(false);
+
+// WORKBOOK VIEW IS SHOWN WHEN A REPORT DOCUMENT IS AVAILABLE
+const showWorkbook = computed(
+  () => viewMode.value === 'workbook' && !!reportDocument.value
+);
+// HTML REPORT FALLS BACK AUTOMATICALLY WHEN NO DOCUMENT WAS RETURNED
+const showHtml = computed(
+  () => (viewMode.value === 'html' || !reportDocument.value) && !!HTMLResponse.value
+);
 
 // ------------------------------------------
 // * API AND DATA FETCHING
@@ -242,9 +268,31 @@ const handleFormSubmit = async (payload: FormSubmissionPayload): Promise<void> =
   try {
     isSubmittingReport.value = true;
     HTMLResponse.value = ''; // CLEAR PREVIOUS RESPONSE
+    reportDocument.value = null;
 
-    const response = await post('/api/report/final_report', payload);
-    HTMLResponse.value = response;
+    // FETCH THE HTML REPORT AND THE REPORT DOCUMENT (EXCEL SOURCE) TOGETHER
+    const [htmlResult, documentResult] = await Promise.allSettled([
+      post('/api/report/final_report', payload),
+      post('/api/report/final_report/document', payload)
+    ]);
+
+    if (htmlResult.status === 'fulfilled') {
+      HTMLResponse.value = htmlResult.value;
+    }
+    if (documentResult.status === 'fulfilled') {
+      reportDocument.value = documentResult.value;
+    }
+
+    if (htmlResult.status === 'rejected' && documentResult.status === 'rejected') {
+      throw htmlResult.reason;
+    }
+    if (htmlResult.status === 'rejected' || documentResult.status === 'rejected') {
+      exportStatus.value = {
+        message: 'Report loaded partially - one of the report views is unavailable',
+        type: 'error',
+        path: null
+      };
+    }
 
   } catch (error: any) {
     handleExportError(error, 'Report submission', exportStatus);
@@ -273,7 +321,8 @@ const handlePDFExport = async (): Promise<void> => {
 };
 
 const handleExcelExport = async (): Promise<void> => {
-  await exportToExcel(HTMLResponse.value);
+  // EXPORTS THE REAL .XLSX BUILT BY THE BACKEND FROM THE REPORT DOCUMENT
+  await exportToExcel(reportDocument.value);
 };
 
 const handleWordExport = async (): Promise<void> => {
