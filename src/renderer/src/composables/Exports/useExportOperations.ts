@@ -127,10 +127,16 @@ export function useExportOperations() {
                     path: null
                 };
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('Excel export error:', error);
+            const status = error?.response?.status;
             exportStatus.value = {
-                message: 'An error occurred while exporting to Excel',
+                message:
+                    status === 404
+                        ? 'This server is missing the Excel export endpoint - deploy the latest onuman-private backend.'
+                        : status >= 500
+                          ? 'The server failed to build the Excel file - make sure openpyxl is installed (pip install openpyxl) and the backend is up to date.'
+                          : 'An error occurred while exporting to Excel',
                 type: 'error',
                 path: null
             };
