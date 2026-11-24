@@ -118,6 +118,7 @@ const projectList = ref<Project[]>([]);
 const HTMLResponse = ref('');
 const reportDocument = ref<ReportDocument | null>(null);
 const viewMode = ref<'workbook' | 'html'>('workbook');
+const lastFormPayload = ref<FormSubmissionPayload | null>(null);
 const isSubmittingReport = ref(false);
 
 // WORKBOOK VIEW IS SHOWN WHEN A REPORT DOCUMENT IS AVAILABLE
@@ -128,6 +129,28 @@ const showWorkbook = computed(
 const showHtml = computed(
   () => (viewMode.value === 'html' || !reportDocument.value) && !!HTMLResponse.value
 );
+
+// ------------------------------------------
+// * ERROR DESCRIPTION (ACTIONABLE MESSAGES)
+// ------------------------------------------
+const describeReportError = (error: any, view: string): string => {
+  const status = error?.response?.status;
+  const serverError = error?.response?.data?.error;
+  if (status === 404) {
+    return `${view} is unavailable on this server (HTTP 404) - the backend must be updated to the latest onuman-private (it provides /api/report/final_report/document and the Excel writer).`;
+  }
+  if (status >= 500) {
+    return `${view} failed on the server (HTTP 500)${serverError ? `: ${serverError}` : ''} - make sure openpyxl is installed (pip install openpyxl) and the backend is up to date.`;
+  }
+  return `${view} failed: ${serverError || error?.message || 'unknown error'}`;
+};
+
+// REWRITE RELATIVE REPORT ASSET LINKS (LOGO / STATIC) TO THE API HOST
+const rewriteReportAssets = (html: string): string => {
+  const base = String(import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
+  if (!base) return html;
+  return html.replace(/(src|href)=(["'])\//g, `$1=$2${base}/`);
+};
 
 // ------------------------------------------
 // * API AND DATA FETCHING
@@ -269,6 +292,7 @@ const handleFormSubmit = async (payload: FormSubmissionPayload): Promise<void> =
     isSubmittingReport.value = true;
     HTMLResponse.value = ''; // CLEAR PREVIOUS RESPONSE
     reportDocument.value = null;
+    lastFormPayload.value = payload;
 
     // FETCH THE HTML REPORT AND THE REPORT DOCUMENT (EXCEL SOURCE) TOGETHER
     const [htmlResult, documentResult] = await Promise.allSettled([
@@ -277,7 +301,7 @@ const handleFormSubmit = async (payload: FormSubmissionPayload): Promise<void> =
     ]);
 
     if (htmlResult.status === 'fulfilled') {
-      HTMLResponse.value = htmlResult.value;
+      HTMLResponse.value = rewriteReportAssets(htmlResult.value);
     }
     if (documentResult.status === 'fulfilled') {
       reportDocument.value = documentResult.value;
@@ -287,8 +311,14 @@ const handleFormSubmit = async (payload: FormSubmissionPayload): Promise<void> =
       throw htmlResult.reason;
     }
     if (htmlResult.status === 'rejected' || documentResult.status === 'rejected') {
+      const failed =
+        (htmlResult.status === 'rejected' ? htmlResult.reason : undefined) ??
+        (documentResult.status === 'rejected' ? documentResult.reason : undefined);
+      const view = htmlResult.status === 'rejected'
+        ? 'The HTML report'
+        : 'The workbook view and Excel export';
       exportStatus.value = {
-        message: 'Report loaded partially - one of the report views is unavailable',
+        message: describeReportError(failed, view),
         type: 'error',
         path: null
       };
@@ -322,6 +352,22 @@ const handlePDFExport = async (): Promise<void> => {
 
 const handleExcelExport = async (): Promise<void> => {
   // EXPORTS THE REAL .XLSX BUILT BY THE BACKEND FROM THE REPORT DOCUMENT
+  if (!reportDocument.value && lastFormPayload.value) {
+    // RETRY THE DOCUMENT FETCH IN CASE IT FAILED AT SUBMIT TIME
+    try {
+      reportDocument.value = await post(
+        '/api/report/final_report/document',
+        lastFormPayload.value
+      );
+    } catch (error: any) {
+      exportStatus.value = {
+        message: describeReportError(error, 'The Excel workbook'),
+        type: 'error',
+        path: null
+      };
+      return;
+    }
+  }
   await exportToExcel(reportDocument.value);
 };
 
