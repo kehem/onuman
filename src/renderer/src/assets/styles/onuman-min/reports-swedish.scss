@@ -39,6 +39,8 @@
   font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
   background: var(--sw-canvas);
   color: var(--sw-ink);
+  // force light native controls (select dropdowns, checkboxes, scrollbars)
+  color-scheme: light;
 
   // ---------------- page shell ----------------
   > h1.text-center {
@@ -137,20 +139,28 @@
 
   // boxed legend variant (uses !important in the base theme)
   .sdfw43zq1 {
-    text-align: left !important;
+    text-align: center !important;
     margin-bottom: 0.25rem !important;
     border: none !important;
-    padding: 0 !important;
+    padding: 0 0.5rem !important;
     background: transparent !important;
 
     strong {
-      color: var(--sw-accent);
+      color: var(--sw-accent) !important;
 
       &.success,
       &.warning {
-        color: var(--sw-accent);
+        color: var(--sw-accent) !important;
       }
     }
+  }
+
+  // global .success/.warning helpers use !important - re-tint them here
+  legend.success,
+  legend.warning,
+  .fieldset-basic-inputs > legend.success,
+  .fieldset-basic-inputs > legend.warning {
+    color: var(--sw-accent) !important;
   }
 
   // ---------------- form controls ----------------
@@ -209,30 +219,38 @@
   input[type='number'],
   input[type='text'],
   input[type='search'] {
-    background: var(--sw-surface);
-    border: 1px solid var(--sw-hairline-strong);
+    background: var(--sw-surface) !important;
+    border: 1px solid var(--sw-hairline-strong) !important;
     border-radius: var(--sw-radius-sm);
-    color: var(--sw-ink);
+    color: var(--sw-ink) !important;
     padding: 0.45rem 0.7rem;
 
     &:focus {
       outline: none;
-      border-color: var(--sw-accent);
+      border-color: var(--sw-accent) !important;
       box-shadow: 0 0 0 3px var(--sw-accent-tint);
     }
   }
 
-  // project select
+  // project select (base theme paints it dark with !important)
   .onuman-select-box {
-    background: var(--sw-surface);
-    border: 1px solid var(--sw-hairline-strong);
-    border-radius: var(--sw-radius-sm);
-    color: var(--sw-ink);
+    background: var(--sw-surface) !important;
+    border: 1px solid var(--sw-hairline-strong) !important;
+    border-radius: var(--sw-radius-sm) !important;
+    color: var(--sw-ink) !important;
+    font-size: 13px !important;
     padding: 0.55rem 0.8rem;
+    min-height: 2.4rem;
+
+    option {
+      background: var(--sw-surface) !important;
+      color: var(--sw-ink) !important;
+      font-size: 13px !important;
+    }
 
     &:focus {
       outline: none;
-      border-color: var(--sw-accent);
+      border-color: var(--sw-accent) !important;
       box-shadow: 0 0 0 3px var(--sw-accent-tint);
     }
   }
@@ -331,12 +349,20 @@
   }
 
   // ---------------- export status banner ----------------
-  .export-status-banner {
-    background: var(--sw-surface-soft);
-    border: 1px solid var(--sw-hairline);
+  // (ftp.scss paints bare .error/.loading amber with !important - override firmly)
+  .export-status-banner,
+  .export-status-banner.error,
+  .export-status-banner.success,
+  .loading,
+  .error {
+    background: var(--sw-surface-soft) !important;
+    border: 1px solid var(--sw-hairline) !important;
     border-radius: var(--sw-radius);
     padding: 10px 14px;
     margin-bottom: 10px;
+    color: var(--sw-ink) !important;
+    text-align: left;
+    width: auto;
 
     .status-content {
       i {
@@ -376,8 +402,8 @@
 
     // muted status tints
     &.success {
-      background: var(--sw-sage);
-      border-color: color.adjust(#5c7050, $lightness: 38%);
+      background: var(--sw-sage) !important;
+      border-color: color.adjust(#5c7050, $lightness: 38%) !important;
 
       .status-content i,
       .status-content .status-actions .action-btn,
@@ -387,8 +413,8 @@
     }
 
     &.error {
-      background: var(--sw-coral);
-      border-color: color.adjust(#b0563c, $lightness: 38%);
+      background: var(--sw-coral) !important;
+      border-color: color.adjust(#b0563c, $lightness: 38%) !important;
 
       .status-content i,
       .status-content .status-actions .action-btn,

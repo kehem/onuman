@@ -87,8 +87,7 @@ const {
 const {
   dismissStatus,
   openFileLocation,
-  openFile,
-  handleExportError
+  openFile
 } = useExportHelpers();
 
 // ------------------------------------------
@@ -101,13 +100,35 @@ const excelFilename = ref('onuman-report.xlsx');
 const isSubmittingReport = ref(false);
 
 // ------------------------------------------
+// * ERROR DESCRIPTION (ACTIONABLE MESSAGES)
+// ------------------------------------------
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null;
+
+const describeReportError = (error: unknown, view: string): string => {
+  const errorRecord = isRecord(error) ? error : {};
+  const response = isRecord(errorRecord.response) ? errorRecord.response : {};
+  const responseData = isRecord(response.data) ? response.data : {};
+  const status = typeof response.status === 'number' ? response.status : undefined;
+  const serverError = typeof responseData.error === 'string' ? responseData.error : undefined;
+  const errorMessage = typeof errorRecord.message === 'string' ? errorRecord.message : undefined;
+  if (status === 404) {
+    return `${view} is unavailable on this server (HTTP 404) - the backend must be updated to the latest onuman-private (it provides /api/report/final_report/document and the Excel writer).`;
+  }
+  if (status !== undefined && status >= 500) {
+    return `${view} failed on the server (HTTP 500)${serverError ? `: ${serverError}` : ''} - make sure openpyxl is installed (pip install openpyxl) and the backend is up to date.`;
+  }
+  return `${view} failed: ${serverError || errorMessage || 'unknown error'}`;
+};
+
+// ------------------------------------------
 // * API AND DATA FETCHING
 // ------------------------------------------
 const fetchProjectList = async (): Promise<void> => {
   try {
     const response = await get('/api/project_list');
     projectList.value = response.results;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Failed to fetch project list:', error);
     exportStatus.value = {
       message: 'Failed to fetch project list',
@@ -262,7 +283,12 @@ const handleFormSubmit = async (payload: FormSubmissionPayload): Promise<void> =
     );
 
   } catch (error: any) {
-    handleExportError(error, 'Report generation', exportStatus);
+    console.error('Report generation error:', error);
+    exportStatus.value = {
+      message: describeReportError(error, 'Report generation'),
+      type: 'error',
+      path: null
+    };
   } finally {
     isSubmittingReport.value = false;
   }
