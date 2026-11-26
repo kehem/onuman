@@ -18,37 +18,21 @@
         <aside ref="rightPanel" class="span-8 onuman-insider-scrollbar onuman-input-height-2">
           <section class="report-result">
 
-            <!-- VIEW SWITCH: WORKBOOK (MIRRORS THE .XLSX) / HTML REPORT -->
-            <div class="report-view-switch" v-if="HTMLResponse && reportDocument">
-              <button type="button" class="view-switch-btn" :class="{ active: viewMode === 'workbook' }"
-                @click="viewMode = 'workbook'">Workbook</button>
-              <button type="button" class="view-switch-btn" :class="{ active: viewMode === 'html' }"
-                @click="viewMode = 'html'">Report</button>
-            </div>
-
-            <!-- WORKBOOK VIEW (EXACTLY WHAT THE .XLSX CONTAINS) -->
-            <ReportWorkbookView v-if="showWorkbook && reportDocument" :document="reportDocument" />
-
-            <!-- CLASSIC HTML REPORT -->
-            <aside class="report-response" v-else-if="showHtml" v-html="HTMLResponse"></aside>
+            <ExcelWorkbookView v-if="workbook" :workbook="workbook" />
             <aside v-else class="report-response-await">
-              <div class="bounce-circle"></div>
+              <div v-if="isSubmittingReport" class="bounce-circle"></div>
+              <span v-else>Select a project and generate a report to view its Excel workbook.</span>
             </aside>
 
-            <!-- ENHANCED INTERACTIVE REPORT ACTIONS -->
-            <section class="report-actions-enhanced" v-if="HTMLResponse || reportDocument">
-
-              <!-- EXPORT STATUS BANNER COMPONENT -->
+            <section class="report-actions-enhanced" v-if="workbook || exportStatus.message">
               <ExportStatusBanner :exportStatus="exportStatus" @dismiss="handleStatusDismiss"
                 @openFileLocation="handleOpenFileLocation" @openFile="handleOpenFile" />
 
-              <!-- EXPORT ACTIONS COMPONENT -->
-              <ExportActionsComponent :hasContent="!!HTMLResponse" :isExporting="isExporting"
-                :isExportingPDF="isExportingPDF" :isExportingExcel="isExportingExcel" :isExportingWord="isExportingWord"
-                @exportPDF="handlePDFExport" @exportExcel="handleExcelExport" @exportWord="handleWordExport"
-                @preview="handlePreviewExport" />
+              <ExportActionsComponent :hasExcelContent="!!excelBytes"
+                :isExporting="isExporting"
+                :isExportingExcel="isExportingExcel"
+                @exportExcel="handleExcelExport" />
 
-              <!-- EXPORT HISTORY COMPONENT -->
               <ExportHistoryComponent :exportHistory="exportHistory" :maxItems="3" />
             </section>
 
@@ -61,11 +45,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import DefaultLayouts from '../../layouts/DefaultLayouts.vue';
 import BottomBar from '../../components/Dashboard/BottomBar.vue';
 import ReportFormComponent from './Components/ReportFormComponent.vue';
-import ReportWorkbookView from './Components/ReportWorkbookView.vue';
+import ExcelWorkbookView from './Components/ExcelWorkbookView.vue';
 import ExportStatusBanner from './IndexComponents/ExportStatusBanner.vue';
 import ExportActionsComponent from './IndexComponents/ExportActionsComponent.vue';
 import ExportHistoryComponent from './IndexComponents/ExportHistoryComponent.vue';
@@ -73,6 +57,8 @@ import { useApi } from '../../composables/useApi';
 import { useSimpleColumnResize } from '../../composables/useColumnResize';
 import { useExportOperations } from '../../composables/Exports/useExportOperations';
 import { useExportHelpers } from '../../composables/Exports/useExportHelpers';
+import { filenameFromDisposition, parseExcelWorkbook } from './Utils/excelWorkbook';
+import type { WorkbookSheet } from './Utils/excelWorkbook';
 import type {
   Project,
   FormSubmissionPayload,
@@ -89,25 +75,19 @@ import {
 // ------------------------------------------
 // * COMPOSABLES
 // ------------------------------------------
-const { get, post } = useApi();
+const { get, post, apiClient } = useApi();
 const { container, leftPanel, rightPanel } = useSimpleColumnResize();
 const {
   isExporting,
-  isExportingPDF,
   isExportingExcel,
-  isExportingWord,
   exportStatus,
   exportHistory,
-  exportToPDF,
-  exportToExcel,
-  exportToWord,
-  exportToPreview
+  exportToExcel
 } = useExportOperations();
 const {
   dismissStatus,
   openFileLocation,
   openFile,
-  loadExternalReportCSS,
   handleExportError
 } = useExportHelpers();
 
@@ -115,19 +95,10 @@ const {
 // * REACTIVE VARIABLES
 // ------------------------------------------
 const projectList = ref<Project[]>([]);
-const HTMLResponse = ref('');
-const reportDocument = ref<ReportDocument | null>(null);
-const viewMode = ref<'workbook' | 'html'>('workbook');
+const workbook = ref<WorkbookSheet | null>(null);
+const excelBytes = ref<Uint8Array | null>(null);
+const excelFilename = ref('onuman-report.xlsx');
 const isSubmittingReport = ref(false);
-
-// WORKBOOK VIEW IS SHOWN WHEN A REPORT DOCUMENT IS AVAILABLE
-const showWorkbook = computed(
-  () => viewMode.value === 'workbook' && !!reportDocument.value
-);
-// HTML REPORT FALLS BACK AUTOMATICALLY WHEN NO DOCUMENT WAS RETURNED
-const showHtml = computed(
-  () => (viewMode.value === 'html' || !reportDocument.value) && !!HTMLResponse.value
-);
 
 // ------------------------------------------
 // * API AND DATA FETCHING
@@ -267,35 +238,31 @@ const handleFormSubmit = async (payload: FormSubmissionPayload): Promise<void> =
 
   try {
     isSubmittingReport.value = true;
-    HTMLResponse.value = ''; // CLEAR PREVIOUS RESPONSE
-    reportDocument.value = null;
+    workbook.value = null;
+    excelBytes.value = null;
+    exportStatus.value = { message: '', type: '', path: null };
 
-    // FETCH THE HTML REPORT AND THE REPORT DOCUMENT (EXCEL SOURCE) TOGETHER
-    const [htmlResult, documentResult] = await Promise.allSettled([
-      post('/api/report/final_report', payload),
-      post('/api/report/final_report/document', payload)
-    ]);
+    const reportDocument = await post<ReportDocument>(
+      '/api/report/final_report/document',
+      payload
+    );
+    const response = await apiClient.post<ArrayBuffer>(
+      '/api/report/final_report/excel',
+      reportDocument,
+      { responseType: 'arraybuffer' }
+    );
+    const bytes = new Uint8Array(response.data);
+    const parsedWorkbook = await parseExcelWorkbook(bytes);
 
-    if (htmlResult.status === 'fulfilled') {
-      HTMLResponse.value = htmlResult.value;
-    }
-    if (documentResult.status === 'fulfilled') {
-      reportDocument.value = documentResult.value;
-    }
-
-    if (htmlResult.status === 'rejected' && documentResult.status === 'rejected') {
-      throw htmlResult.reason;
-    }
-    if (htmlResult.status === 'rejected' || documentResult.status === 'rejected') {
-      exportStatus.value = {
-        message: 'Report loaded partially - one of the report views is unavailable',
-        type: 'error',
-        path: null
-      };
-    }
+    workbook.value = parsedWorkbook;
+    excelBytes.value = bytes;
+    excelFilename.value = filenameFromDisposition(
+      response.headers['content-disposition'],
+      'onuman-report.xlsx'
+    );
 
   } catch (error: any) {
-    handleExportError(error, 'Report submission', exportStatus);
+    handleExportError(error, 'Report generation', exportStatus);
   } finally {
     isSubmittingReport.value = false;
   }
@@ -316,31 +283,14 @@ const handleOpenFile = async (path: string): Promise<void> => {
   await openFile(path, exportStatus);
 };
 
-const handlePDFExport = async (): Promise<void> => {
-  await exportToPDF(HTMLResponse.value);
-};
-
 const handleExcelExport = async (): Promise<void> => {
-  // EXPORTS THE REAL .XLSX BUILT BY THE BACKEND FROM THE REPORT DOCUMENT
-  await exportToExcel(reportDocument.value);
-};
-
-const handleWordExport = async (): Promise<void> => {
-  await exportToWord(HTMLResponse.value);
-};
-
-const handlePreviewExport = async (): Promise<void> => {
-  await exportToPreview(HTMLResponse.value);
+  await exportToExcel(excelBytes.value, excelFilename.value);
 };
 
 // ------------------------------------------
 // * LIFECYCLE HOOKS
 // ------------------------------------------
 onMounted(() => {
-  // LOAD EXTERNAL REPORT CSS
-  loadExternalReportCSS();
-
-  // FETCH PROJECT DATA
   fetchProjectList();
 });
 </script>

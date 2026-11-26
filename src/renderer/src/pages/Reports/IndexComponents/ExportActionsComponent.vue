@@ -1,101 +1,41 @@
 <!-- /src/pages/Reports/InComponents/ExportActionsComponent.vue -->
 
 <template>
-    <div class="export-grid">
-        <!-- PDF EXPORT -->
-        <div class="export-card">
-            <button @click="handlePDFExport" :disabled="!hasContent || isExporting"
-                :class="['export-btn', 'export-pdf', { 'exporting': isExportingPDF }]">
-                <div class="btn-content">
-                    <i class="m-document-file-pdf1"></i>
-                    <span>{{ isExportingPDF ? 'Generating...' : 'Export PDF' }}</span>
-                </div>
-                <div v-if="isExportingPDF" class="progress-bar">
-                    <div class="progress-fill"></div>
-                </div>
-            </button>
-            <p class="export-desc">High-quality PDF document</p>
+  <div class="export-grid">
+    <div class="export-card">
+      <button
+        :disabled="!hasExcelContent || isExporting"
+        :class="['export-btn', 'export-excel', { exporting: isExportingExcel }]"
+        @click="handleExcelExport"
+      >
+        <div class="btn-content">
+          <i class="m-file-excel"></i>
+          <span>{{ isExportingExcel ? 'Saving...' : 'Save Excel' }}</span>
         </div>
-
-        <!-- EXCEL EXPORT -->
-        <div class="export-card">
-            <button @click="handleExcelExport" :disabled="!hasContent || isExporting"
-                :class="['export-btn', 'export-excel', { 'exporting': isExportingExcel }]">
-                <div class="btn-content">
-                    <i class="m-file-excel"></i>
-                    <span>{{ isExportingExcel ? 'Processing...' : 'Export Excel' }}</span>
-                </div>
-                <div v-if="isExportingExcel" class="progress-bar">
-                    <div class="progress-fill"></div>
-                </div>
-            </button>
-            <p class="export-desc">Real .xlsx workbook from the backend</p>
+        <div v-if="isExportingExcel" class="progress-bar">
+          <div class="progress-fill"></div>
         </div>
-
-        <!-- WORD EXPORT -->
-        <div class="export-card">
-            <button @click="handleWordExport" :disabled="!hasContent || isExporting"
-                :class="['export-btn', 'export-word', { 'exporting': isExportingWord }]">
-                <div class="btn-content">
-                    <i class="m-file-word"></i>
-                    <span>{{ isExportingWord ? 'Creating...' : 'Export Word' }}</span>
-                </div>
-                <div v-if="isExportingWord" class="progress-bar">
-                    <div class="progress-fill"></div>
-                </div>
-            </button>
-            <p class="export-desc">Editable document format</p>
-        </div>
-
-        <!-- PREVIEW (EXTERNAL BROWSER) -->
-        <div class="export-card">
-            <button @click="handlePreview" :disabled="!hasContent" class="export-btn export-print">
-                <div class="btn-content">
-                    <i class="m-eye"></i>
-                    <span>Preview</span>
-                </div>
-            </button>
-            <p class="export-desc">Open in browser to print</p>
-        </div>
+      </button>
+      <p class="export-desc">Save the Django-generated workbook</p>
     </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-// COMPONENT PROPS
 interface Props {
-    hasContent: boolean;
-    isExporting: boolean;
-    isExportingPDF: boolean;
-    isExportingExcel: boolean;
-    isExportingWord: boolean;
+  hasExcelContent: boolean
+  isExporting: boolean
+  isExportingExcel: boolean
 }
 
-// COMPONENT EMITS
 interface Emits {
-    exportPDF: [];
-    exportExcel: [];
-    exportWord: [];
-    preview: [];
+  exportExcel: []
 }
 
-// DEFINE PROPS AND EMITS
-defineProps<Props>();
-const emit = defineEmits<Emits>();
-
-// EVENT HANDLERS
-const handlePDFExport = (): void => {
-    emit('exportPDF');
-};
+defineProps<Props>()
+const emit = defineEmits<Emits>()
 
 const handleExcelExport = (): void => {
-    emit('exportExcel');
-};
-
-const handleWordExport = (): void => {
-    emit('exportWord');
-};
-
-const handlePreview = (): void => {
-    emit('preview');
-};
+  emit('exportExcel')
+}
 </script>
