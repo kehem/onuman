@@ -3,8 +3,7 @@
 <template>
   <DefaultLayouts>
     <div class="main-screen project-insider reports-page">
-      <br><br>
-      <h1 class="text-center">Reports</h1><br>
+      <h1 class="text-center">Reports</h1>
 
       <section class="flex-col-container" ref="container">
         <!-- LEFT PANEL - FORM COMPONENT -->
@@ -325,7 +324,7 @@ onMounted(() => {
 /* LAYOUT STYLES */
 .onuman-input-height-2 {
   margin-top: 0;
-  height: calc(100vh - 8.7rem);
+  height: calc(100vh - 6.5rem);
 }
 
 .onuman-input-height {

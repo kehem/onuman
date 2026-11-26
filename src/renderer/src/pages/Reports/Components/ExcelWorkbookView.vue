@@ -42,17 +42,19 @@ defineProps<{
 
 <style scoped lang="scss">
 .excel-workbook-scroll {
+  flex: 1 1 auto;
   width: 100%;
-  height: 100%;
+  height: auto;
+  min-height: 0;
   overflow: auto;
-  padding: 12px;
+  padding: 6px;
   background: var(--sw-canvas, #e8eaed);
 }
 
 .excel-workbook {
   width: max-content;
   min-width: 100%;
-  padding: 20px;
+  padding: 10px;
   background: #fff;
   color: #1f2933;
   font-family: Calibri, 'Segoe UI', sans-serif;
@@ -61,7 +63,7 @@ defineProps<{
 }
 
 .excel-sheet-name {
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   color: #64748b;
   font-size: 12px;
 }

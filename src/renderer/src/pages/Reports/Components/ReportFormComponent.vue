@@ -190,6 +190,6 @@ watch(selectedItems, () => {
 
 .onuman-input-height {
     margin-top: 0;
-    height: calc(100vh - 11.2rem);
+    height: calc(100vh - 6.5rem);
 }
 </style>
