@@ -7,6 +7,7 @@ import { setupIpcHandlers } from './ipc'
 import { configureAutoUpdater } from './updater'
 import { startAppServer } from './server'
 import { setupGlobalShortcuts, cleanupShortcuts } from './shortcuts'
+import { logDevToolsAvailability } from './devtools'
 
 let mainWindow: BrowserWindow | null = null
 let server: any = null
@@ -45,6 +46,7 @@ async function initializeApp(): Promise<{ mainWindow: BrowserWindow; server: any
 
     // CREATE MAIN WINDOW
     mainWindow = createWindow()
+    logDevToolsAvailability()
 
     // CHECK AUTO UPDATE ON LAUNCH
     if (!is.dev) {

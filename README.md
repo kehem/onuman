@@ -110,6 +110,62 @@ Onuman is continuously evolving. In the near future, the following features will
 
 ---
 
+## 🛠️ Developer Tools (Debugging)
+
+DevTools are **always available in development** and **opt-in in packaged builds** (a build only enables them when it was made with `ENABLE_DEVTOOLS=true`).
+
+### Open DevTools in the app
+
+| Action | Shortcut |
+| --- | --- |
+| Toggle DevTools (detached window) | `F12` |
+| Toggle DevTools | `Ctrl + Shift + I` (`Cmd + Shift + I` on macOS) |
+| Toggle console | `Ctrl + Shift + J` (`Cmd + Shift + J` on macOS) |
+| Inspect element | Right-click → **Inspect Element** |
+
+Shortcuts are handled in the main process (`before-input-event`), because the window is frameless with `autoHideMenuBar`, so the default Electron menu accelerators never reach the user.
+
+### From code / the renderer
+
+```ts
+// main process
+win.webContents.openDevTools({ mode: 'detach' }) // 'right' | 'bottom' | 'undocked'
+
+// renderer (exposed by the preload bridge)
+await window.electronAPI.toggleDevTools()
+await window.electronAPI.isDevToolsEnabled()
+await window.electronAPI.copyConsoleLogs()   // console buffer → clipboard
+await window.electronAPI.exportConsoleLogs() // console buffer → .log file
+```
+
+Helpers live in `src/main/devtools.ts` (`openDevTools`, `toggleDevTools`, `closeDevTools`, `isDevToolsOpen`) and the matching IPC handlers in `src/main/ipc/devtools.ts`.
+
+### Builds and scripts
+
+```bash
+npm run dev            # electron-vite dev, DevTools enabled
+npm run dev:inspect    # dev + main-process inspector on 127.0.0.1:9229 (chrome://inspect)
+npm run dev:remote     # dev + remote debugging port 9222
+npm run build:win-dev  # packaged Windows build with ENABLE_DEVTOOLS=true
+npm run build:mac-dev  # packaged macOS build with ENABLE_DEVTOOLS=true
+npm run build:linux-dev# packaged Linux build with ENABLE_DEVTOOLS=true
+```
+
+Environment variables:
+
+- `ENABLE_DEVTOOLS=true` – allow DevTools in a packaged build.
+- `DEVTOOLS_MODE=detach|right|bottom|undocked` – where the panel docks (default `detach`, which is the only mode that behaves well with a frameless window).
+
+### Inspecting the main / preload processes
+
+Run `npm run dev:inspect`, open `chrome://inspect` in Chrome/Edge, and pick the 9229 target. Main-process `console.log` output also appears in the terminal that started the app.
+
+### When DevTools are disabled
+
+Pressing `F12` shows a hint dialog instead. The renderer console buffer can still be copied or exported to a `.log` file with `window.electronAPI.exportConsoleLogs()`, which is the recommended way to collect logs from a customer machine.
+
+---
+
 ## ✅ Conclusion
 Onuman provides a **modern, AI-ready, user-friendly** solution for civil and architectural estimation.  
 It bridges the gap between project planning, cost analysis, team collaboration, and future-ready automation with AI and 3D modeling.  

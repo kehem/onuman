@@ -9,6 +9,7 @@ import { fileAPI } from './apis/file'
 import { systemAPI } from './apis/system'
 import { storeAPI } from './apis/store'
 import { lifecycleAPI } from './apis/lifecycle'
+import { devtoolsAPI } from './apis/devtools'
 import type { ElectronAPI } from './types'
 
 // COMBINE ALL APIS INTO ONE ELECTRON API OBJECT
@@ -38,7 +39,10 @@ const electronAPI: ElectronAPI = {
   ...storeAPI,
 
   // APP LIFECYCLE
-  ...lifecycleAPI
+  ...lifecycleAPI,
+
+  // DEVTOOLS
+  ...devtoolsAPI
 }
 
 // EXPOSE THE ELECTRON API TO THE RENDERER PROCESS
