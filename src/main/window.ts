@@ -1,12 +1,10 @@
 // src/main/window.ts
-import { BrowserWindow, shell, session } from 'electron'
+import { BrowserWindow, Menu, shell, session } from 'electron'
 import { join } from 'path'
 import { is } from '@electron-toolkit/utils'
+import { attachDevToolsBindings, isDevToolsEnabled } from './devtools'
 
 const icon = join(__dirname, '../../resources/icon.ico')
-const isDev = process.env.NODE_ENV === 'development' || !!process.env.ELECTRON_RENDERER_URL
-const enableDevTools: boolean =
-  process.env.ENABLE_DEVTOOLS === 'true' || isDev
 
 
 
@@ -76,7 +74,7 @@ export function createWindow(): BrowserWindow {
       nodeIntegration: false,
       contextIsolation: true,
       allowRunningInsecureContent: false,
-      devTools: enableDevTools
+      devTools: isDevToolsEnabled()
     }
 
   })
@@ -86,8 +84,22 @@ export function createWindow(): BrowserWindow {
     mainWindow.show()
   })
 
-  // PREVENT CONTEXT MENU
-  mainWindow.webContents.on('context-menu', (e) => e.preventDefault())
+  // DEVTOOLS SHORTCUTS (F12, CTRL+SHIFT+I, CTRL+SHIFT+J) + CONSOLE BUFFER
+  attachDevToolsBindings(mainWindow)
+
+  // PREVENT THE DEFAULT CONTEXT MENU, BUT OFFER "INSPECT ELEMENT" WHEN DEVTOOLS
+  // ARE ALLOWED - RIGHT-CLICK IS THE FASTEST WAY TO THE ELEMENTS PANEL
+  mainWindow.webContents.on('context-menu', (e, params) => {
+    e.preventDefault()
+    if (!isDevToolsEnabled()) return
+
+    Menu.buildFromTemplate([
+      {
+        label: 'Inspect Element',
+        click: () => mainWindow.webContents.inspectElement(params.x, params.y)
+      }
+    ]).popup({ window: mainWindow })
+  })
 
   // HANDLE EXTERNAL LINKS
   mainWindow.webContents.setWindowOpenHandler((details) => {

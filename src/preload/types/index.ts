@@ -95,6 +95,15 @@ export interface ElectronAPI {
     // GENERAL JSON STORE
     store: StoreAPI
 
+    // DEVTOOLS
+    isDevToolsEnabled: () => Promise<boolean>
+    isDevToolsOpen: () => Promise<boolean>
+    openDevTools: () => Promise<boolean>
+    toggleDevTools: () => Promise<boolean>
+    closeDevTools: () => Promise<boolean>
+    copyConsoleLogs: () => Promise<boolean>
+    exportConsoleLogs: () => Promise<string | null>
+
     // APP LIFECYCLE
     onAppWillClose: (callback: () => void) => void
     onAppReady: (callback: () => void) => void

@@ -7,6 +7,7 @@ import { setupFileHandlers } from './files'
 import { setupExportHandlers } from './exports'
 import { setupNavigationHandlers } from './navigation'
 import { setupServerHandlers } from './server'
+import { setupDevToolsHandlers } from './devtools'
 
 // SETUP ALL IPC HANDLERS
 export function setupIpcHandlers() {
@@ -33,4 +34,7 @@ export function setupIpcHandlers() {
 
     // SERVER HANDLERS
     setupServerHandlers()
+
+    // DEVTOOLS HANDLERS
+    setupDevToolsHandlers()
 }
